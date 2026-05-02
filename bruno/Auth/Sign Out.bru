@@ -1,0 +1,19 @@
+meta {
+  name: Sign Out
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/auth/sign-out
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+vars:post-response {
+  auth_token: res.body.data.token
+}

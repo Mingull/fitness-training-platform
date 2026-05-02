@@ -1,0 +1,22 @@
+meta {
+  name: Refresh
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/auth/refresh
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "refreshToken": "{{refresh_token}}"
+  }
+}
+
+vars:post-response {
+  access_token: res.body.data.accessToken
+  refresh_token: res.body.data.refreshToken
+}

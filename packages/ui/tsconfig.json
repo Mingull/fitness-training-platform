@@ -1,0 +1,17 @@
+{
+  "extends": "@fitness/typescript-config/react-library.json",
+  "compilerOptions": {
+    "paths": {
+      "@fitness/ui/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "."
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

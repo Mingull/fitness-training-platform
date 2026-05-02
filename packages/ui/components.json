@@ -1,0 +1,24 @@
+{
+	"$schema": "https://ui.shadcn.com/schema.json",
+	"style": "radix-nova",
+	"rsc": true,
+	"tsx": true,
+	"tailwind": {
+		"config": "",
+		"css": "src/styles/globals.css",
+		"baseColor": "zinc",
+		"cssVariables": true,
+		"prefix": ""
+	},
+	"iconLibrary": "lucide",
+	"aliases": {
+		"components": "@mingull/ui/components",
+		"hooks": "@mingull/ui/hooks",
+		"lib": "@mingull/ui/lib",
+		"utils": "@mingull/ui/lib/utils",
+		"ui": "@mingull/ui/components"
+	},
+	"menuColor": "default",
+	"menuAccent": "bold",
+	"registries": {}
+}

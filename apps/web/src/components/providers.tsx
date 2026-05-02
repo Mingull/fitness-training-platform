@@ -1,0 +1,18 @@
+"use client";
+import { ThemeProvider, useTheme } from "next-themes";
+import { Toaster } from "@fitness/ui/components/sonner";
+
+export function Providers({ children }: Readonly<{ children: React.ReactNode }>) {
+	return (
+		<ThemeProvider enableSystem attribute="class" defaultTheme="system" disableTransitionOnChange>
+			{children}
+			<ToastProvider />
+		</ThemeProvider>
+	);
+}
+
+function ToastProvider() {
+	const { resolvedTheme } = useTheme();
+
+	return <Toaster position="top-right" theme={resolvedTheme === "dark" ? "dark" : "light"} />;
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Sign In
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/auth/sign-in
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "Test",
+    "password": "Test@1234"
+  }
+}
+
+vars:post-response {
+  access_token: res.body.data.accessToken
+  refresh_token: res.body.data.refreshToken
+}
