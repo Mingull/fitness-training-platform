@@ -14,9 +14,6 @@ public class AuthController(IAuthService authService) : ControllerBase
     [HttpPost("sign-up")]
     [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ApiError), StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
