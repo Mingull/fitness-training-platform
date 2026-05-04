@@ -1,15 +1,21 @@
 {
   "extends": "@fitness/typescript-config/react-library.json",
   "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "sourceMap": false,
+    "declarationMap": false,
     "paths": {
-      "@fitness/ui/*": [
+      "@/*": [
         "./src/*"
       ]
     }
   },
   "include": [
     "."
-, "../../apps/app/src/hooks/forms.ts"  ],
+  ],
   "exclude": [
     "node_modules",
     "dist"

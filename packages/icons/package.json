@@ -1,0 +1,32 @@
+{
+	"name": "@fitness/icons",
+	"version": "0.0.0",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"generate": "tsx scripts/generate.ts",
+		"lint": "eslint .",
+		"check-types": "tsc --noEmit",
+		"start": "node dist/index.js"
+	},
+	"dependencies": {
+		"react": "^19.2.5",
+		"react-dom": "^19.2.5"
+	},
+	"devDependencies": {
+		"@fitness/eslint-config": "workspace:*",
+		"@fitness/registry": "workspace:*",
+		"@fitness/typescript-config": "workspace:*",
+		"@tailwindcss/postcss": "^4.2.2",
+		"@turbo/gen": "^2.9.6",
+		"@types/node": "^25.6.0",
+		"@types/react": "^19.2.14",
+		"@types/react-dom": "^19.2.3",
+		"eslint": "^10.2.0",
+		"tsdown": "^0.21.8"
+	},
+	"exports": {
+		".": "./src/index.ts",
+		"./native": "./src/native/index.ts"
+	}
+}

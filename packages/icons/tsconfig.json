@@ -1,0 +1,23 @@
+{
+  "extends": "@fitness/typescript-config/react-library.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "sourceMap": false,
+    "declarationMap": false,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "."
+, "../../apps/app/src/components/native"  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
