@@ -15,7 +15,7 @@
   },
   "include": [
     "."
-, "../../apps/app/src/components/native"  ],
+  ],
   "exclude": [
     "node_modules",
     "dist"

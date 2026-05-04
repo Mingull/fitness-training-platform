@@ -9,7 +9,7 @@
   },
   "include": [
     "."
-, "../../apps/app/src/hooks/forms.ts"  ],
+  ],
   "exclude": [
     "node_modules",
     "dist"

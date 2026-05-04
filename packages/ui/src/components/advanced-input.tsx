@@ -60,9 +60,10 @@ export function AdvancedInput({ id, requirements, onStrengthChange, className, p
 			if (req.type === "ends-with") return { met: pass.endsWith(req.value), text: req.text, flags: req.flags };
 			if (req.type === "no-repeats") {
 				const match = pass.match(/(.)\1+/g);
-				return { met: !match || match.every((r) => r.length < req.max), text: req.text, flags: req.flags };
+				return { met: !match || match.every((r) => r.length <= req.max), text: req.text, flags: req.flags };
 			}
-			return { met: false, text: "Unknown requirement" };
+			if (req.type === "custom") return { met: req.validate(pass), text: req.text, flags: req.flags };
+			return { met: false, text: "Unknown requirement", flags: undefined };
 		});
 	};
 
@@ -74,7 +75,7 @@ export function AdvancedInput({ id, requirements, onStrengthChange, className, p
 
 	const getDefaultStrength = (strength: number) => {
 		if (strength === 0) return { color: "bg-border", text: "Enter a password" };
-		if (strength <= 1) return { color: "bg-red-500" };
+		if (strength <= 1) return { color: "bg-red-500", text: "Very weak password" };
 		if (strength <= 2) return { color: "bg-orange-500", text: "Weak password" };
 		if (strength === 3) return { color: "bg-amber-500", text: "Medium password" };
 		return { color: "bg-emerald-500", text: "Strong password" };

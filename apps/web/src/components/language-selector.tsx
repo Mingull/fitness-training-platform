@@ -41,7 +41,7 @@ export function LanguageSelector({ size }: { size?: "default" | "sm" }) {
 		:	{ pathname: pathname as ExtractStaticPath<typeof pathname>, query };
 
 	return (
-		<Button size={size ?? "sm"} variant="ghost" aria-label="Switch language">
+		<Button size={size ?? "sm"} variant="ghost" aria-label="Switch language" asChild>
 			<Link href={href} locale={locale === "en" ? "nl" : "en"}>
 				<ReactCountryFlag
 					countryCode={locale === "en" ? "GB" : "NL"}
