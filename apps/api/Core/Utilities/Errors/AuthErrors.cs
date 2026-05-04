@@ -18,7 +18,7 @@ public static class AuthErrors
         new("DuplicateEmail", ErrorType.Conflict, "Conflict", "A user with this email already exists.");
 
     public static ApiError RoleAssignmentFailed { get; } =
-        new("RoleAssignmentFailed", ErrorType.Forbidden, "Forbidden", "Could not assign the user role.");
+        new("RoleAssignmentFailed", ErrorType.InternalError, "Internal Server Error", "Could not assign the user role.");
 
     public static ApiError InvalidCredentials(string username) =>
         new("InvalidCredentials", ErrorType.Unauthorized, "Unauthorized", $"Invalid credentials for {username}.");
