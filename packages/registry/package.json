@@ -1,0 +1,25 @@
+{
+	"name": "@fitness/registry",
+	"version": "0.0.0",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"lint": "eslint .",
+		"test": "vitest run",
+		"check-types": "tsc --noEmit"
+	},
+	"dependencies": {
+		"zod": "^4.3.6"
+	},
+	"devDependencies": {
+		"@fitness/eslint-config": "workspace:*",
+		"@fitness/typescript-config": "workspace:*",
+		"@types/node": "^25.6.0",
+		"eslint": "^10.2.0",
+		"tsdown": "^0.21.8",
+		"vitest": "^4.1.4"
+	},
+	"exports": {
+		".": "./src/index.ts"
+	}
+}
