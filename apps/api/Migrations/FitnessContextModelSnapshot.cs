@@ -22,7 +22,7 @@ namespace Fitness.Api.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Fitness.API.Models.AppUser", b =>
+            modelBuilder.Entity("Fitness.API.Features.Auth.Models.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,7 +103,7 @@ namespace Fitness.Api.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("Fitness.API.Models.Profile", b =>
+            modelBuilder.Entity("Fitness.API.Features.Profiles.Models.Profile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -312,11 +312,11 @@ namespace Fitness.Api.Migrations
                     b.ToTable("user_tokens", (string)null);
                 });
 
-            modelBuilder.Entity("Fitness.API.Models.Profile", b =>
+            modelBuilder.Entity("Fitness.API.Features.Profiles.Models.Profile", b =>
                 {
-                    b.HasOne("Fitness.API.Models.AppUser", "User")
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "User")
                         .WithOne("Profile")
-                        .HasForeignKey("Fitness.API.Models.Profile", "UserId")
+                        .HasForeignKey("Fitness.API.Features.Profiles.Models.Profile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_profiles_users_user_id");
@@ -336,7 +336,7 @@ namespace Fitness.Api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Fitness.API.Models.AppUser", null)
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -346,7 +346,7 @@ namespace Fitness.Api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Fitness.API.Models.AppUser", null)
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -363,7 +363,7 @@ namespace Fitness.Api.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_user_roles_roles_role_id");
 
-                    b.HasOne("Fitness.API.Models.AppUser", null)
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -373,7 +373,7 @@ namespace Fitness.Api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Fitness.API.Models.AppUser", null)
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -381,7 +381,7 @@ namespace Fitness.Api.Migrations
                         .HasConstraintName("fk_user_tokens_users_user_id");
                 });
 
-            modelBuilder.Entity("Fitness.API.Models.AppUser", b =>
+            modelBuilder.Entity("Fitness.API.Features.Auth.Models.AppUser", b =>
                 {
                     b.Navigation("Profile");
                 });

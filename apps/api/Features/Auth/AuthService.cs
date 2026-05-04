@@ -1,4 +1,3 @@
-using Fitness.API.Models;
 using Fitness.API.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Fitness.API.Abstract.Services;
