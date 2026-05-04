@@ -1,4 +1,4 @@
-namespace Fitness.API.Models;
+namespace Fitness.API.Features.Auth.Models;
 
 public static class Roles
 {
