@@ -1,8 +1,7 @@
 using Fitness.API.Abstract.Services;
 using Fitness.API.Contexts;
-using Fitness.API.Models;
-using Fitness.API.Services;
-using Fitness.API.Utilities;
+using Fitness.API.Features.Auth;
+using Fitness.API.Features.Auth.Models;
 using Fitness.API.Utilities.Errors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
