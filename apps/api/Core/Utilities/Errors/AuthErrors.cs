@@ -42,15 +42,41 @@ public static class AuthErrors
             return DuplicateEmail;
         }
 
+        var passwordErrorCodes = new HashSet<string>
+        {
+            nameof(IdentityErrorDescriber.PasswordTooShort),
+            nameof(IdentityErrorDescriber.PasswordRequiresNonAlphanumeric),
+            nameof(IdentityErrorDescriber.PasswordRequiresDigit),
+            nameof(IdentityErrorDescriber.PasswordRequiresLower),
+            nameof(IdentityErrorDescriber.PasswordRequiresUpper),
+            nameof(IdentityErrorDescriber.PasswordRequiresUniqueChars),
+        };
+
+        var fieldErrors = new Dictionary<string, List<string>>();
+
+        foreach (var error in identityErrors)
+        {
+            string key;
+            if (error.Code == nameof(IdentityErrorDescriber.InvalidUserName))
+                key = "username";
+            else if (error.Code == nameof(IdentityErrorDescriber.InvalidEmail))
+                key = "email";
+            else if (passwordErrorCodes.Contains(error.Code))
+                key = "password";
+            else
+                key = "errors";
+
+            if (!fieldErrors.ContainsKey(key))
+                fieldErrors[key] = [];
+            fieldErrors[key].Add(error.Description);
+        }
+
         return new ApiError(
             UserCreationFailed.Code,
             ErrorType.Validation,
             "Validation failed",
             "Could not create the user.",
-            new Dictionary<string, string[]>
-            {
-                ["password"] = identityErrors.Select(e => e.Description).ToArray(),
-            });
+            fieldErrors.ToDictionary(kv => kv.Key, kv => kv.Value.ToArray()));
     }
 
     public static ApiError MapModelStateValidationFailure(ModelStateDictionary modelState)
