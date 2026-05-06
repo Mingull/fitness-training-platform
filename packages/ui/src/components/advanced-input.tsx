@@ -107,7 +107,7 @@ export function AdvancedInput({ id, requirements, onStrengthChange, className, p
 						<InputGroupButton
 							type="button"
 							variant="ghost"
-							className="text-muted-foreground/80 absolute top-1/2 right-0 -translate-y-1/2"
+							className="text-muted-foreground/80"
 							onClick={toggleVisibility}
 							aria-label={isVisible ? "Hide password" : "Show password"}
 							aria-pressed={isVisible}
@@ -176,7 +176,7 @@ type RequirementCustom = { type: "custom"; validate: (value: string) => boolean;
 
 type RequirementFlags = "hidden";
 
-type Requirement = (
+export type Requirement = (
 	| RequirementMin
 	| RequirementMax
 	| RequirementLength

@@ -1,0 +1,21 @@
+export { AngularIcon } from "./icons-map/angular-icon";
+export { AppleIcon } from "./icons-map/apple-icon";
+export { AriaIcon } from "./icons-map/aria-icon";
+export { DiscordIcon } from "./icons-map/discord-icon";
+export { GitHubIcon } from "./icons-map/github-icon";
+export { GoogleIcon } from "./icons-map/google-icon";
+export { LinkedInIcon } from "./icons-map/linkedin-icon";
+export { MingullIcon } from "./icons-map/mingull-icon";
+export { MySQLIcon } from "./icons-map/mysql-icon";
+export { NextJsIcon } from "./icons-map/nextjs-icon";
+export { NodeJsIcon } from "./icons-map/nodejs-icon";
+export { NPMIcon } from "./icons-map/npm-icon";
+export { PayPalIcon } from "./icons-map/paypal-icon";
+export { PnpmIcon } from "./icons-map/pnpm-icon";
+export { ReactIcon } from "./icons-map/react-icon";
+export { Spinner } from "./icons-map/spinner-icon";
+export { TailwindIcon } from "./icons-map/tailwind-icon";
+export { TypeScriptIcon } from "./icons-map/typescript-icon";
+export { YarnIcon } from "./icons-map/yarn-icon";
+
+export type { Icon } from "./icon";

@@ -1,0 +1,18 @@
+declare const messages: {
+	"sign-up": {
+		title: "Registreren voor {title}";
+		subtitle: "Maak een account aan om door te gaan naar {title}";
+		divider: "of";
+		username: "Gebruikersnaam";
+		email: "E-mailadres";
+		password: "Wachtwoord";
+		confirmPassword: "Bevestig wachtwoord";
+		button: "Registreren";
+		continue: "Doorgaan met {provider}";
+		"have-account": "Heb je al een account?";
+		linkText: "Inloggen";
+		tos: "Door je aan te melden, ga je akkoord met onze <tos>Terms of Service</tos> en <privacy>Privacy Policy</privacy>.";
+		name: "Naam";
+	};
+};
+export default messages;

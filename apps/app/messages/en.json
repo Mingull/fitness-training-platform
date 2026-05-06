@@ -1,0 +1,17 @@
+{
+	"sign-up": {
+		"title": "Sign Up for {title}",
+		"subtitle": "Create an account to continue to {title}",
+		"divider": "or",
+		"username": "Username",
+		"email": "Email",
+		"password": "Password",
+		"confirmPassword": "Confirm Password",
+		"button": "Sign Up",
+		"continue": "Continue with {provider}",
+		"have-account": "Already have an account?",
+		"linkText": "Sign In",
+		"tos": "By clicking sign up, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>.",
+		"name": "Name"
+	}
+}
