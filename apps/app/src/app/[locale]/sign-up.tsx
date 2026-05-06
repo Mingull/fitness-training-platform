@@ -48,7 +48,7 @@ export default function Signup() {
 	const t = useTranslations("sign-up");
 	const [errorMessage, setErrorMessage] = useState<string | null>(null); // global error message state
 	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-	const fields = useRef([] as Array<{ input: TextInput; name: string }>);
+	const fields = useRef(new Map<string, TextInput>());
 
 	const form = useAppForm({
 		defaultValues: {
@@ -86,11 +86,11 @@ export default function Signup() {
 		// 	const errorMap = formApi.state.errorMap.onSubmit;
 		// 	const inputs = fields.current;
 
-		// 	let firstInput;
-		// 	for (const input of inputs) {
-		// 		if (!input || !input.input) continue;
-		// 		if (!!errorMap![input.name]) {
-		// 			firstInput = input.input;
+		// 	let firstInput: TextInput | undefined;
+		// 	for (const [name, input] of inputs) {
+		// 		if (!input) continue;
+		// 		if (!!errorMap![name]) {
+		// 			firstInput = input;
 		// 			break;
 		// 		}
 		// 	}
@@ -99,12 +99,15 @@ export default function Signup() {
 	});
 
 	const registerRef = (name: keyof typeof formSchema.shape, input: TextInput | null) => {
-		if (!input) return;
-		fields.current.push({ input, name: name });
+		if (!input) {
+			fields.current.delete(name);
+			return;
+		}
+		fields.current.set(name, input);
 	};
 
 	const focusNext = (name: keyof typeof formSchema.shape) => {
-		fields.current.find((f) => f.name === name)?.input.focus();
+		fields.current.get(name)?.focus();
 	};
 
 	return (

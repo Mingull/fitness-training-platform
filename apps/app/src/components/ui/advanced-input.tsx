@@ -112,7 +112,7 @@ export function AdvancedInput({ id, requirements, onStrengthChange, className, p
 							onPress={toggleVisibility}
 							aria-label={isVisible ? "Hide password" : "Show password"}
 							aria-pressed={isVisible}
-							aria-controls="password"
+							aria-controls={inputId}
 						>
 							{isVisible ?
 								<Icon as={EyeOffIcon} />
@@ -139,7 +139,7 @@ export function AdvancedInput({ id, requirements, onStrengthChange, className, p
 				</View>
 
 				{/* Password strength description */}
-				<Text id={`${id}-description`} className="text-foreground mb-2 text-sm font-medium">
+				<Text id={`${inputId}-description`} className="text-foreground mb-2 text-sm font-medium">
 					{getStrength(strengthScore).text}. Must contain:
 				</Text>
 
