@@ -28,7 +28,7 @@ export const THEME = {
 		radius: "0.45rem",
 	},
 	dark: {
-		background: "hsl(240.1 11.24% 3.98%))",
+		background: "hsl(240.1 11.24% 3.98%)",
 		foreground: "hsl(0 0% 98.03%)",
 		card: "hsl(240.01 6.03% 9.98%)",
 		cardForeground: "hsl(0 0% 98.03%)",
