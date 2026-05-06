@@ -27,7 +27,19 @@ function buildError(payload: ErrorPayload, statusText: string): Result<never>["e
 }
 
 export const signUp = async (data: z.infer<typeof registerContract>): Promise<Result<{ token: string }>> => {
-	let apiBase = process.env.EXPO_PUBLIC_API_URL;
+	const apiBase = process.env.EXPO_PUBLIC_API_URL;
+
+	if (!apiBase) {
+		console.error("EXPO_PUBLIC_API_URL is not configured.");
+		return {
+			data: null,
+			error: {
+				message: "An unexpected error occurred. Please try again later.",
+				status: 500,
+				statusText: "Internal Server Error",
+			},
+		};
+	}
 
 	try {
 		const validatedData = registerContract.parse(data);
