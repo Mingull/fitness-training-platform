@@ -1,18 +1,18 @@
 using Fitness.API.Contexts;
-using Fitness.API.Abstract.Services;
-using Fitness.API.Utilities;
-using Fitness.API.Utilities.Errors;
+using Fitness.API.Core.Utilities;
 using Fitness.API.Features.Auth.Contracts;
 using Fitness.API.Features.Auth.Models;
 using Fitness.API.Features.Profiles.Models;
 using Microsoft.AspNetCore.Identity;
-using Fitness.API.Core.Tokens;
-using Fitness.API.Features.Auth.Tokens.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Fitness.API.Features.Auth.Abstract;
+using Fitness.API.Abstract.Services;
+using Fitness.API.Features.Auth.Utilities;
 
 namespace Fitness.API.Features.Auth;
 
-public class AuthService(UserManager<AppUser> userManager, FitnessContext context, TokenProvider tokenProvider) : IAuthService
+public class AuthService(UserManager<AppUser> userManager, FitnessContext context, IAuthRepository authRepo, TokenProvider tokenProvider, IHttpContextAccessor httpContextAccessor) : IAuthService
 {
     public async Task<Result> RegisterAsync(RegisterUserRequest request)
     {
@@ -75,35 +75,70 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
 
         var accessToken = tokenProvider.CreateAccessToken(user, roles);
 
-        var refreshToken = new RefreshToken
-        {
-            Id = Guid.NewGuid(),
-            UserId = user.Id,
-            Token = tokenProvider.CreateRefreshToken(),
-            ExpiresOnUtc = DateTime.UtcNow.AddDays(7)
-        };
-
-        context.RefreshTokens.Add(refreshToken);
-        await context.SaveChangesAsync();
+        var refreshToken = await authRepo.AddRefreshTokenAsync(user.Id, tokenProvider.CreateRefreshToken());
 
         return Result<AuthResponse>.Success(new AuthResponse { AccessToken = accessToken, RefreshToken = refreshToken.Token });
     }
 
     public async Task<Result<AuthResponse>> RefreshTokenAsync(RefreshTokenRequest request)
     {
-        var refreshToken = await context.RefreshTokens
-                                    .Include(r => r.User)
-                                    .FirstOrDefaultAsync(rt => rt.Token == request.RefreshToken);
-        if (refreshToken is null || refreshToken.ExpiresOnUtc < DateTime.UtcNow)
+        var refreshToken = await authRepo.GetRefreshTokenAsync(request.RefreshToken);
+        if (refreshToken is null || refreshToken.ExpiresAt < DateTime.UtcNow || refreshToken.RevokedAt != null)
             return AuthErrors.InvalidRefreshToken;
+
+        refreshToken.RevokedAt = DateTime.UtcNow;
 
         string accessToken = tokenProvider.CreateAccessToken(refreshToken.User!, await userManager.GetRolesAsync(refreshToken.User!));
 
-        refreshToken.Token = tokenProvider.CreateRefreshToken();
-        refreshToken.ExpiresOnUtc = DateTime.UtcNow.AddDays(7);
+        var newRefreshToken = await authRepo.AddRefreshTokenAsync(refreshToken.UserId, tokenProvider.CreateRefreshToken());
+
+        return Result<AuthResponse>.Success(new AuthResponse { AccessToken = accessToken, RefreshToken = newRefreshToken.Token });
+    }
+
+    public async Task<Result<bool>> RevokeRefreshTokenAsync(string refreshToken)
+    {
+        var userId = GetCurrentUserId();
+
+        if (userId is null) return AuthErrors.Unauthorized;
+
+        var token = await authRepo.GetValidRefreshTokenAsync(userId.Value, refreshToken);
+
+        if (token is null) return AuthErrors.InvalidRefreshToken;
+
+        token.RevokedAt = DateTime.UtcNow;
 
         await context.SaveChangesAsync();
 
-        return Result<AuthResponse>.Success(new AuthResponse { AccessToken = accessToken, RefreshToken = refreshToken.Token });
+        return Result<bool>.Success(true);
+    }
+
+    private Guid? GetCurrentUserId()
+    {
+        var principal = httpContextAccessor.HttpContext?.User;
+        var userIdValue = principal?.FindFirstValue(ClaimTypes.NameIdentifier)
+            ?? principal?.FindFirstValue(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub);
+
+        return Guid.TryParse(userIdValue, out var parsed) ? parsed : null;
+    }
+
+    public async Task<Result<bool>> RevokeRefreshTokensAsync()
+    {
+        var userId = GetCurrentUserId();
+
+        if (userId is null)
+        {
+            return AuthErrors.Unauthorized;
+        }
+
+        var userRefreshTokens = await context.RefreshTokens.Where(r => r.UserId == userId && r.RevokedAt == null).ToListAsync();
+
+        foreach (var token in userRefreshTokens)
+        {
+            token.RevokedAt = DateTime.UtcNow;
+        }
+
+        await context.SaveChangesAsync();
+
+        return Result<bool>.Success(true);
     }
 }

@@ -1,5 +1,4 @@
 using Fitness.API.Features.Auth.Models;
-using Fitness.API.Features.Auth.Tokens.Contracts;
 using Fitness.API.Features.Profiles.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

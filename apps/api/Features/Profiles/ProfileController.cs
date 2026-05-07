@@ -1,4 +1,4 @@
-using Fitness.API.Utilities;
+using Fitness.API.Core.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -10,10 +10,10 @@ namespace Fitness.API.Features.Profiles;
 public class ProfileController() : ControllerBase
 {
     [HttpGet("me")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
-    [Authorize]
     public async Task<IActionResult> GetProfile()
     {
         // For now just return the claims of the authenticated user to verify that authentication is working correctly.

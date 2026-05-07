@@ -1,7 +1,8 @@
+using Fitness.API.Core.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Fitness.API.Utilities.Errors;
+namespace Fitness.API.Features.Auth.Utilities;
 
 public static class AuthErrors
 {
@@ -20,6 +21,8 @@ public static class AuthErrors
         new("InvalidCredentials", ErrorType.Unauthorized, "Unauthorized", "Invalid credentials.");
     public static ApiError InvalidRefreshToken { get; } =
         new("InvalidRefreshToken", ErrorType.Unauthorized, "Unauthorized", "The refresh token is invalid or has expired.");
+    public static ApiError Unauthorized { get; } =
+        new("Unauthorized", ErrorType.Unauthorized, "Unauthorized", "You are not authorized to perform this action.");
 
     public static ApiError MapUserCreationFailure(IEnumerable<IdentityError> errors)
     {

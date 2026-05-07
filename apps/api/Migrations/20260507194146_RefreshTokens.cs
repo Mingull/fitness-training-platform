@@ -19,7 +19,8 @@ namespace Fitness.Api.Migrations
                     token = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     user_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    expires_on_utc = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    expires_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    revoked_at = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Cryptography;
 
-namespace Fitness.API.Core.Tokens;
+namespace Fitness.API.Features.Auth.Utilities;
 
 public sealed class TokenProvider(IConfiguration configuration)
 {

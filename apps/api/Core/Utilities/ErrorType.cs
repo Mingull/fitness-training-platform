@@ -1,4 +1,4 @@
-namespace Fitness.API.Utilities;
+namespace Fitness.API.Core.Utilities;
 
 public enum ErrorType
 {

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fitness.Api.Migrations
 {
     [DbContext(typeof(FitnessContext))]
-    [Migration("20260507092847_RefreshTokens")]
+    [Migration("20260507194146_RefreshTokens")]
     partial class RefreshTokens
     {
         /// <inheritdoc />
@@ -113,9 +113,13 @@ namespace Fitness.Api.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("ExpiresOnUtc")
+                    b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("datetime(6)")
-                        .HasColumnName("expires_on_utc");
+                        .HasColumnName("expires_at");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("revoked_at");
 
                     b.Property<string>("Token")
                         .IsRequired()

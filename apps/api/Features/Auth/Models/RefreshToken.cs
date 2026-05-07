@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fitness.API.Features.Auth.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Fitness.API.Features.Auth.Tokens.Contracts;
+namespace Fitness.API.Features.Auth.Models;
 
 [Table("refresh_tokens")]
 [Index(nameof(Token), IsUnique = true)]
@@ -12,8 +11,9 @@ public sealed class RefreshToken
     [Key]
     public Guid Id { get; set; }
     [MaxLength(200)]
-    public string Token { get; set; }
+    public string Token { get; set; } = default!;
     public Guid UserId { get; set; }
-    public DateTime ExpiresOnUtc { get; set; }
+    public DateTime ExpiresAt { get; set; }
+    public DateTime? RevokedAt { get; set; }
     public AppUser? User { get; set; }
 }

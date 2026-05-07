@@ -1,10 +1,10 @@
 using System.Text;
 using Fitness.API.Abstract.Services;
 using Fitness.API.Contexts;
-using Fitness.API.Core.Tokens;
 using Fitness.API.Features.Auth;
+using Fitness.API.Features.Auth.Abstract;
 using Fitness.API.Features.Auth.Models;
-using Fitness.API.Utilities.Errors;
+using Fitness.API.Features.Auth.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +63,7 @@ public class Startup(IConfiguration configuration)
         });
 
         services.AddAuthorization();
+        services.AddHttpContextAccessor();
 
         // Add dependency injection here
         InitializeRepositories(services);
@@ -84,7 +85,7 @@ public class Startup(IConfiguration configuration)
 
     private void InitializeRepositories(IServiceCollection services)
     {
-        // services.AddScoped<IRepository, Repository>() for repositories that should be created per request
+        services.AddScoped<IAuthRepository, AuthRepository>(); // for repositories that should be created per request
         // services.AddSingleton<IRepository, Repository>() for repositories that should be created once and shared across the application
     }
     private void InitializeServices(IServiceCollection services)
