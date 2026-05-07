@@ -1,10 +1,6 @@
-using Fitness.API.Features.Auth.Contracts;
 using Fitness.API.Utilities;
 using Microsoft.AspNetCore.Mvc;
-using Fitness.Api.Contracts;
-using Fitness.API.Contexts;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 
 namespace Fitness.API.Features.Profiles;
 

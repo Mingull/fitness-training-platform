@@ -31,11 +31,16 @@ public class AuthController(IAuthService authService) : ControllerBase
             // Status code has to be set to "Ok" for human readability, even though the HTTP status code is already 200.
             StatusCode = "Ok",
             Message = "User registered successfully",
-            Data = new AuthResponse { AccessToken = "sample-jwt-token", RefreshToken = "sample-refresh-token" }
+            // No need to return tokens on registration, as the user should log in after registering to get their tokens. This also encourages email verification if that feature is implemented in the future. 
+            Data = null
         });
     }
 
     [HttpPost("sign-in")]
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
     {
         var result = await authService.LoginAsync(request);
@@ -54,7 +59,11 @@ public class AuthController(IAuthService authService) : ControllerBase
         });
     }
 
-    [HttpPost("refresh-token")]
+    [HttpPost("refresh")]
+    [ProducesResponseType(typeof(ApiResponse<AuthResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
     {
         var result = await authService.RefreshTokenAsync(request);

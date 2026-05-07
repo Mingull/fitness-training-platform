@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Fitness.Api.Contracts;
 
 public record ApiResponse<T>
@@ -17,5 +19,6 @@ public record ApiResponse<T>
     /// <summary>
     /// The actual data payload of the response, which can be of any type (generic T) depending on the context of the API call. This allows for flexibility in returning different types of data while maintaining a consistent response structure.
     /// </summary>
-    public T Data { get; init; } = default!;
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public T? Data { get; init; }
 }

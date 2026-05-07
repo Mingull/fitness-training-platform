@@ -91,11 +91,11 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
 
     public async Task<Result<AuthResponse>> RefreshTokenAsync(RefreshTokenRequest request)
     {
-        var refreshToken = await context.RefreshTokens.Include(r => r.User).FirstOrDefaultAsync(rt => rt.Token == request.RefreshToken);
+        var refreshToken = await context.RefreshTokens
+                                    .Include(r => r.User)
+                                    .FirstOrDefaultAsync(rt => rt.Token == request.RefreshToken);
         if (refreshToken is null || refreshToken.ExpiresOnUtc < DateTime.UtcNow)
-        {
             return AuthErrors.InvalidRefreshToken;
-        }
 
         string accessToken = tokenProvider.CreateAccessToken(refreshToken.User!, await userManager.GetRolesAsync(refreshToken.User!));
 
