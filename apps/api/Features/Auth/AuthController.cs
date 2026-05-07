@@ -4,7 +4,7 @@ using Fitness.API.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Fitness.Api.Contracts;
 
-namespace Fitness.API.Controllers;
+namespace Fitness.API.Features.Auth;
 
 [ApiController]
 [Route("auth")]
@@ -32,6 +32,44 @@ public class AuthController(IAuthService authService) : ControllerBase
             StatusCode = "Ok",
             Message = "User registered successfully",
             Data = new AuthResponse { AccessToken = "sample-jwt-token", RefreshToken = "sample-refresh-token" }
+        });
+    }
+
+    [HttpPost("sign-in")]
+    public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
+    {
+        var result = await authService.LoginAsync(request);
+        if (!result.IsSuccess)
+        {
+            var error = result.Error!;
+            return StatusCode(error.Status ?? StatusCodes.Status500InternalServerError, error);
+        }
+
+        return Ok(new ApiResponse<AuthResponse>
+        {
+            Status = StatusCodes.Status200OK,
+            StatusCode = "Ok",
+            Message = "User logged in successfully",
+            Data = result.Value
+        });
+    }
+
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
+    {
+        var result = await authService.RefreshTokenAsync(request);
+        if (!result.IsSuccess)
+        {
+            var error = result.Error!;
+            return StatusCode(error.Status ?? StatusCodes.Status500InternalServerError, error);
+        }
+
+        return Ok(new ApiResponse<AuthResponse>
+        {
+            Status = StatusCodes.Status200OK,
+            StatusCode = "Ok",
+            Message = "Token refreshed successfully",
+            Data = result.Value
         });
     }
 }

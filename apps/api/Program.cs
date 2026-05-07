@@ -24,7 +24,7 @@ public class Program
             var dbContext = services.GetRequiredService<FitnessContext>();
 
             // await dbContext.Database.MigrateAsync();
-            // await IdentitySeeder.SeedRoles(roleManager);
+            await IdentitySeeder.SeedRoles(roleManager);
         }
 
         await host.RunAsync();

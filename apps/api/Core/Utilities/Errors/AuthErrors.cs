@@ -10,18 +10,16 @@ public static class AuthErrors
 
     public static ApiError UserCreationFailed { get; } =
         new("UserCreationFailed", ErrorType.Validation, "Validation failed", "Could not create the user.");
-
     public static ApiError DuplicateUsername { get; } =
         new("DuplicateUsername", ErrorType.Conflict, "Conflict", "A user with this username already exists.");
-
     public static ApiError DuplicateEmail { get; } =
         new("DuplicateEmail", ErrorType.Conflict, "Conflict", "A user with this email already exists.");
-
     public static ApiError RoleAssignmentFailed { get; } =
         new("RoleAssignmentFailed", ErrorType.InternalError, "Internal Server Error", "Could not assign the user role.");
-
-    public static ApiError InvalidCredentials(string username) =>
-        new("InvalidCredentials", ErrorType.Unauthorized, "Unauthorized", $"Invalid credentials for {username}.");
+    public static ApiError InvalidCredentials { get; } =
+        new("InvalidCredentials", ErrorType.Unauthorized, "Unauthorized", "Invalid credentials.");
+    public static ApiError InvalidRefreshToken { get; } =
+        new("InvalidRefreshToken", ErrorType.Unauthorized, "Unauthorized", "The refresh token is invalid or has expired.");
 
     public static ApiError MapUserCreationFailure(IEnumerable<IdentityError> errors)
     {

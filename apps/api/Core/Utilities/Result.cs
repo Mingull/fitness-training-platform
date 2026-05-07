@@ -28,6 +28,8 @@ public record Result<T> : Result
     private Result(T value) : base(true, null) => _value = value;
     private Result(ApiError error) : base(false, error) => _value = default;
 
+    public static Result<T> Success(T value) => new(value);
+
     public static implicit operator Result<T>(T value) => new(value);
 
     public static implicit operator Result<T>(ApiError error) => new(error);

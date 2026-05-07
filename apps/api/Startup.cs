@@ -1,11 +1,15 @@
+using System.Text;
 using Fitness.API.Abstract.Services;
 using Fitness.API.Contexts;
+using Fitness.API.Core.Tokens;
 using Fitness.API.Features.Auth;
 using Fitness.API.Features.Auth.Models;
 using Fitness.API.Utilities.Errors;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Fitness.API;
 
@@ -18,6 +22,10 @@ public class Startup(IConfiguration configuration)
             app.UseDeveloperExceptionPage();
         }
         app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
@@ -42,6 +50,19 @@ public class Startup(IConfiguration configuration)
         services.AddOpenApi();
 
         ConfigureDatabase(services);
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters.ValidIssuer = configuration["Jwt:Issuer"];
+            options.TokenValidationParameters.ValidAudience = configuration["Jwt:Audience"];
+            options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]!));
+        });
+
+        services.AddAuthorization();
 
         // Add dependency injection here
         InitializeRepositories(services);
@@ -68,7 +89,7 @@ public class Startup(IConfiguration configuration)
     }
     private void InitializeServices(IServiceCollection services)
     {
-        services.AddScoped<IAuthService, AuthService>(); // for services that should be created per request
-        // services.AddSingleton<IService, Service>() for services that should be created once and shared across the application
+        services.AddScoped<IAuthService, AuthService>() // for services that should be created per request
+            .AddSingleton<TokenProvider>(); // for services that should be created once and shared across the application
     }
 }
