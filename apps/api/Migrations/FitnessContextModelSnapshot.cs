@@ -103,7 +103,7 @@ namespace Fitness.Api.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("Fitness.API.Features.Auth.Tokens.Contracts.RefreshToken", b =>
+            modelBuilder.Entity("Fitness.API.Features.Auth.Models.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -350,7 +350,7 @@ namespace Fitness.Api.Migrations
                     b.ToTable("user_tokens", (string)null);
                 });
 
-            modelBuilder.Entity("Fitness.API.Features.Auth.Tokens.Contracts.RefreshToken", b =>
+            modelBuilder.Entity("Fitness.API.Features.Auth.Models.RefreshToken", b =>
                 {
                     b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "User")
                         .WithMany()

@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Fitness.Api.Contracts;
 
 public record ApiResponse
