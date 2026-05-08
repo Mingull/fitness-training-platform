@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Fitness.API.Features.Auth.Abstract;
 using Fitness.API.Abstract.Services;
 using Fitness.API.Features.Auth.Utilities;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Fitness.API.Features.Auth;
 
@@ -116,7 +117,7 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
     {
         var principal = httpContextAccessor.HttpContext?.User;
         var userIdValue = principal?.FindFirstValue(ClaimTypes.NameIdentifier)
-            ?? principal?.FindFirstValue(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub);
+                ?? principal?.FindFirstValue(JwtRegisteredClaimNames.Sub);
 
         return Guid.TryParse(userIdValue, out var parsed) ? parsed : null;
     }
@@ -125,17 +126,11 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
     {
         var userId = GetCurrentUserId();
 
-        if (userId is null)
-        {
-            return AuthErrors.Unauthorized;
-        }
+        if (userId is null) return AuthErrors.Unauthorized;
 
-        var userRefreshTokens = await context.RefreshTokens.Where(r => r.UserId == userId && r.RevokedAt == null).ToListAsync();
+        var userRefreshTokens = await authRepo.GetAllRefreshTokensAsync(userId.Value);
 
-        foreach (var token in userRefreshTokens)
-        {
-            token.RevokedAt = DateTime.UtcNow;
-        }
+        foreach (var token in userRefreshTokens) token.RevokedAt = DateTime.UtcNow;
 
         await context.SaveChangesAsync();
 

@@ -27,4 +27,10 @@ public interface IAuthRepository
     /// <param name="token"></param>
     /// <returns></returns>
     Task<RefreshToken?> GetValidRefreshTokenAsync(Guid userId, string token);
+    /// <summary>
+    /// Retrieves all valid (not revoked) refresh tokens for the specified user.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns>Returns null if no tokens are found.</returns>
+    Task<List<RefreshToken>> GetAllRefreshTokensAsync(Guid userId);
 }

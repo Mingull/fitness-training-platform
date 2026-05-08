@@ -32,4 +32,10 @@ public class AuthRepository(FitnessContext context) : IAuthRepository
     {
         return await context.RefreshTokens.FirstOrDefaultAsync(r => r.UserId == userId && r.Token == token && r.RevokedAt == null);
     }
+
+    public async Task<List<RefreshToken>> GetAllRefreshTokensAsync(Guid userId)
+    {
+        return await context.RefreshTokens.Where(r => r.UserId == userId && r.RevokedAt == null).ToListAsync();
+    }
+
 }
