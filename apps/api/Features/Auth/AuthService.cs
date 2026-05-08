@@ -108,10 +108,7 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
             TokenHash = newTokenHash,
             ExpiresAt = DateTime.UtcNow.AddDays(7)
         });
-        var writtenRows = await context.SaveChangesAsync();
-        if (writtenRows == 0)
-            return AuthErrors.InvalidRefreshToken;
-
+        await context.SaveChangesAsync();
         await transaction.CommitAsync();
 
         return Result<AuthResponse>.Success(new AuthResponse { AccessToken = accessToken, RefreshToken = newRefreshToken });
