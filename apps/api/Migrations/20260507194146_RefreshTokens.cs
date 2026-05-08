@@ -16,7 +16,7 @@ namespace Fitness.Api.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    token = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                    token_hash = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     user_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     expires_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -35,9 +35,9 @@ namespace Fitness.Api.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "ix_refresh_tokens_token",
+                name: "ix_refresh_tokens_token_hash",
                 table: "refresh_tokens",
-                column: "token",
+                column: "token_hash",
                 unique: true);
 
             migrationBuilder.CreateIndex(

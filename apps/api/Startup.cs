@@ -1,5 +1,4 @@
 using System.Text;
-using Fitness.API.Abstract.Services;
 using Fitness.API.Contexts;
 using Fitness.API.Core;
 using Fitness.API.Features.Auth;

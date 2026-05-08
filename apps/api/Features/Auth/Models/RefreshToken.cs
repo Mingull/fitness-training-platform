@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.API.Features.Auth.Models;
@@ -18,21 +16,4 @@ public sealed class RefreshToken
     public DateTime ExpiresAt { get; set; }
     public DateTime? RevokedAt { get; set; }
     public AppUser? User { get; set; }
-
-    public void SetToken(string token)
-    {
-        TokenHash = HashToken(token);
-    }
-
-    public bool MatchesToken(string token)
-    {
-        return TokenHash == HashToken(token);
-    }
-
-    private static string HashToken(string token)
-    {
-        var bytes = Encoding.UTF8.GetBytes(token);
-        var hash = SHA256.HashData(bytes);
-        return Convert.ToHexString(hash);
-    }
 }

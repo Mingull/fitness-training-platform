@@ -1,5 +1,5 @@
-using Fitness.API.Abstract.Services;
 using Fitness.API.Contexts;
+using Fitness.API.Features.Auth.Abstract;
 using Fitness.API.Features.Auth.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +13,7 @@ public class AuthRepository(FitnessContext context) : IAuthRepository
         {
             Id = Guid.NewGuid(),
             UserId = userId,
-            Token = token,
+            TokenHash = token,
             ExpiresAt = expiresAt ?? DateTime.UtcNow.AddDays(7)
         };
 
@@ -25,12 +25,12 @@ public class AuthRepository(FitnessContext context) : IAuthRepository
 
     public async Task<RefreshToken?> GetRefreshTokenAsync(string token)
     {
-        return await context.RefreshTokens.Include(r => r.User).FirstOrDefaultAsync(rt => rt.Token == token);
+        return await context.RefreshTokens.Include(r => r.User).FirstOrDefaultAsync(rt => rt.TokenHash == token);
     }
 
     public async Task<RefreshToken?> GetValidRefreshTokenAsync(Guid userId, string token)
     {
-        return await context.RefreshTokens.FirstOrDefaultAsync(r => r.UserId == userId && r.Token == token && r.RevokedAt == null);
+        return await context.RefreshTokens.FirstOrDefaultAsync(r => r.UserId == userId && r.TokenHash == token && r.RevokedAt == null);
     }
 
     public async Task<List<RefreshToken>> GetAllRefreshTokensAsync(Guid userId)

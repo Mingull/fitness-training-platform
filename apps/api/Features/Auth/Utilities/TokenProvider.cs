@@ -9,7 +9,7 @@ using Fitness.API.Core;
 
 namespace Fitness.API.Features.Auth.Utilities;
 
-public sealed class TokenProvider(IOptions<JwtOptions> options) 
+public sealed class TokenProvider(IOptions<JwtOptions> options)
 {
     public string CreateAccessToken(AppUser user, IList<string> roles)
     {
@@ -39,5 +39,12 @@ public sealed class TokenProvider(IOptions<JwtOptions> options)
     public string CreateRefreshToken()
     {
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+    }
+
+    public static string HashRefreshToken(string token)
+    {
+        var bytes = Encoding.UTF8.GetBytes(token);
+        var hash = SHA256.HashData(bytes);
+        return Convert.ToHexString(hash);
     }
 }

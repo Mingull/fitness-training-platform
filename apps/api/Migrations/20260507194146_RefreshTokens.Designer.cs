@@ -121,11 +121,11 @@ namespace Fitness.Api.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("revoked_at");
 
-                    b.Property<string>("Token")
+                    b.Property<string>("TokenHash")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("token");
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)")
+                        .HasColumnName("token_hash");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)")
@@ -134,9 +134,9 @@ namespace Fitness.Api.Migrations
                     b.HasKey("Id")
                         .HasName("pk_refresh_tokens");
 
-                    b.HasIndex("Token")
+                    b.HasIndex("TokenHash")
                         .IsUnique()
-                        .HasDatabaseName("ix_refresh_tokens_token");
+                        .HasDatabaseName("ix_refresh_tokens_token_hash");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_refresh_tokens_user_id");

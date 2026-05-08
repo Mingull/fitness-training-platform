@@ -4,10 +4,8 @@ using Fitness.API.Features.Auth.Contracts;
 using Fitness.API.Features.Auth.Models;
 using Fitness.API.Features.Profiles.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Fitness.API.Features.Auth.Abstract;
-using Fitness.API.Abstract.Services;
 using Fitness.API.Features.Auth.Utilities;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -68,22 +66,22 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
         var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user is null || !await userManager.CheckPasswordAsync(user, request.Password))
-        {
             return AuthErrors.InvalidCredentials;
-        }
 
         var roles = await userManager.GetRolesAsync(user);
 
         var accessToken = tokenProvider.CreateAccessToken(user, roles);
 
-        var refreshToken = await authRepo.AddRefreshTokenAsync(user.Id, tokenProvider.CreateRefreshToken());
+        var refreshToken = tokenProvider.CreateRefreshToken();
+        var tokenHash = TokenProvider.HashRefreshToken(refreshToken);
+        await authRepo.AddRefreshTokenAsync(user.Id, tokenHash);
 
-        return Result<AuthResponse>.Success(new AuthResponse { AccessToken = accessToken, RefreshToken = refreshToken.Token });
+        return Result<AuthResponse>.Success(new AuthResponse { AccessToken = accessToken, RefreshToken = refreshToken });
     }
 
     public async Task<Result<AuthResponse>> RefreshTokenAsync(RefreshTokenRequest request)
     {
-        var refreshToken = await authRepo.GetRefreshTokenAsync(request.RefreshToken);
+        var refreshToken = await authRepo.GetRefreshTokenAsync(TokenProvider.HashRefreshToken(request.RefreshToken));
         if (refreshToken is null || refreshToken.ExpiresAt < DateTime.UtcNow || refreshToken.RevokedAt != null)
             return AuthErrors.InvalidRefreshToken;
 
@@ -91,9 +89,11 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
 
         string accessToken = tokenProvider.CreateAccessToken(refreshToken.User!, await userManager.GetRolesAsync(refreshToken.User!));
 
-        var newRefreshToken = await authRepo.AddRefreshTokenAsync(refreshToken.UserId, tokenProvider.CreateRefreshToken());
+        var newRefreshToken = tokenProvider.CreateRefreshToken();
+        var newTokenHash = TokenProvider.HashRefreshToken(newRefreshToken);
+        await authRepo.AddRefreshTokenAsync(refreshToken.UserId, newTokenHash);
 
-        return Result<AuthResponse>.Success(new AuthResponse { AccessToken = accessToken, RefreshToken = newRefreshToken.Token });
+        return Result<AuthResponse>.Success(new AuthResponse { AccessToken = accessToken, RefreshToken = newRefreshToken });
     }
 
     public async Task<Result<bool>> RevokeRefreshTokenAsync(string refreshToken)
@@ -102,7 +102,8 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
 
         if (userId is null) return AuthErrors.Unauthorized;
 
-        var token = await authRepo.GetValidRefreshTokenAsync(userId.Value, refreshToken);
+        var tokenHash = TokenProvider.HashRefreshToken(refreshToken);
+        var token = await authRepo.GetValidRefreshTokenAsync(userId.Value, tokenHash);
 
         if (token is null) return AuthErrors.InvalidRefreshToken;
 
