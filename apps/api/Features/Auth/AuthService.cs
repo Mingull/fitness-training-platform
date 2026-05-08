@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Fitness.API.Features.Auth.Abstract;
 using Fitness.API.Features.Auth.Utilities;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.API.Features.Auth;
 
@@ -81,17 +82,34 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
 
     public async Task<Result<AuthResponse>> RefreshTokenAsync(RefreshTokenRequest request)
     {
+        await using var transaction = await context.Database.BeginTransactionAsync();
+
         var refreshToken = await authRepo.GetRefreshTokenAsync(TokenProvider.HashRefreshToken(request.RefreshToken));
         if (refreshToken is null || refreshToken.ExpiresAt < DateTime.UtcNow || refreshToken.RevokedAt != null)
             return AuthErrors.InvalidRefreshToken;
 
-        refreshToken.RevokedAt = DateTime.UtcNow;
+        var revokedAt = DateTime.UtcNow;
+        var revokedRows = await context.RefreshTokens
+            .Where(rt => rt.Id == refreshToken.Id && rt.RevokedAt == null && rt.ExpiresAt >= revokedAt)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(rt => rt.RevokedAt, revokedAt));
+
+        if (revokedRows == 0)
+            return AuthErrors.InvalidRefreshToken;
 
         string accessToken = tokenProvider.CreateAccessToken(refreshToken.User!, await userManager.GetRolesAsync(refreshToken.User!));
 
         var newRefreshToken = tokenProvider.CreateRefreshToken();
         var newTokenHash = TokenProvider.HashRefreshToken(newRefreshToken);
-        await authRepo.AddRefreshTokenAsync(refreshToken.UserId, newTokenHash);
+        context.RefreshTokens.Add(new RefreshToken
+        {
+            Id = Guid.NewGuid(),
+            UserId = refreshToken.UserId,
+            TokenHash = newTokenHash,
+            ExpiresAt = DateTime.UtcNow.AddDays(7)
+        });
+        await context.SaveChangesAsync();
+        await transaction.CommitAsync();
 
         return Result<AuthResponse>.Success(new AuthResponse { AccessToken = accessToken, RefreshToken = newRefreshToken });
     }
