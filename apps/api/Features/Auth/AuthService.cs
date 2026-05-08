@@ -86,7 +86,10 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
 
         var refreshToken = await authRepo.GetRefreshTokenAsync(TokenProvider.HashRefreshToken(request.RefreshToken));
         if (refreshToken is null || refreshToken.ExpiresAt < DateTime.UtcNow || refreshToken.RevokedAt != null)
+        {
+            await transaction.RollbackAsync();
             return AuthErrors.InvalidRefreshToken;
+        }
 
         var revokedAt = DateTime.UtcNow;
         var revokedRows = await context.RefreshTokens
@@ -95,7 +98,10 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
                 .SetProperty(rt => rt.RevokedAt, revokedAt));
 
         if (revokedRows == 0)
+        {
+            await transaction.RollbackAsync();
             return AuthErrors.InvalidRefreshToken;
+        }
 
         string accessToken = tokenProvider.CreateAccessToken(refreshToken.User!, await userManager.GetRolesAsync(refreshToken.User!));
 
