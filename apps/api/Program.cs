@@ -23,7 +23,7 @@ public class Program
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
             var dbContext = services.GetRequiredService<FitnessContext>();
 
-            // await dbContext.Database.MigrateAsync();
+            await dbContext.Database.MigrateAsync();
             await IdentitySeeder.SeedRoles(roleManager);
         }
 
