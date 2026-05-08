@@ -85,13 +85,20 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
         if (refreshToken is null || refreshToken.ExpiresAt < DateTime.UtcNow || refreshToken.RevokedAt != null)
             return AuthErrors.InvalidRefreshToken;
 
-        refreshToken.RevokedAt = DateTime.UtcNow;
-
         string accessToken = tokenProvider.CreateAccessToken(refreshToken.User!, await userManager.GetRolesAsync(refreshToken.User!));
 
         var newRefreshToken = tokenProvider.CreateRefreshToken();
         var newTokenHash = TokenProvider.HashRefreshToken(newRefreshToken);
-        await authRepo.AddRefreshTokenAsync(refreshToken.UserId, newTokenHash);
+
+        await using var transaction = await context.Database.BeginTransactionAsync();
+        var currentUtc = DateTime.UtcNow;
+
+        var revokedTokens = await authRepo.RevokeRefreshTokenAsync(refreshToken.Id, currentUtc);
+        if (revokedTokens == 0)
+            return AuthErrors.InvalidRefreshToken;
+
+        await authRepo.AddRefreshTokenAsync(refreshToken.UserId, newTokenHash, currentUtc.AddDays(7));
+        await transaction.CommitAsync();
 
         return Result<AuthResponse>.Success(new AuthResponse { AccessToken = accessToken, RefreshToken = newRefreshToken });
     }

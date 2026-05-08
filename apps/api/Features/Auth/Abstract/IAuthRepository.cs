@@ -33,4 +33,12 @@ public interface IAuthRepository
     /// <param name="userId"></param>
     /// <returns>A list of valid refresh tokens for the specified user, or an empty list if no tokens are found.</returns>
     Task<List<RefreshToken>> GetAllRefreshTokensAsync(Guid userId);
+
+    /// <summary>
+    /// Revokes a refresh token if it is still active and unexpired.
+    /// </summary>
+    /// <param name="refreshTokenId"></param>
+    /// <param name="currentUtc"></param>
+    /// <returns>The number of revoked rows.</returns>
+    Task<int> RevokeRefreshTokenAsync(Guid refreshTokenId, DateTime currentUtc);
 }
