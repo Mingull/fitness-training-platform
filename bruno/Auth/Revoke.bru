@@ -1,0 +1,14 @@
+meta {
+  name: Revoke
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/auth/revoke
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Fitness.API.Utilities;
+namespace Fitness.API.Core.Utilities;
 
 public class ApiError : ProblemDetails
 {
