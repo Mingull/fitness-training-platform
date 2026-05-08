@@ -90,14 +90,15 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
         var newRefreshToken = tokenProvider.CreateRefreshToken();
         var newTokenHash = TokenProvider.HashRefreshToken(newRefreshToken);
 
-        var rotateSucceeded = await authRepo.TryRotateRefreshTokenAsync(
-            refreshToken.Id,
-            refreshToken.UserId,
-            newTokenHash,
-            DateTime.UtcNow);
+        await using var transaction = await context.Database.BeginTransactionAsync();
+        var currentUtc = DateTime.UtcNow;
 
-        if (!rotateSucceeded)
+        var revokedTokens = await authRepo.RevokeRefreshTokenAsync(refreshToken.Id, currentUtc);
+        if (revokedTokens == 0)
             return AuthErrors.InvalidRefreshToken;
+
+        await authRepo.AddRefreshTokenAsync(refreshToken.UserId, newTokenHash, currentUtc.AddDays(7));
+        await transaction.CommitAsync();
 
         return Result<AuthResponse>.Success(new AuthResponse { AccessToken = accessToken, RefreshToken = newRefreshToken });
     }

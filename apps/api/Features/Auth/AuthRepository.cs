@@ -38,30 +38,13 @@ public class AuthRepository(FitnessContext context) : IAuthRepository
         return await context.RefreshTokens.Where(r => r.UserId == userId && r.RevokedAt == null).ToListAsync();
     }
 
-    public async Task<bool> TryRotateRefreshTokenAsync(Guid refreshTokenId, Guid userId, string newTokenHash, DateTime currentUtc)
+    public async Task<int> RevokeRefreshTokenAsync(Guid refreshTokenId, DateTime currentUtc)
     {
-        await using var transaction = await context.Database.BeginTransactionAsync();
-
         var revokedRows = await context.RefreshTokens
             .Where(rt => rt.Id == refreshTokenId && rt.RevokedAt == null && rt.ExpiresAt >= currentUtc)
             .ExecuteUpdateAsync(setters => setters
                 .SetProperty(rt => rt.RevokedAt, currentUtc));
-
-        if (revokedRows == 0)
-            return false;
-
-        context.RefreshTokens.Add(new RefreshToken
-        {
-            Id = Guid.NewGuid(),
-            UserId = userId,
-            TokenHash = newTokenHash,
-            ExpiresAt = currentUtc.AddDays(7)
-        });
-
-        await context.SaveChangesAsync();
-        await transaction.CommitAsync();
-
-        return true;
+        return revokedRows;
     }
 
 }

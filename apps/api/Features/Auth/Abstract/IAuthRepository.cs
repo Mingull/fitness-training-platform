@@ -35,13 +35,10 @@ public interface IAuthRepository
     Task<List<RefreshToken>> GetAllRefreshTokensAsync(Guid userId);
 
     /// <summary>
-    /// Atomically rotates a refresh token by revoking the existing token if it is still valid and issuing a replacement token.
-    /// Returns false when the source token was already revoked or expired.
+    /// Revokes a refresh token if it is still active and unexpired.
     /// </summary>
     /// <param name="refreshTokenId"></param>
-    /// <param name="userId"></param>
-    /// <param name="newTokenHash"></param>
     /// <param name="currentUtc"></param>
-    /// <returns>True when rotation succeeds; false when the source token is already revoked or expired.</returns>
-    Task<bool> TryRotateRefreshTokenAsync(Guid refreshTokenId, Guid userId, string newTokenHash, DateTime currentUtc);
+    /// <returns>The number of revoked rows.</returns>
+    Task<int> RevokeRefreshTokenAsync(Guid refreshTokenId, DateTime currentUtc);
 }
