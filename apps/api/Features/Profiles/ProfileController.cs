@@ -18,6 +18,10 @@ public class ProfileController() : ControllerBase
     {
         // For now just return the claims of the authenticated user to verify that authentication is working correctly.
         var claimsPrincipal = HttpContext.User;
-        return Ok(claimsPrincipal.Claims.ToDictionary(c => c.Type, c => c.Value));
+        var claimsByType = claimsPrincipal.Claims
+            .GroupBy(c => c.Type)
+            .ToDictionary(g => g.Key, g => g.Select(c => c.Value).ToArray());
+
+        return Ok(claimsByType);
     }
 }
