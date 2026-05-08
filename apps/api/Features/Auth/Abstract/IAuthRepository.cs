@@ -1,6 +1,6 @@
 using Fitness.API.Features.Auth.Models;
 
-namespace Fitness.API.Abstract.Services;
+namespace Fitness.API.Features.Auth.Abstract;
 
 public interface IAuthRepository
 {
