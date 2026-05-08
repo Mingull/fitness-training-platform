@@ -31,6 +31,6 @@ public interface IAuthRepository
     /// Retrieves all valid (not revoked) refresh tokens for the specified user.
     /// </summary>
     /// <param name="userId"></param>
-    /// <returns>Returns null if no tokens are found.</returns>
+    /// <returns>A list of valid refresh tokens for the specified user, or an empty list if no tokens are found.</returns>
     Task<List<RefreshToken>> GetAllRefreshTokensAsync(Guid userId);
 }
