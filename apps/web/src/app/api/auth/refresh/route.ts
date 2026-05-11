@@ -28,6 +28,6 @@ export async function GET(request: NextRequest) {
 	}
 
 	const response = NextResponse.redirect(new URL(nextPath, request.url));
-	setAuthCookies(response.cookies, result.data, { remember: true });
+	setAuthCookies(response.cookies, result.data);
 	return response;
 }
