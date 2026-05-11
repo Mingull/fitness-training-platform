@@ -1,7 +1,6 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { apiClient } from "@/lib/api-client";
 import { signIn } from "@/server/auth/sign-in";
 import { DiscordIcon, GoogleIcon } from "@fitness/icons";
 import { Button } from "@fitness/ui/components/button";
