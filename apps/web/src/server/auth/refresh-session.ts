@@ -34,7 +34,7 @@ export const refreshSession = async (): Promise<
 		};
 	}
 
-	setAuthCookies(cookieStore, result.data, { remember: true });
+	setAuthCookies(cookieStore, result.data);
 
 	return {
 		data: result.data,
