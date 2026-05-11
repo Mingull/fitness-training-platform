@@ -2,7 +2,7 @@ import { useStorageState } from "@/hooks/use-storage-state";
 import { apiClient } from "@/lib/api-client";
 import { ClientResult } from "@fitness/api-client/types";
 import { signinContract } from "@fitness/contracts/auth";
-import { createContext, use, useCallback, useMemo, type PropsWithChildren } from "react";
+import { createContext, use, useCallback, useMemo, useRef, type PropsWithChildren } from "react";
 import { z } from "zod";
 
 const AuthContext = createContext<{
@@ -26,6 +26,8 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
 	const [[isLoadingAccessToken, accessToken], setAccessToken] = useStorageState("session.accessToken");
 	const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState("session.refreshToken");
+	const refreshTokenRef = useRef(refreshToken);
+	refreshTokenRef.current = refreshToken;
 	const signIn = useCallback(
 		async (data: z.infer<typeof signinContract>) => {
 			const result = await apiClient.auth.signIn(data);
@@ -57,7 +59,9 @@ export function SessionProvider({ children }: PropsWithChildren) {
 		setRefreshToken(null);
 	}, [setAccessToken, setRefreshToken]);
 	const refresh = useCallback(async () => {
-		if (!refreshToken) {
+		const currentRefreshToken = refreshTokenRef.current;
+
+		if (!currentRefreshToken) {
 			setAccessToken(null);
 			setRefreshToken(null);
 			return {
@@ -69,7 +73,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 			};
 		}
 
-		const result = await apiClient.auth.refresh({ refreshToken });
+		const result = await apiClient.auth.refresh({ refreshToken: currentRefreshToken });
 
 		if (result.error) {
 			return {
@@ -85,7 +89,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 			data: { success: true },
 			error: null,
 		};
-	}, [refreshToken, setAccessToken, setRefreshToken]);
+	}, [setAccessToken, setRefreshToken]);
 	const value = useMemo(
 		() => ({
 			signIn,
