@@ -5,7 +5,7 @@ import type { ClientResult } from "@fitness/api-client/types";
 import { signinContract } from "@fitness/contracts/auth";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import { accessTokenCookieName, getCookie, refreshTokenCookieName, setCookie } from "./session";
+import { accessTokenCookieName, refreshTokenCookieName, setCookie } from "./session";
 
 export const signIn = async (data: z.infer<typeof signinContract>): Promise<ClientResult<{ success: true }>> => {
 	const cookieStore = await cookies();
@@ -25,8 +25,6 @@ export const signIn = async (data: z.infer<typeof signinContract>): Promise<Clie
 	}
 
 	const tokens = result.data.data;
-	const remember = getCookie(cookieStore, "remember");
-
 	setCookie(cookieStore, accessTokenCookieName, tokens.accessToken, {
 		httpOnly: true,
 		secure: isProduction,
@@ -39,7 +37,7 @@ export const signIn = async (data: z.infer<typeof signinContract>): Promise<Clie
 		secure: isProduction,
 		sameSite: "lax" as const,
 		path: "/",
-		maxAge: remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24,
+		maxAge: data.remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24,
 	});
 	setCookie(cookieStore, "remember", data.remember ? "true" : "false", { path: "/" });
 
