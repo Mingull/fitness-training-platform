@@ -32,6 +32,7 @@ export async function GET(request: NextRequest) {
 
 	const response = NextResponse.redirect(new URL(nextPath, request.url));
 	const remember = getCookie(request.cookies, "remember");
+	const shouldRemember = remember === "true";
 	setCookie(response.cookies, accessTokenCookieName, result.data.accessToken, {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
@@ -44,7 +45,7 @@ export async function GET(request: NextRequest) {
 		secure: process.env.NODE_ENV === "production",
 		sameSite: "lax" as const,
 		path: "/",
-		maxAge: remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24,
+		maxAge: shouldRemember ? 60 * 60 * 24 * 30 : 60 * 60 * 24,
 	});
 	return response;
 }
