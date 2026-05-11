@@ -3,16 +3,12 @@
 import type { ClientResult } from "@fitness/api-client/types";
 import { cookies } from "next/headers";
 import { refreshAuthTokens } from "./refresh-auth-tokens";
-import { getRefreshToken, setAuthCookies } from "./session";
+import { accessTokenCookieName, getCookie, refreshTokenCookieName, setCookie } from "./session";
 
-export const refreshSession = async (): Promise<
-	ClientResult<{
-		accessToken: string;
-		refreshToken: string;
-	}>
-> => {
+export const refreshSession = async (): Promise<ClientResult<{ accessToken: string; refreshToken: string }>> => {
 	const cookieStore = await cookies();
-	const refreshToken = await getRefreshToken(cookieStore);
+	const refreshToken = getCookie(cookieStore, refreshTokenCookieName);
+	const isProduction = process.env.NODE_ENV === "production";
 
 	if (!refreshToken) {
 		return {
@@ -33,8 +29,21 @@ export const refreshSession = async (): Promise<
 			error: result.error,
 		};
 	}
-
-	setAuthCookies(cookieStore, result.data, { remember: true });
+	const remember = getCookie(cookieStore, "remember");
+	setCookie(cookieStore, accessTokenCookieName, result.data.accessToken, {
+		httpOnly: true,
+		secure: isProduction,
+		sameSite: "lax" as const,
+		path: "/",
+		maxAge: 60 * 15,
+	});
+	setCookie(cookieStore, refreshTokenCookieName, result.data.refreshToken, {
+		httpOnly: true,
+		secure: isProduction,
+		sameSite: "lax" as const,
+		path: "/",
+		maxAge: remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24,
+	});
 
 	return {
 		data: result.data,

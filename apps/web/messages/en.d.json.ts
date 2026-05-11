@@ -14,7 +14,7 @@ declare const messages: {
 		"continue": "Continue with {provider}",
 		"no-account": "Don't have an account?",
 		"linkText": "Sign Up",
-		"tos": "By clicking sign up, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>."
+		"tos": "By clicking sign in, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>."
 	},
 	"sign-up": {
 		"title": "Sign Up for {title}",
