@@ -3,7 +3,7 @@ import { clearAuthCookies, getRefreshToken, setAuthCookies } from "@/server/auth
 import { NextRequest, NextResponse } from "next/server";
 
 const sanitizeReturnTo = (value: string | null) => {
-	if (!value || !value.startsWith("/")) {
+	if (!value || !value.startsWith("/") || value.startsWith("//") || value.startsWith("/\\")) {
 		return "/";
 	}
 
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
 		return response;
 	}
 
-	const response = NextResponse.redirect(new URL(nextPath, request.url));
+	const response = NextResponse.redirect(new URL(nextPath, request.nextUrl.origin));
 	setAuthCookies(response.cookies, result.data, { remember: true });
 	return response;
 }
