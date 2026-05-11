@@ -5,9 +5,8 @@
     "tailwindCSS.classAttributes": [
         "class",
         "className",
-        "ngClass",
-        "class:list",
-        "headerClassName"
+        "headerClassName",
+        "contentContainerClassName"
     ],
     "editor.codeActionsOnSave": {
         "source.fixAll": "explicit",

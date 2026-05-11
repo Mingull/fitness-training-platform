@@ -9,11 +9,12 @@ import { Text } from "@/components/ui/text";
 import { useAppForm } from "@/hooks/forms";
 import { signUp } from "@/server/auth/sign-up";
 import { defineRequirements, requirementsToSchema } from "@fitness/ui/components/advanced-input";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { Dumbbell, Eye, EyeOff } from "lucide-react-native";
 import { useRef, useState } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { toast } from "sonner-native";
 import { useTranslations } from "use-intl";
 import { z } from "zod";
 
@@ -46,6 +47,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function Signup() {
 	const t = useTranslations("sign-up");
+	const router = useRouter();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null); // global error message state
 	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 	const fields = useRef(new Map<string, TextInput>());
@@ -75,27 +77,14 @@ export default function Signup() {
 
 			if (error) {
 				setErrorMessage(error.message || "Failed to sign up.");
-				// toast.error(error.message || "Failed to sign up.", { position: "top-center" });
+				toast.error(error.message || "Failed to sign up.", { position: "top-center" });
 				return;
 			}
 
 			form.reset();
-			// toast.success("Signed up successfully!", { position: "top-center" });
+			toast.success("Signed up successfully!", { position: "top-center" });
+			router.push("/[locale]/sign-in");
 		},
-		// onSubmitInvalid({ formApi }) {
-		// 	const errorMap = formApi.state.errorMap.onSubmit;
-		// 	const inputs = fields.current;
-
-		// 	let firstInput: TextInput | undefined;
-		// 	for (const [name, input] of inputs) {
-		// 		if (!input) continue;
-		// 		if (!!errorMap![name]) {
-		// 			firstInput = input;
-		// 			break;
-		// 		}
-		// 	}
-		// 	firstInput?.focus();
-		// },
 	});
 
 	const registerRef = (name: keyof typeof formSchema.shape, input: TextInput | null) => {
@@ -115,7 +104,7 @@ export default function Signup() {
 			<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
 				<View className="mt-4 mb-4">
 					<Card className="h-full">
-						<ScrollView>
+						<ScrollView className="flex-1" contentContainerClassName="grow gap-6">
 							<CardHeader>
 								<View className="flex flex-col items-center gap-2">
 									<Link href="/[locale]/index" className="flex flex-col items-center gap-2 font-medium">

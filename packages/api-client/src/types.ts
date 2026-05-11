@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export type FetchFn = (url: string, init?: RequestInit | undefined) => Promise<Response>;
+
 export type Route = {
 	method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 	path: string;
@@ -16,6 +18,7 @@ export type RequestOptions<R extends Route> = {
 	headers?: Record<string, string>;
 	timeout?: number;
 	signal?: AbortSignal;
+	$fetch?: FetchFn;
 } & (R["requiresAuth"] extends true ? { accessToken: string | undefined } : { accessToken?: never });
 
 export type ClientErrorCode = "missing_token" | "input_validation" | "network" | "http" | "output_validation" | "unknown";

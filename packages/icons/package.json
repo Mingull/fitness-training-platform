@@ -17,13 +17,13 @@
 		"@fitness/eslint-config": "workspace:*",
 		"@fitness/registry": "workspace:*",
 		"@fitness/typescript-config": "workspace:*",
-		"@tailwindcss/postcss": "^4.2.2",
-		"@turbo/gen": "^2.9.6",
-		"@types/node": "^25.6.0",
+		"@tailwindcss/postcss": "^4.3.0",
+		"@turbo/gen": "^2.9.12",
+		"@types/node": "^25.6.2",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
 		"eslint": "^10.2.0",
-		"tsdown": "^0.21.8"
+		"tsdown": "^0.22.0"
 	},
 	"exports": {
 		".": "./src/index.ts",
