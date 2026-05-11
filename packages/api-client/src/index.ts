@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ArgsOf, Client, ClientError, ClientResult, InputOf, OutputOf, RequestOptions, Route, RouteNamespace } from "./types";
+import { ArgsOf, Client, ClientError, ClientResult, FetchFn, InputOf, OutputOf, RequestOptions, Route, RouteNamespace } from "./types";
 
 const isRouteConfig = (value: RouteNamespace | Route): value is Route => {
 	return typeof value === "object" && value !== null && "method" in value && "path" in value && "out" in value;
@@ -9,9 +9,10 @@ export type ApiClientOptions<R extends RouteNamespace> = {
 	baseUrl: string;
 	routes: R;
 	errorSchema?: z.ZodType;
+	$fetch?: FetchFn;
 };
 
-export const createApiClient = <const R extends RouteNamespace>({ baseUrl, routes, errorSchema }: ApiClientOptions<R>): Client<R> => {
+export const createApiClient = <const R extends RouteNamespace>({ baseUrl, routes, errorSchema, $fetch }: ApiClientOptions<R>): Client<R> => {
 	const asClientError = (error: unknown): ClientError => {
 		if (error instanceof Error) {
 			return {
@@ -70,7 +71,11 @@ export const createApiClient = <const R extends RouteNamespace>({ baseUrl, route
 		const finalSignal = options?.signal ?? controller?.signal;
 
 		try {
-			const response = await fetch(url, {
+			const requestFetch = options?.$fetch ?? $fetch ?? globalThis.fetch;
+			if (requestFetch == null) {
+				throw new Error("Fetch API is not available in this environment. Please provide a custom $fetch implementation.");
+			}
+			const response = await requestFetch(url.toString(), {
 				method: config.method,
 				headers,
 				body,
