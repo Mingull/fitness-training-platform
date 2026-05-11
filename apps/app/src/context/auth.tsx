@@ -5,8 +5,6 @@ import { signinContract } from "@fitness/contracts/auth";
 import { createContext, use, useCallback, useEffect, useMemo, useRef, type PropsWithChildren } from "react";
 import { z } from "zod";
 
-type AuthResult = ClientResult<{ success: boolean }>;
-
 type AuthContextValue = {
 	signIn: (data: z.infer<typeof signinContract>) => Promise<ClientResult<{ success: boolean }>>;
 	signOut: () => void;
@@ -37,7 +35,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 	}, [refreshToken]);
 	// Memoize the auth actions so consumers don't receive new callback references on every render.
 	const signIn = useCallback(
-		async (data: z.infer<typeof signinContract>): Promise<AuthResult> => {
+		async (data: z.infer<typeof signinContract>): Promise<ClientResult<{ success: boolean }>> => {
 			const result = await apiClient.auth.signIn(data);
 
 			if (result.error) {
@@ -68,7 +66,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 		setRefreshToken(null);
 		refreshTokenRef.current = null;
 	}, [setAccessToken, setRefreshToken]);
-	const refresh = useCallback(async (): Promise<AuthResult> => {
+	const refresh = useCallback(async (): Promise<ClientResult<{ success: boolean }>> => {
 		const currentRefreshToken = refreshTokenRef.current;
 
 		if (!currentRefreshToken) {
@@ -114,9 +112,5 @@ export function SessionProvider({ children }: PropsWithChildren) {
 		[accessToken, isLoadingAccessToken, isLoadingRefreshToken, refresh, signIn, signOut],
 	);
 
-	return (
-		<AuthContext.Provider value={value}>
-			{children}
-		</AuthContext.Provider>
-	);
+	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
