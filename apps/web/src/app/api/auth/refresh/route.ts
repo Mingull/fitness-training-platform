@@ -2,8 +2,9 @@ import { refreshSession } from "@/server/auth/refresh-session";
 import { accessTokenCookieName, clearCookie, getCookie, refreshTokenCookieName, setCookie } from "@/server/auth/session";
 import { NextRequest, NextResponse } from "next/server";
 
+/** Ensures refresh redirects stay on a safe in-app path. */
 const sanitizeReturnTo = (value: string | null) => {
-	if (!value || !value.startsWith("/")) {
+	if (!value || !value.startsWith("/") || value.startsWith("//") || value.startsWith("/\\")) {
 		return "/";
 	}
 
