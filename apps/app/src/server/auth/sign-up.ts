@@ -1,5 +1,5 @@
 import { apiErrorContract } from "@fitness/contracts/api-error";
-import { registerContract } from "@fitness/contracts/auth";
+import { signupContract } from "@fitness/contracts/auth";
 import { fetch } from "expo/fetch";
 import { z } from "zod";
 type Result<T> = {
@@ -26,7 +26,7 @@ function buildError(payload: ErrorPayload, statusText: string): Result<never>["e
 	return { message, status, statusText };
 }
 
-export const signUp = async (data: z.infer<typeof registerContract>): Promise<Result<{ token: string }>> => {
+export const signUp = async (data: z.infer<typeof signupContract>): Promise<Result<{ token: string }>> => {
 	const apiBase = process.env.EXPO_PUBLIC_API_URL;
 
 	if (!apiBase) {
@@ -42,7 +42,7 @@ export const signUp = async (data: z.infer<typeof registerContract>): Promise<Re
 	}
 
 	try {
-		const validatedData = registerContract.parse(data);
+		const validatedData = signupContract.parse(data);
 		const response = await fetch(`${apiBase}/auth/sign-up`, {
 			method: "POST",
 			body: JSON.stringify(validatedData),

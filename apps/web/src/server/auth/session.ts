@@ -1,19 +1,5 @@
-export type AuthTokens = {
-	accessToken: string;
-	refreshToken: string;
-};
-
 export const accessTokenCookieName = "access_token";
 export const refreshTokenCookieName = "refresh_token";
-
-const isProduction = process.env.NODE_ENV === "production";
-
-export const authCookieOptions = {
-	httpOnly: true,
-	secure: isProduction,
-	sameSite: "lax" as const,
-	path: "/",
-};
 
 export type Cookies = {
 	get: (name: string) => { name: string; value: string } | undefined;
@@ -26,39 +12,19 @@ export type Cookies = {
 			sameSite?: "lax" | "strict" | "none";
 			path?: string;
 			maxAge?: number;
-			expires?: number;
 		},
 	) => void;
 	delete: (name: string) => void;
 };
 
-export const getAccessToken = (cookieStore: Pick<Cookies, "get">): string | undefined => {
-	return cookieStore.get(accessTokenCookieName)?.value;
+export const getCookie = (cookieStore: Pick<Cookies, "get">, name: string): string | undefined => {
+	return cookieStore.get(name)?.value;
 };
 
-export const getRefreshToken = (cookieStore: Pick<Cookies, "get">): string | undefined => {
-	return cookieStore.get(refreshTokenCookieName)?.value;
+export const setCookie = (cookieStore: Pick<Cookies, "set">, name: string, value: string, options?: Parameters<Cookies["set"]>[2]) => {
+	cookieStore.set(name, value, options);
 };
 
-export const setAuthCookies = (cookieStore: Pick<Cookies, "set">, tokens: AuthTokens, opts?: { remember?: boolean }) => {
-	cookieStore.set(accessTokenCookieName, tokens.accessToken, {
-		...authCookieOptions,
-		maxAge: 60 * 15,
-	});
-
-	cookieStore.set(refreshTokenCookieName, tokens.refreshToken, {
-		...authCookieOptions,
-		maxAge: opts?.remember ? 60 * 60 * 24 * 30 : 60 * 60 * 24,
-	});
-};
-
-export const clearAuthCookies = (cookieStore: Pick<Cookies, "set">) => {
-	cookieStore.set(accessTokenCookieName, "", {
-		...authCookieOptions,
-		maxAge: 0,
-	});
-	cookieStore.set(refreshTokenCookieName, "", {
-		...authCookieOptions,
-		maxAge: 0,
-	});
+export const clearCookie = (cookieStore: Pick<Cookies, "delete">, name: string) => {
+	cookieStore.delete(name);
 };
