@@ -26,10 +26,12 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
 	const [[isLoadingAccessToken, accessToken], setAccessToken] = useStorageState("session.accessToken");
 	const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState("session.refreshToken");
+	// Keep the latest refresh token in a ref so `refresh` can stay memoized when tokens rotate.
 	const refreshTokenRef = useRef(refreshToken);
 	useEffect(() => {
 		refreshTokenRef.current = refreshToken;
 	}, [refreshToken]);
+	// Memoize the auth actions so consumers don't receive new callback references on every render.
 	const signIn = useCallback(
 		async (data: z.infer<typeof signinContract>) => {
 			const result = await apiClient.auth.signIn(data);
@@ -96,6 +98,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 			error: null,
 		};
 	}, [setAccessToken, setRefreshToken]);
+	// Memoize the provider value so consumers only re-render when exposed auth state actually changes.
 	const value = useMemo(
 		() => ({
 			signIn,
