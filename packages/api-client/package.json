@@ -8,14 +8,14 @@
 		"check-types": "tsc --noEmit"
 	},
 	"dependencies": {
-		"zod": "^4.3.6",
-		"next": "16.2.4"
+		"zod": "^4.3.6"
 	},
 	"devDependencies": {
 		"@fitness/eslint-config": "workspace:*",
 		"@fitness/typescript-config": "workspace:*",
 		"@types/node": "^25.6.0",
-		"eslint": "^10.2.1"
+		"eslint": "^10.2.1",
+		"next": "16.2.4"
 	},
 	"exports": {
 		".": "./src/index.ts",
