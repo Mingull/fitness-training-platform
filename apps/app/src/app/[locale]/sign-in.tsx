@@ -7,7 +7,7 @@ import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "
 import { Text } from "@/components/ui/text";
 import { useSession } from "@/context/auth";
 import { useAppForm } from "@/hooks/forms";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 import { Dumbbell, Eye, EyeOff } from "lucide-react-native";
 import { useRef, useState } from "react";
 import { KeyboardAvoidingView, Platform, TextInput, View } from "react-native";
@@ -18,8 +18,8 @@ import { useTranslations } from "use-intl";
 import { z } from "zod";
 
 const formSchema = z.object({
-	email: z.string().min(2, {
-		message: "Please enter your email",
+	email: z.email("Invalid email address").min(2, {
+		error: "Email must be at least 2 characters long",
 	}),
 	password: z.string().min(8, "Password must be at least 8 characters long"),
 	remember: z.boolean().optional(),
@@ -29,7 +29,6 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function Signin() {
 	const t = useTranslations("sign-in");
-	const router = useRouter();
 	const { signIn } = useSession();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null); // global error message state
 	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
@@ -112,7 +111,7 @@ export default function Signin() {
 										</form.AppField>
 										<form.AppField name="password" validators={{ onBlur: formSchema.shape.password }}>
 											{(field) => (
-												<FormBase label="Confirm Password" horizontal>
+												<FormBase label="Password" horizontal>
 													{(isInvalid) => (
 														<InputGroup>
 															<InputGroupInput
