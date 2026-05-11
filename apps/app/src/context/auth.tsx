@@ -48,8 +48,8 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
 			const tokens = result.data.data;
 			setAccessToken(tokens.accessToken);
-			refreshTokenRef.current = tokens.refreshToken;
 			setRefreshToken(tokens.refreshToken);
+			refreshTokenRef.current = tokens.refreshToken;
 			return {
 				data: { success: true },
 				error: null,
@@ -59,16 +59,16 @@ export function SessionProvider({ children }: PropsWithChildren) {
 	);
 	const signOut = useCallback(() => {
 		setAccessToken(null);
-		refreshTokenRef.current = null;
 		setRefreshToken(null);
+		refreshTokenRef.current = null;
 	}, [setAccessToken, setRefreshToken]);
 	const refresh = useCallback(async () => {
 		const currentRefreshToken = refreshTokenRef.current;
 
 		if (!currentRefreshToken) {
 			setAccessToken(null);
-			refreshTokenRef.current = null;
 			setRefreshToken(null);
+			refreshTokenRef.current = null;
 			return {
 				data: null,
 				error: {
@@ -89,8 +89,8 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
 		const tokens = result.data.data;
 		setAccessToken(tokens.accessToken);
-		refreshTokenRef.current = tokens.refreshToken;
 		setRefreshToken(tokens.refreshToken);
+		refreshTokenRef.current = tokens.refreshToken;
 		return {
 			data: { success: true },
 			error: null,
