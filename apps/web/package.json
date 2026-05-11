@@ -9,6 +9,7 @@
 		"lint": "eslint"
 	},
 	"dependencies": {
+		"@fitness/api-client": "workspace:*",
 		"@fitness/contracts": "workspace:*",
 		"@fitness/ui": "workspace:*",
 		"class-variance-authority": "^0.7.1",

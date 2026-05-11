@@ -1,81 +1,45 @@
 "use server";
 
-import { z } from "zod";
-import { registerContract } from "@fitness/contracts/auth";
+import { apiClient } from "@/lib/api-client";
+import type { ClientError, ClientResult } from "@fitness/api-client/types";
 import { apiErrorContract } from "@fitness/contracts/api-error";
-
-type Result<T> = {
-	data: T | null;
-	error: {
-		status: number;
-		statusText: string;
-		message?: string | undefined;
-	} | null;
-};
+import { signupContract } from "@fitness/contracts/auth";
+import { z } from "zod";
 
 type ErrorPayload = z.infer<typeof apiErrorContract>;
 
-function buildError(payload: ErrorPayload, statusText: string): Result<never>["error"] {
+function buildError(payload: ErrorPayload, fallbackMessage: string): ClientError {
 	let message: string | undefined = payload?.detail ?? payload?.title;
-	const status = payload?.status;
 
 	if (!message && payload?.errors) {
 		const firstError = Object.values(payload.errors)[0];
 		if (Array.isArray(firstError) && firstError.length) message = firstError[0];
 	}
 
-	if (!message) message = "Failed to sign up.";
-	return { message, status, statusText };
+	return {
+		code: "http",
+		message: message ?? fallbackMessage,
+		statusCode: payload?.status,
+		details: payload,
+	};
 }
 
-export const signUp = async (data: z.infer<typeof registerContract>): Promise<Result<{ token: string }>> => {
-	try {
-		const validatedData = registerContract.parse(data);
-		const response = await fetch(`${process.env.API_URL}/auth/sign-up`, {
-			method: "POST",
-			body: JSON.stringify(validatedData),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
+export const signUp = async (data: z.infer<typeof signupContract>): Promise<ClientResult<{ success: true }>> => {
+	const result = await apiClient.auth.signUp(data);
 
-		const body = await response.json();
-
-		if (!response.ok) {
-			const parsedError = apiErrorContract.safeParse(body);
-			if (parsedError.success) {
-				return { data: null, error: buildError(parsedError.data, response.statusText) };
-			}
-			return {
-				data: null,
-				error: {
-					message: "An unexpected error occurred. Please try again later.",
-					status: response.status,
-					statusText: response.statusText,
-				},
-			};
-		}
-
-		return { data: body as { token: string }, error: null };
-	} catch (error) {
-		if (error instanceof z.ZodError) {
-			return {
-				data: null,
-				error: {
-					message: error.issues.map((issue) => issue.message).join(", "),
-					status: 400,
-					statusText: "Bad Request",
-				},
-			};
-		}
-
+	if (result.error) {
+		const parsedError = apiErrorContract.safeParse(result.error.details);
 		return {
 			data: null,
-			error: {
-				message: "An unexpected error occurred. Please try again later.",
-				status: 500,
-				statusText: "Internal Server Error",
-			},
+			error:
+				parsedError.success ?
+					buildError(parsedError.data, "Failed to sign up.")
+				:	{ ...result.error, message: result.error.message || "Failed to sign up." },
 		};
 	}
+
+	return {
+		data: { success: true },
+		error: null,
+	};
 };

@@ -2,6 +2,20 @@
 // See: https://next-intl.dev/docs/workflows/typescript#messages-arguments
 
 declare const messages: {
+	"sign-in": {
+		"title": "Meld je aan bij {title}",
+		"subtitle": "Meld je aan bij je account om door te gaan naar {title}",
+		"divider": "of",
+		"email": "E-mail",
+		"password": "Wachtwoord",
+		"remember": "Onthoud mij",
+		"forgot": "Wachtwoord vergeten?",
+		"button": "Inloggen",
+		"continue": "Doorgaan met {provider}",
+		"no-account": "Nog geen account?",
+		"linkText": "Registreren",
+		"tos": "Door je in te loggen, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacy Policy</privacy>."
+	},
 	"sign-up": {
 		"title": "Registreren voor {title}",
 		"subtitle": "Maak een account aan om door te gaan naar {title}",
