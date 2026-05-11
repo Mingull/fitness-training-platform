@@ -29,7 +29,7 @@ export const refreshSession = async (): Promise<ClientResult<{ accessToken: stri
 			error: result.error,
 		};
 	}
-	const remember = getCookie(cookieStore, "remember");
+	const remember = getCookie(cookieStore, "remember") === "true";
 	setCookie(cookieStore, accessTokenCookieName, result.data.accessToken, {
 		httpOnly: true,
 		secure: isProduction,
