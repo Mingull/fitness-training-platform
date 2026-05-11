@@ -2,7 +2,7 @@ import { useStorageState } from "@/hooks/use-storage-state";
 import { apiClient } from "@/lib/api-client";
 import { ClientResult } from "@fitness/api-client/types";
 import { signinContract } from "@fitness/contracts/auth";
-import { createContext, use, useCallback, useMemo, useRef, type PropsWithChildren } from "react";
+import { createContext, use, useCallback, useEffect, useMemo, useRef, type PropsWithChildren } from "react";
 import { z } from "zod";
 
 const AuthContext = createContext<{
@@ -27,7 +27,9 @@ export function SessionProvider({ children }: PropsWithChildren) {
 	const [[isLoadingAccessToken, accessToken], setAccessToken] = useStorageState("session.accessToken");
 	const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState("session.refreshToken");
 	const refreshTokenRef = useRef(refreshToken);
-	refreshTokenRef.current = refreshToken;
+	useEffect(() => {
+		refreshTokenRef.current = refreshToken;
+	}, [refreshToken]);
 	const signIn = useCallback(
 		async (data: z.infer<typeof signinContract>) => {
 			const result = await apiClient.auth.signIn(data);
@@ -46,6 +48,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
 			const tokens = result.data.data;
 			setAccessToken(tokens.accessToken);
+			refreshTokenRef.current = tokens.refreshToken;
 			setRefreshToken(tokens.refreshToken);
 			return {
 				data: { success: true },
@@ -56,6 +59,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 	);
 	const signOut = useCallback(() => {
 		setAccessToken(null);
+		refreshTokenRef.current = null;
 		setRefreshToken(null);
 	}, [setAccessToken, setRefreshToken]);
 	const refresh = useCallback(async () => {
@@ -63,6 +67,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
 		if (!currentRefreshToken) {
 			setAccessToken(null);
+			refreshTokenRef.current = null;
 			setRefreshToken(null);
 			return {
 				data: null,
@@ -84,6 +89,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
 		const tokens = result.data.data;
 		setAccessToken(tokens.accessToken);
+		refreshTokenRef.current = tokens.refreshToken;
 		setRefreshToken(tokens.refreshToken);
 		return {
 			data: { success: true },
