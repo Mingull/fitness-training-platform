@@ -23,7 +23,9 @@ public class ProfileController(IProfileService profileService) : ControllerBase
     {
         // Read the authenticated user's ID from the claims principal and return that user's profile.
         var claimsPrincipal = HttpContext.User;
-        var userId = Guid.TryParse(claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier), out var parsedUserId) ? parsedUserId : (Guid?)null;
+        var userIdClaim = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier)
+            ?? claimsPrincipal.FindFirstValue(JwtRegisteredClaimNames.Sub);
+        var userId = Guid.TryParse(userIdClaim, out var parsedUserId) ? parsedUserId : (Guid?)null;
         if (!userId.HasValue)
         {
             return Unauthorized(
