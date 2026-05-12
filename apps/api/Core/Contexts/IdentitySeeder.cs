@@ -1,7 +1,7 @@
 using Fitness.API.Features.Auth.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace Fitness.API.Contexts;
+namespace Fitness.API.Core.Contexts;
 
 public static class IdentitySeeder
 {

@@ -1,13 +1,18 @@
 using Fitness.API.Core.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Fitness.API.Features.Profiles.Abstract;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Fitness.API.Core.Contracts;
+using Fitness.API.Features.Profiles.Contracts;
 
 namespace Fitness.API.Features.Profiles;
 
 [ApiController]
 [Route("profiles")]
 [Produces("application/json")]
-public class ProfileController() : ControllerBase
+public class ProfileController(IProfileService profileService) : ControllerBase
 {
     [HttpGet("me")]
     [Authorize]
@@ -18,9 +23,30 @@ public class ProfileController() : ControllerBase
     {
         // For now just return the claims of the authenticated user to verify that authentication is working correctly.
         var claimsPrincipal = HttpContext.User;
-        var claimsByType = claimsPrincipal.Claims
-            .ToDictionary(c => c.Type, c => c.Value);
+        var userId = Guid.TryParse(claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier), out var parsedUserId) ? parsedUserId : (Guid?)null;
+        if (!userId.HasValue)
+        {
+            return Unauthorized(
+                new ApiError(
+                    code: "InvalidToken",
+                    type: ErrorType.Unauthorized,
+                    title: "Invalid token",
+                    detail: "The provided token is invalid."));
+        }
+        var profile = await profileService.GetProfileAsync(userId.Value);
 
-        return Ok(claimsByType);
+        if (!profile.IsSuccess)
+        {
+            var error = profile.Error!;
+            return StatusCode(error.Status ?? StatusCodes.Status500InternalServerError, error);
+        }
+
+        return Ok(new ApiResponse<ProfileResponse>
+        {
+            Status = StatusCodes.Status200OK,
+            StatusCode = "Ok",
+            Message = "Profile retrieved successfully",
+            Data = profile.Value
+        });
     }
 }

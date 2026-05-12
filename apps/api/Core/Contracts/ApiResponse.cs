@@ -1,4 +1,4 @@
-namespace Fitness.Api.Contracts;
+namespace Fitness.API.Core.Contracts;
 
 public record ApiResponse
 {
