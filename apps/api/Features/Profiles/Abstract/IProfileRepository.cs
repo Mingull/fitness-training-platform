@@ -4,5 +4,5 @@ namespace Fitness.API.Features.Profiles.Abstract;
 
 public interface IProfileRepository
 {
-    Task<Profile?> GetByProfileIdAsync(Guid userId);
+    Task<Profile?> GetByUserIdAsync(Guid userId);
 }
