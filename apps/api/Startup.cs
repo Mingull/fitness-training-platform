@@ -1,10 +1,12 @@
 using System.Text;
-using Fitness.API.Contexts;
 using Fitness.API.Core;
+using Fitness.API.Core.Contexts;
 using Fitness.API.Features.Auth;
 using Fitness.API.Features.Auth.Abstract;
 using Fitness.API.Features.Auth.Models;
 using Fitness.API.Features.Auth.Utilities;
+using Fitness.API.Features.Profiles;
+using Fitness.API.Features.Profiles.Abstract;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -61,6 +63,7 @@ public class Startup(IConfiguration configuration)
             options.TokenValidationParameters.ValidIssuer = configuration["Jwt:Issuer"];
             options.TokenValidationParameters.ValidAudience = configuration["Jwt:Audience"];
             options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]!));
+            options.MapInboundClaims = false; // to prevent the default mapping of claim types to Microsoft-specific ones
         });
 
         services.AddAuthorization();
@@ -86,12 +89,14 @@ public class Startup(IConfiguration configuration)
 
     private void InitializeRepositories(IServiceCollection services)
     {
-        services.AddScoped<IAuthRepository, AuthRepository>(); // for repositories that should be created per request
+        services.AddScoped<IAuthRepository, AuthRepository>() // for repositories that should be created per request
+            .AddScoped<IProfileRepository, ProfileRepository>();
         // services.AddSingleton<IRepository, Repository>() for repositories that should be created once and shared across the application
     }
     private void InitializeServices(IServiceCollection services)
     {
         services.AddScoped<IAuthService, AuthService>() // for services that should be created per request
+            .AddScoped<IProfileService, ProfileService>()
             .AddSingleton<TokenProvider>(); // for services that should be created once and shared across the application
     }
 }

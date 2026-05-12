@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Fitness.Api.Migrations
+namespace Fitness.API.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration

@@ -1,4 +1,4 @@
-using Fitness.API.Contexts;
+using Fitness.API.Core.Contexts;
 using Fitness.API.Features.Auth.Abstract;
 using Fitness.API.Features.Auth.Models;
 using Microsoft.EntityFrameworkCore;

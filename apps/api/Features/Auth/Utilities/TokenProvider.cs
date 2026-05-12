@@ -19,7 +19,7 @@ public sealed class TokenProvider(IOptions<JwtOptions> options)
         List<Claim> claims = [
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-            ..roles.Select(r=>new Claim(ClaimTypes.Role, r))
+            ..roles.Select(r => new Claim(RoleClaimType, r))
         ];
 
         var descriptor = new SecurityTokenDescriptor
@@ -47,4 +47,6 @@ public sealed class TokenProvider(IOptions<JwtOptions> options)
         var hash = SHA256.HashData(bytes);
         return Convert.ToHexString(hash);
     }
+
+    public static readonly string RoleClaimType = "role";
 }

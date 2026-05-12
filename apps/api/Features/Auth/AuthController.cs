@@ -1,6 +1,6 @@
 using Fitness.API.Features.Auth.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Fitness.Api.Contracts;
+using Fitness.API.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Fitness.API.Features.Auth.Abstract;
 using Fitness.API.Core.Utilities;

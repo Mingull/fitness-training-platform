@@ -1,4 +1,4 @@
-using Fitness.API.Contexts;
+using Fitness.API.Core.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,13 +8,13 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-         var host = Host
-            .CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            })
-            .Build();
+        var host = Host
+           .CreateDefaultBuilder(args)
+           .ConfigureWebHostDefaults(webBuilder =>
+           {
+               webBuilder.UseStartup<Startup>();
+           })
+           .Build();
 
         using (var scope = host.Services.CreateScope())
         {

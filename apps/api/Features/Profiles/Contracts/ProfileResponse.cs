@@ -1,18 +1,12 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Fitness.API.Features.Auth.Models;
+namespace Fitness.API.Features.Profiles.Contracts;
 
-namespace Fitness.API.Features.Profiles.Models;
-
-[Table("profiles")]
-public sealed class Profile
+public record ProfileResponse
 {
-    [Key]
     public Guid Id { get; set; }
-
     public Guid UserId { get; set; }
-    public AppUser User { get; set; } = null!;
 
+    public string? Username { get; set; }
+    public string? Email { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? Bio { get; set; }
