@@ -11,4 +11,10 @@ public class ProfileRepository(FitnessContext context) : IProfileRepository
     {
         return await context.Profiles.Include(p => p.User).FirstOrDefaultAsync(p => p.UserId == userId);
     }
+
+    public async Task UpdateAsync(Profile profile)
+    {
+        context.Profiles.Update(profile);
+        await context.SaveChangesAsync();
+    }
 }

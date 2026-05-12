@@ -1,5 +1,6 @@
 using System.Text;
 using Fitness.API.Core;
+using Fitness.API.Core.Filters;
 using Fitness.API.Core.Contexts;
 using Fitness.API.Features.Auth;
 using Fitness.API.Features.Auth.Abstract;
@@ -44,7 +45,10 @@ public class Startup(IConfiguration configuration)
     {
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
         services
-            .AddControllers()
+            .AddControllers(options =>
+            {
+                options.Filters.Add<MissingBodyToModelStateFilter>();
+            })
             .ConfigureApiBehaviorOptions(options =>
             {
                 options.InvalidModelStateResponseFactory = context =>

@@ -10,6 +10,7 @@ namespace Fitness.API.Features.Auth;
 [ApiController]
 [Route("auth")]
 [Produces("application/json")]
+[Tags("Authentication")]
 public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("sign-up")]
