@@ -2,7 +2,6 @@ using Fitness.API.Core.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Fitness.API.Features.Profiles.Abstract;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Fitness.API.Core.Contracts;
 using Fitness.API.Features.Profiles.Contracts;
