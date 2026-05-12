@@ -9,12 +9,11 @@ public class ProfileService(IProfileRepository profileRepository, ILogger<Profil
 {
     public async Task<Result<ProfileResponse>> GetProfileAsync(Guid userId)
     {
-        var profile = await profileRepository.GetByProfileIdAsync(userId);
+        var profile = await profileRepository.GetByUserIdAsync(userId);
         if (profile == null)
         {
             return ProfileErrors.NotFound;
         }
-        logger.LogInformation("Profile found for userId {UserId}", userId);
         
         return Result<ProfileResponse>.Success(new ProfileResponse
         {

@@ -63,6 +63,7 @@ public class Startup(IConfiguration configuration)
             options.TokenValidationParameters.ValidIssuer = configuration["Jwt:Issuer"];
             options.TokenValidationParameters.ValidAudience = configuration["Jwt:Audience"];
             options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]!));
+            options.MapInboundClaims = false; // to prevent the default mapping of claim types to Microsoft-specific ones
         });
 
         services.AddAuthorization();

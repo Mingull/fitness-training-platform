@@ -7,7 +7,7 @@ namespace Fitness.API.Features.Profiles;
 
 public class ProfileRepository(FitnessContext context) : IProfileRepository
 {
-    public async Task<Profile?> GetByProfileIdAsync(Guid userId)
+    public async Task<Profile?> GetByUserIdAsync(Guid userId)
     {
         return await context.Profiles.Include(p => p.User).FirstOrDefaultAsync(p => p.UserId == userId);
     }
