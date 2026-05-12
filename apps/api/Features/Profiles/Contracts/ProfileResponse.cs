@@ -3,6 +3,7 @@ namespace Fitness.API.Features.Profiles.Contracts;
 public record ProfileResponse
 {
     public Guid Id { get; set; }
+    public Guid UserId { get; set; }
 
     public string? Username { get; set; }
     public string? Email { get; set; }

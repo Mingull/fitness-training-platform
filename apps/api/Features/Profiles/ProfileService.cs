@@ -5,7 +5,7 @@ using Fitness.API.Features.Profiles.Utilities;
 
 namespace Fitness.API.Features.Profiles;
 
-public class ProfileService(IProfileRepository profileRepository, ILogger<ProfileService> logger) : IProfileService
+public class ProfileService(IProfileRepository profileRepository) : IProfileService
 {
     public async Task<Result<ProfileResponse>> GetProfileAsync(Guid userId)
     {
@@ -14,10 +14,11 @@ public class ProfileService(IProfileRepository profileRepository, ILogger<Profil
         {
             return ProfileErrors.NotFound;
         }
-        
+
         return Result<ProfileResponse>.Success(new ProfileResponse
         {
-            Id = profile.UserId,
+            Id = profile.Id,
+            UserId = profile.User.Id,
             Username = profile.User.UserName,
             Email = profile.User.Email,
             FirstName = profile.FirstName,
