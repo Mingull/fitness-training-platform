@@ -1,5 +1,3 @@
-using Fitness.API.Features.Auth.Models;
-
 namespace Fitness.API.Features.Profiles.Contracts;
 
 public record ProfileResponse
