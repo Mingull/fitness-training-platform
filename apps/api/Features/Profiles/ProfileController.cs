@@ -21,7 +21,7 @@ public class ProfileController(IProfileService profileService) : ControllerBase
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetProfile()
     {
-        // For now just return the claims of the authenticated user to verify that authentication is working correctly.
+        // Read the authenticated user's ID from the claims principal and return that user's profile.
         var claimsPrincipal = HttpContext.User;
         var userId = Guid.TryParse(claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier), out var parsedUserId) ? parsedUserId : (Guid?)null;
         if (!userId.HasValue)
