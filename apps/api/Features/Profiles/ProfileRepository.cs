@@ -14,7 +14,7 @@ public class ProfileRepository(FitnessContext context) : IProfileRepository
 
     public async Task UpdateAsync(Profile profile)
     {
-        context.Profiles.Update(profile);
+        context.Entry(profile).State = EntityState.Modified;
         await context.SaveChangesAsync();
     }
 }
