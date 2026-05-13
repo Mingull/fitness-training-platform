@@ -29,4 +29,36 @@ public class ProfileService(IProfileRepository profileRepository) : IProfileServ
             PictureUrl = profile.PictureUrl
         });
     }
+
+    public async Task<Result<ProfileResponse>> UpdateProfileAsync(Guid userId, UpdateProfileRequest request)
+    {
+        var profile = await profileRepository.GetByUserIdAsync(userId);
+        if (profile == null)
+        {
+            return ProfileErrors.NotFound;
+        }
+
+        profile.FirstName = request.FirstName ?? profile.FirstName;
+        profile.LastName = request.LastName ?? profile.LastName;
+        profile.Bio = request.Bio ?? profile.Bio;
+        profile.Goals = request.Goals ?? profile.Goals;
+        profile.ExperienceLevel = request.ExperienceLevel ?? profile.ExperienceLevel;
+        profile.PictureUrl = request.PictureUrl ?? profile.PictureUrl;
+
+        await profileRepository.UpdateAsync(profile);
+
+        return Result<ProfileResponse>.Success(new ProfileResponse
+        {
+            Id = profile.Id,
+            UserId = profile.User.Id,
+            Username = profile.User.UserName,
+            Email = profile.User.Email,
+            FirstName = profile.FirstName,
+            LastName = profile.LastName,
+            Bio = profile.Bio,
+            Goals = profile.Goals,
+            ExperienceLevel = profile.ExperienceLevel,
+            PictureUrl = profile.PictureUrl
+        });
+    }
 }
