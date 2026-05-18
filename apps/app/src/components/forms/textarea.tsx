@@ -7,7 +7,7 @@ export function FormTextarea({ label, description, ...props }: FormControlProps 
 	const field = useFieldContext<string>();
 
 	return (
-		<FormBase label={label} description={description}>
+		<FormBase label={label} description={description} horizontal>
 			{(isInvalid) => (
 				<Textarea
 					id={field.name}

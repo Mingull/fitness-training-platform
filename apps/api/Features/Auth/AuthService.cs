@@ -8,10 +8,11 @@ using System.Security.Claims;
 using Fitness.API.Features.Auth.Abstract;
 using Fitness.API.Features.Auth.Utilities;
 using System.IdentityModel.Tokens.Jwt;
+using Fitness.API.Features.Profiles.Abstract;
 
 namespace Fitness.API.Features.Auth;
 
-public class AuthService(UserManager<AppUser> userManager, FitnessContext context, IAuthRepository authRepo, TokenProvider tokenProvider, IHttpContextAccessor httpContextAccessor) : IAuthService
+public class AuthService(UserManager<AppUser> userManager, FitnessContext context, IAuthRepository authRepo, IProfileRepository profileRepo, TokenProvider tokenProvider, IHttpContextAccessor httpContextAccessor) : IAuthService
 {
     public async Task<Result> RegisterAsync(RegisterUserRequest request)
     {
@@ -20,6 +21,7 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
         {
             var user = new AppUser
             {
+                Id = Guid.CreateVersion7(),
                 UserName = request.Username,
                 Email = request.Email,
             };
@@ -38,18 +40,18 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
                 return AuthErrors.RoleAssignmentFailed;
             }
 
-            var profile = new Profile
+            await profileRepo.CreateAsync(new Profile
             {
+                Id = Guid.CreateVersion7(),
                 UserId = user.Id,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Bio = null,
-                ExperienceLevel = null,
-                Goals = null
-            };
-
-            context.Profiles.Add(profile);
-            await context.SaveChangesAsync();
+                // Optional fields
+                Bio = request.Bio,
+                ExperienceLevel = request.ExperienceLevel,
+                Goals = request.Goals,
+                PictureUrl = request.PictureUrl
+            });
 
             await transaction.CommitAsync();
             return Result.Success();

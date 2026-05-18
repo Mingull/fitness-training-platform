@@ -11,9 +11,9 @@ function Textarea({
 	return (
 		<TextInput
 			className={cn(
-				"text-foreground border-input dark:bg-input/30 flex min-h-16 w-full flex-row rounded-md border bg-transparent px-3 py-2 text-base shadow-sm shadow-black/5 md:text-sm",
+				"bg-input/50 dark:bg-input text-foreground placeholder:text-muted-foreground flex min-h-16 w-full rounded-2xl border border-transparent pt-3 pr-3 pb-3 pl-3 text-base",
 				Platform.select({
-					web: "placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive field-sizing-content resize-y transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed",
+					web: "dark:aria-invalid:border-destructive/50 placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/30 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive field-sizing-content resize-none transition-[color,box-shadow,background-color] outline-none focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3 md:text-sm",
 				}),
 				props.editable === false && "opacity-50",
 				className,

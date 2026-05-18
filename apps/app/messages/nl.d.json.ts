@@ -2,26 +2,30 @@
 // See: https://next-intl.dev/docs/workflows/typescript#messages-arguments
 
 declare const messages: {
-	"onboarding": {
-		eyebrow: "Fitness App";
-		title: "Volg je training zonder gedoe";
-		subtitle: "Bekijk je voortgang, houd workouts overzichtelijk en meld je pas aan wanneer je klaar bent om alles te synchroniseren.";
+	onboarding: {
+		eyebrow: "Fitness Training Platform";
+		title: "Kom in contact met trainers en train slimmer";
+		subtitle: "Vind gecertificeerde trainers, ontvang gepersonaliseerde trainingsschema's en houd samen uw voortgang bij.";
 		features: {
-			progress: {
-				title: "Zie je voortgang";
-				description: "Houd elke training bij en zie duidelijk hoeveel je al hebt bereikt.";
+			findTrainer: {
+				title: "Vind jouw trainer";
+				description: "Kom in contact met gecertificeerde personal trainers die aansluiten bij uw fitnessdoelen.";
 			};
-			fast: {
-				title: "Snel loggen";
-				description: "Open de app direct en begin zonder lange onboarding.";
+			personalWorkouts: {
+				title: "Krijg snel trainingen";
+				description: "Ontvang aangepaste trainingsschema's rechtstreeks van uw trainer.";
 			};
-			sync: {
-				title: "Altijd synchroon";
-				description: "Gebruik je account om je trainingsgegevens overal beschikbaar te houden.";
+			shareProgress: {
+				title: "Deel je voortgang";
+				description: "Deel je voortgang in realtime met je trainer en ontvang direct feedback.";
+			};
+			track: {
+				title: "Volg je voortgang";
+				description: "Bekijk je geschiedenis en statistieken om je voortgang in de tijd bij te houden.";
 			};
 		};
-		continue: "Verder";
-		footer: "Hierna meld je je aan. Je hebt nog geen account nodig om deze eerste pagina te zien.";
+		continue: "Doorgaan";
+		footer: "Maak een account aan om trainers te vinden, gepersonaliseerde trainingen te ontvangen en uw fitnesstraject bij te houden.";
 	};
 	"sign-in": {
 		title: "Meld je aan bij {title}";
@@ -35,7 +39,7 @@ declare const messages: {
 		continue: "Doorgaan met {provider}";
 		"no-account": "Nog geen account?";
 		linkText: "Registreren";
-		tos: "Door je in te loggen, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacy Policy</privacy>.";
+		tos: "Door je in te loggen, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacybeleid</privacy>.";
 	};
 	"sign-up": {
 		title: "Registreren voor {title}";
@@ -43,14 +47,92 @@ declare const messages: {
 		divider: "of";
 		username: "Gebruikersnaam";
 		email: "E-mailadres";
-		password: "Wachtwoord";
-		confirmPassword: "Bevestig wachtwoord";
 		button: "Registreren";
-		continue: "Doorgaan met {provider}";
+		continue: "Doorgaan";
+		continueWith: "Doorgaan met {provider}";
+		back: "Terug";
 		"have-account": "Heb je al een account?";
 		linkText: "Inloggen";
-		tos: "Door je aan te melden, ga je akkoord met onze <tos>Terms of Service</tos> en <privacy>Privacy Policy</privacy>.";
-		name: "Naam";
+		tos: "Door je aan te melden, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacybeleid</privacy>.";
+		steps: {
+			currentStep: "Stap {current, number} van {total, number}";
+			stepOne: {
+				title: "Accountgegevens";
+				subtitle: "Start met je inloggegevens.";
+				inputs: {
+					email: {
+						label: "E-mailadres";
+						placeholder: "Voer je e-mailadres in";
+					};
+					password: {
+						label: "Wachtwoord";
+						placeholder: "Voer je wachtwoord in";
+					};
+					confirmPassword: {
+						label: "Bevestig wachtwoord";
+						placeholder: "Bevestig je wachtwoord";
+					};
+				};
+			};
+			stepTwo: {
+				title: "Persoonlijke gegevens";
+				subtitle: "Vertel ons wie je bent.";
+				inputs: {
+					firstname: {
+						label: "Voornaam";
+						placeholder: "Voer je voornaam in";
+					};
+					lastname: {
+						label: "Achternaam";
+						placeholder: "Voer je achternaam in";
+					};
+					username: {
+						label: "Gebruikersnaam";
+						placeholder: "Kies een gebruikersnaam";
+					};
+				};
+			};
+			stepThree: {
+				title: "Trainingsniveau";
+				subtitle: "Vertel ons je ervaring zodat we je training kunnen afstemmen.";
+				inputs: {
+					experienceLevel: {
+						label: "Ervaringsniveau";
+						description: "Kies je huidige ervaringsniveau om gepersonaliseerde trainingsaanbevelingen te ontvangen.";
+						options: {
+							beginner: {
+								label: "Beginner";
+								description: "Nieuw in fitness of net begonnen.";
+							};
+							intermediate: {
+								label: "Gemiddeld";
+								description: "Redelijk ervaren, op zoek naar verbetering.";
+							};
+							advanced: {
+								label: "Geavanceerd";
+								description: "Ervaren, gericht op piekprestaties.";
+							};
+						};
+					};
+				};
+			};
+			stepFour: {
+				title: "Over jou";
+				subtitle: "Voeg een korte bio en je belangrijkste fitnessdoelen toe.";
+				inputs: {
+					bio: {
+						label: "Bio";
+						description: "Een korte bio helpt ons om uw ervaring te personaliseren. Deel een beetje over je fitnessreis!";
+						placeholder: "Vertel ons iets over jezelf";
+					};
+					goals: {
+						label: "Doelen";
+						description: "Deel je fitnessdoelen met ons zodat we je kunnen helpen ze te bereiken!";
+						placeholder: "Wat zijn je fitnessdoelen?";
+					};
+				};
+			};
+		};
 	};
 };
 export default messages;

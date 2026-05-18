@@ -5,3 +5,10 @@ nodeLinker: hoisted
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+allowBuilds:
+  '@parcel/watcher': true
+  '@swc/core': true
+  esbuild: true
+  msw: false
+  sharp: true
+  unrs-resolver: true
