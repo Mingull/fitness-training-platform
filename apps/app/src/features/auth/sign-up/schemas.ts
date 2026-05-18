@@ -3,8 +3,8 @@ import { z } from "zod";
 
 export const passwordRequirements = defineRequirements(({ min, regex, noRepeats }) => [
 	min(8, "Password must be at least 8 characters long"),
-	regex(/[0-9]/, "Password must contain at least 1 numbers"),
-	regex(/[a-z]/, "Password must contain at least 1 lowercase letters"),
+	regex(/[0-9]/, "Password must contain at least 1 number"),
+	regex(/[a-z]/, "Password must contain at least 1 lowercase letter"),
 	regex(/[A-Z]/, "Password must contain at least 1 uppercase letter"),
 	regex(/[^a-zA-Z0-9]/, "Password must contain at least 1 special character"),
 	noRepeats(3, "Password must not contain more than 3 repeating characters", ["hidden"]),
