@@ -10,7 +10,7 @@ export const passwordRequirements = defineRequirements(({ min, regex, noRepeats 
 	noRepeats(3, "Password must not contain more than 3 repeating characters", ["hidden"]),
 ]);
 
-export const stepOneScheme = z
+export const stepOneSchema = z
 	.object({
 		email: z.email("Invalid email address").min(2, { error: "Email must be at least 2 characters long" }),
 		password: requirementsToSchema(passwordRequirements),
@@ -38,7 +38,7 @@ export const stepFourSchema = z.object({
 });
 
 export const formSchema = z.object({
-	stepOne: stepOneScheme,
+	stepOne: stepOneSchema,
 	stepTwo: stepTwoSchema,
 	stepThree: stepThreeSchema,
 	stepFour: stepFourSchema,
