@@ -1,11 +1,12 @@
 import { FormBase } from "@/components/forms/base";
+import { DiscordIcon, GoogleIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FieldGroup, FieldSet } from "@/components/ui/field";
+import { FieldGroup, FieldSet } from "@/components/ui/field_old";
 import { Icon } from "@/components/ui/icon";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
+import { Separator } from "@/components/ui/separator";
 import { Text } from "@/components/ui/text";
-import { useSession } from "@/context/auth";
+import { useSession } from "@/features/auth/context";
 import { useAppForm } from "@/hooks/forms";
 import { Link } from "expo-router";
 import { Dumbbell, Eye, EyeOff } from "lucide-react-native";
@@ -62,6 +63,9 @@ export default function Signin() {
 			toast.success("Signed in successfully!", { position: "top-center" });
 		},
 	});
+	const handleSignInProvider = async (provider: "google" | "discord") => {
+		toast.error(`Social sign-in is for ${provider.slice(0, 1).toUpperCase() + provider.slice(1)} not implemented yet.`, { position: "top-center" });
+	};
 
 	const registerRef = (name: keyof typeof formSchema.shape, input: TextInput | null) => {
 		if (!input) {
@@ -76,90 +80,138 @@ export default function Signin() {
 	};
 
 	return (
-		<SafeAreaView>
+		<SafeAreaView className="flex-1">
 			<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
-				<View className="mt-4 mb-4">
-					<Card className="h-full">
-						<ScrollView className="flex-1" contentContainerClassName="grow gap-6">
-							<CardHeader>
-								<Link href="/[locale]/index" className="flex flex-col items-center gap-2 font-medium">
-									<Icon as={Dumbbell} size={14 * 1.5} className="flex flex-row items-center justify-center rounded-md" />
-								</Link>
-								<CardTitle>{t("title", { title: "FTP" })}</CardTitle>
-								<CardDescription>{t("subtitle", { title: "FTP" })}</CardDescription>
-							</CardHeader>
-							<CardContent>
-								{errorMessage ?
-									<Text className="text-center text-red-500">{errorMessage}</Text>
-								:	null}
-								<FieldGroup>
-									<FieldSet className="gap-4">
-										<form.AppField name="email" validators={{ onBlur: formSchema.shape.email }}>
-											{(field) => (
-												<>
-													<field.Input
-														label="Email"
-														keyboardType="email-address"
-														placeholder="Enter your email"
-														returnKeyType="next"
+				<ScrollView contentContainerClassName="h-full py-6 px-6">
+					<View className="mt-18 mb-auto">
+						<View className="mb-8 flex-col items-center gap-1">
+							<View className="bg-muted border-primary mb-6 rounded-4xl border-2 p-3.5">
+								<Icon as={Dumbbell} size={14 * 2.25} className="text-primary items-center justify-center" />
+							</View>
+							<Text className="text-2xl font-bold">{t("title", { title: "FTP" })}</Text>
+							<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-center font-mono text-sm">
+								{t("subtitle", { title: "FTP" })}
+							</Text>
+						</View>
+						{/* Do i really need an error message container when i have an toast? */}
+						{errorMessage ?
+							<Text className="text-destructive mb-4 text-center text-sm">{errorMessage}</Text>
+						:	null}
+						<FieldGroup>
+							<FieldSet className="gap-4">
+								<form.AppField name="email" validators={{ onBlur: formSchema.shape.email }}>
+									{(field) => (
+										<>
+											<field.Input
+												label="Email"
+												keyboardType="email-address"
+												placeholder="Enter your email"
+												labelClassName="font-mono"
+												returnKeyType="next"
+												ref={(input) => registerRef(field.name, input)}
+												submitBehavior="submit"
+												onSubmitEditing={() => focusNext("password")}
+											/>
+										</>
+									)}
+								</form.AppField>
+								<form.AppField name="password" validators={{ onBlur: formSchema.shape.password }}>
+									{(field) => (
+										<FormBase label="Password" horizontal>
+											{(isInvalid) => (
+												<InputGroup>
+													<InputGroupInput
+														id={field.name}
+														value={field.state.value}
+														onBlur={field.handleBlur}
+														onChangeText={field.handleChange}
+														aria-invalid={isInvalid}
+														secureTextEntry={!showPasswordConfirm}
+														placeholder="********"
+														returnKeyType="done"
 														ref={(input) => registerRef(field.name, input)}
-														submitBehavior="submit"
-														onSubmitEditing={() => focusNext("password")}
+														submitBehavior="blurAndSubmit"
 													/>
-												</>
+													<InputGroupAddon align="inline-end">
+														<InputGroupButton
+															onPress={() => {
+																setShowPasswordConfirm((prev) => !prev);
+															}}
+															aria-label="Toggle password visibility"
+														>
+															{showPasswordConfirm ?
+																<Icon as={EyeOff} />
+															:	<Icon as={Eye} />}
+														</InputGroupButton>
+													</InputGroupAddon>
+												</InputGroup>
 											)}
-										</form.AppField>
-										<form.AppField name="password" validators={{ onBlur: formSchema.shape.password }}>
-											{(field) => (
-												<FormBase label="Password" horizontal>
-													{(isInvalid) => (
-														<InputGroup>
-															<InputGroupInput
-																id={field.name}
-																value={field.state.value}
-																onBlur={field.handleBlur}
-																onChangeText={field.handleChange}
-																aria-invalid={isInvalid}
-																secureTextEntry={!showPasswordConfirm}
-																placeholder="********"
-																returnKeyType="done"
-																ref={(input) => registerRef(field.name, input)}
-																submitBehavior="blurAndSubmit"
-															/>
-															<InputGroupAddon align="inline-end">
-																<InputGroupButton
-																	onPress={() => {
-																		setShowPasswordConfirm((prev) => !prev);
-																	}}
-																	aria-label="Toggle password visibility"
-																>
-																	{showPasswordConfirm ?
-																		<Icon as={EyeOff} />
-																	:	<Icon as={Eye} />}
-																</InputGroupButton>
-															</InputGroupAddon>
-														</InputGroup>
-													)}
-												</FormBase>
-											)}
-										</form.AppField>
-									</FieldSet>
-									<View className="gap-1">
-										<Button className="w-full" onPress={form.handleSubmit} disabled={form.state.isSubmitting}>
-											<Text>{form.state.isSubmitting ? "" : t("button")}</Text>
-										</Button>
-										<Text className="text-center text-sm">
-											{t("no-account")}{" "}
-											<Link href="/[locale]/sign-up" className="underline underline-offset-4" asChild>
-												<Text>{t("linkText")}</Text>
-											</Link>
-										</Text>
+										</FormBase>
+									)}
+								</form.AppField>
+							</FieldSet>
+							<View className="gap-1">
+								<Button className="w-full" onPress={form.handleSubmit} disabled={form.state.isSubmitting}>
+									<Text>{form.state.isSubmitting ? "" : t("button")}</Text>
+								</Button>
+								<Text className="text-center text-sm">
+									{t("no-account")}{" "}
+									<Link href="/[locale]/sign-up" className="underline underline-offset-4" asChild>
+										<Text>{t("linkText")}</Text>
+									</Link>
+								</Text>
+								<View className="gap-2">
+									<View className="mt-4 mb-4 flex flex-row items-center gap-1">
+										<Separator className="flex-1/2" />
+										<Text className="text-muted-foreground relative px-2">{t("divider")}</Text>
+										<Separator className="flex-1/2" />
 									</View>
-								</FieldGroup>
-							</CardContent>
-						</ScrollView>
-					</Card>
-				</View>
+									<View className="gap-2">
+										<Button
+											variant="outline"
+											className="w-full"
+											onPress={() => handleSignInProvider("google")}
+											aria-label={t("continue", { provider: "Google" })}
+										>
+											<GoogleIcon className="text-foreground" />
+											<Text>{t("continue", { provider: "Google" })}</Text>
+										</Button>
+										<Button
+											variant="outline"
+											className="w-full"
+											onPress={() => handleSignInProvider("discord")}
+											aria-label={t("continue", { provider: "Discord" })}
+										>
+											<DiscordIcon className="text-foreground" />
+											<Text>{t("continue", { provider: "Discord" })}</Text>
+										</Button>
+									</View>
+								</View>
+							</View>
+
+							<View className="mx-auto">
+								<Text
+									textBreakStrategy="balanced"
+									lineBreakStrategyIOS="push-out"
+									className="text-muted-foreground text-center text-xs text-balance"
+								>
+									{t.rich("tos", {
+										tos: (chunks) => (
+											<Link href="/terms-of-service" className="underline">
+												{chunks}
+											</Link>
+										),
+										privacy: (chunks) => (
+											<Link href="/privacy-policy" className="underline">
+												{chunks}
+											</Link>
+										),
+									})}
+								</Text>
+							</View>
+						</FieldGroup>
+					</View>
+				</ScrollView>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
 	);

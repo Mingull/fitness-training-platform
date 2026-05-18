@@ -6,6 +6,8 @@ export type FormControlProps = {
 	label: string;
 	description?: string;
 	className?: string;
+	labelClassName?: string;
+	descriptionClassName?: string;
 };
 
 type FormBaseProps = FormControlProps & {
@@ -14,17 +16,17 @@ type FormBaseProps = FormControlProps & {
 	controlFirst?: boolean;
 };
 
-export function FormBase({ children, label, description, controlFirst, horizontal, className }: FormBaseProps) {
+export function FormBase({ children, label, description, controlFirst, horizontal, className, labelClassName, descriptionClassName }: FormBaseProps) {
 	const field = useFieldContext();
 	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
 
 	const labelElement = (
 		<>
-			<FieldLabel htmlFor={field.name} data-invalid={isInvalid}>
+			<FieldLabel htmlFor={field.name} data-invalid={isInvalid} className={labelClassName}>
 				{label}
 			</FieldLabel>
 			{description ?
-				<FieldDescription>{description}</FieldDescription>
+				<FieldDescription className={descriptionClassName}>{description}</FieldDescription>
 			:	null}
 		</>
 	);

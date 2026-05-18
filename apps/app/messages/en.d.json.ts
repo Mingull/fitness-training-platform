@@ -2,55 +2,140 @@
 // See: https://next-intl.dev/docs/workflows/typescript#messages-arguments
 
 declare const messages: {
-	"onboarding": {
-		eyebrow: "Fitness App";
-		title: "Track training without the friction";
-		subtitle: "See your progress, keep workouts organized, and sign in only when you are ready to sync your account.";
+	onboarding: {
+		eyebrow: "Fitness Training Platform";
+		title: "Connect with trainers and train smarter";
+		subtitle: "Find certified trainers, receive personalized workout schemas, and track your progress together.";
 		features: {
-			progress: {
-				title: "See your progress";
-				description: "Keep a clear picture of every workout and how far you have come.";
+			findTrainer: {
+				title: "Find your trainer";
+				description: "Connect with certified personal trainers who match your fitness goals.";
 			};
-			fast: {
-				title: "Log fast";
-				description: "Get into the app quickly and start tracking without a long setup step.";
+			personalWorkouts: {
+				title: "Get workouts fast";
+				description: "Receive customized workout schemas directly from your trainer.";
 			};
-			sync: {
-				title: "Stay in sync";
-				description: "Use your account to keep your training data available across sessions.";
+			shareProgress: {
+				title: "Share progress";
+				description: "Share your progress with your trainer in real-time and get instant feedback.";
+			};
+			track: {
+				title: "Track progress";
+				description: "View history and stats to monitor improvements over time.";
 			};
 		};
 		continue: "Continue";
-		footer: "You will sign in next. No account needed to look around this first screen.";
+		footer: "Create an account to find trainers, receive personalized workouts, and track your fitness journey.";
 	};
 	"sign-in": {
-		"title": "Sign In to {title}",
-		"subtitle": "Sign in to your account to continue to {title}",
-		"divider": "or",
-		"email": "Email",
-		"password": "Password",
-		"remember": "Remember me",
-		"forgot": "Forgot password?",
-		"button": "Sign In",
-		"continue": "Continue with {provider}",
-		"no-account": "Don't have an account?",
-		"linkText": "Sign Up",
-		"tos": "By clicking sign in, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>."
-	},
+		title: "Sign In to {title}";
+		subtitle: "Sign in to your account to continue to {title}";
+		divider: "or";
+		email: "Email";
+		password: "Password";
+		remember: "Remember me";
+		forgot: "Forgot password?";
+		button: "Sign In";
+		continue: "Continue with {provider}";
+		"no-account": "Don't have an account?";
+		linkText: "Sign Up";
+		tos: "By clicking sign in, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>.";
+	};
 	"sign-up": {
-		"title": "Sign Up for {title}",
-		"subtitle": "Create an account to continue to {title}",
-		"divider": "or",
-		"username": "Username",
-		"email": "Email",
-		"password": "Password",
-		"confirmPassword": "Confirm Password",
-		"button": "Sign Up",
-		"continue": "Continue with {provider}",
-		"have-account": "Already have an account?",
-		"linkText": "Sign In",
-		"tos": "By clicking sign up, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>.",
-		"name": "Name"
-	}
+		title: "Sign Up for {title}";
+		subtitle: "Create an account to continue to {title}";
+		divider: "or";
+		username: "Username";
+		email: "Email";
+		password: "Password";
+		confirmPassword: "Confirm Password";
+		button: "Sign Up";
+		continue: "Continue";
+		continueWith: "Continue with {provider}";
+		back: "Back";
+		"have-account": "Already have an account?";
+		linkText: "Sign In";
+		tos: "By clicking sign up, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>.";
+		steps: {
+			currentStep: "Step {current, number} of {total, number}";
+			stepOne: {
+				title: "Account details";
+				subtitle: "Start with your login details.";
+				inputs: {
+					email: {
+						label: "Email";
+						placeholder: "Enter your email address";
+					};
+					password: {
+						label: "Password";
+						placeholder: "Password";
+					};
+					confirmPassword: {
+						label: "Confirm Password";
+						placeholder: "Password";
+					};
+				};
+			};
+			stepTwo: {
+				title: "Personal details";
+				subtitle: "Tell us who you are.";
+				inputs: {
+					firstname: {
+						label: "First Name";
+						placeholder: "Enter your first name";
+					};
+					lastname: {
+						label: "Last Name";
+						placeholder: "Enter your last name";
+					};
+					username: {
+						label: "Username";
+						placeholder: "Choose a username";
+					};
+				};
+			};
+			stepThree: {
+				title: "Training level";
+				subtitle: "Tell us your experience so we can tailor your training.";
+				inputs: {
+					experienceLevel: {
+						label: "Experience Level";
+						description: "This helps us tailor your experience.";
+						options: {
+							beginner: {
+								label: "Beginner";
+								description: "New to fitness or just starting out.";
+							};
+							intermediate: {
+								label: "Intermediate";
+								description: "Somewhat experienced, looking to improve.";
+							};
+							advanced: {
+								label: "Advanced";
+								description: "Experienced, aiming for peak performance.";
+							};
+						};
+					};
+				};
+			};
+			stepFour: {
+				title: "About you";
+				subtitle: "Add a short bio and your main fitness goals.";
+				inputs: {
+					bio: {
+						label: "Bio";
+						description: "A short bio helps us personalize your experience. Share a bit about your fitness journey!";
+						placeholder: "Tell us a little about yourself";
+					};
+					goals: {
+						label: "Goals";
+						description: "Share your fitness goals with us so we can help you achieve them!";
+						placeholder: "What are your fitness goals?";
+					};
+				};
+			};
+		};
+	};
 };
+
 export default messages;

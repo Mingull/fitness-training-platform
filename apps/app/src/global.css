@@ -5,8 +5,23 @@
 @import "nativewind/theme";
 
 @theme inline {
-	--font-heading: var(--font-heading);
-	--font-sans: var(--font-sans);
+	--font-mono-thin: "JetBrainsMono_100Thin";
+	--font-mono-thin-italic: "JetBrainsMono_100Thin_Italic";
+	--font-mono-extralight: "JetBrainsMono_200ExtraLight";
+	--font-mono-extralight-italic: "JetBrainsMono_200ExtraLight_Italic";
+	--font-mono-light: "JetBrainsMono_300Light";
+	--font-mono-light-italic: "JetBrainsMono_300Light_Italic";
+	--font-mono: "JetBrainsMono_400Regular";
+	--font-mono-italic: "JetBrainsMono_400Regular_Italic";
+	--font-mono-medium: "JetBrainsMono_500Medium";
+	--font-mono-medium-italic: "JetBrainsMono_500Medium_Italic";
+	--font-mono-semibold: "JetBrainsMono_600SemiBold";
+	--font-mono-semibold-italic: "JetBrainsMono_600SemiBold_Italic";
+	--font-mono-bold: "JetBrainsMono_700Bold";
+	--font-mono-bold-italic: "JetBrainsMono_700Bold_Italic";
+	--font-mono-extrabold: "JetBrainsMono_800ExtraBold";
+	--font-mono-extrabold-italic: "JetBrainsMono_800ExtraBold_Italic";
+
 	--color-chart-5: var(--chart-5);
 	--color-chart-4: var(--chart-4);
 	--color-chart-3: var(--chart-3);

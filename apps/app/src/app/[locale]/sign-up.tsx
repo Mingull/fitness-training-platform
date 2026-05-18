@@ -1,78 +1,74 @@
-import { FormBase } from "@/components/forms/base";
-import { AdvancedInput } from "@/components/ui/advanced-input";
+import { DiscordIcon, GoogleIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { FieldGroup, FieldSet } from "@/components/ui/field";
+import { FieldGroup } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
+import { Separator } from "@/components/ui/separator";
 import { Text } from "@/components/ui/text";
+import { signUp } from "@/features/auth/sign-up/action";
+import { StepFour } from "@/features/auth/sign-up/components/steps/step-four";
+import { StepOne } from "@/features/auth/sign-up/components/steps/step-one";
+import { StepThree } from "@/features/auth/sign-up/components/steps/step-three";
+import { StepTwo } from "@/features/auth/sign-up/components/steps/step-two";
+import { formSchema } from "@/features/auth/sign-up/schemas";
+import { sharedForm } from "@/features/auth/sign-up/shared-form";
 import { useAppForm } from "@/hooks/forms";
-import { signUp } from "@/server/auth/sign-up";
-import { defineRequirements, requirementsToSchema } from "@fitness/ui/components/advanced-input";
+import { cn } from "@fitness/ui/lib/utils";
+import { revalidateLogic } from "@tanstack/react-form";
 import { Link, useRouter } from "expo-router";
-import { Dumbbell, Eye, EyeOff } from "lucide-react-native";
-import { useRef, useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, TextInput, View } from "react-native";
+import { Dumbbell } from "lucide-react-native";
+import { useEffect, useState } from "react";
+import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import { useTranslations } from "use-intl";
-import { z } from "zod";
-
-const passwordRequirements = defineRequirements(({ min, regex, noRepeats }) => [
-	min(8, "Password must be at least 8 characters long"),
-	regex(/[0-9]/, "Password must contain at least 1 numbers"),
-	regex(/[a-z]/, "Password must contain at least 1 lowercase letters"),
-	regex(/[A-Z]/, "Password must contain at least 1 uppercase letter"),
-	regex(/[^a-zA-Z0-9]/, "Password must contain at least 1 special character"),
-	noRepeats(3, "Password must not contain more than 3 repeating characters", ["hidden"]),
-]);
-
-const formSchema = z
-	.object({
-		firstname: z.string().min(2, { error: "First name must be at least 2 characters long" }),
-		lastname: z.string().min(2, { error: "Last name must be at least 2 characters long" }),
-		username: z.string().min(2, { error: "Username must be at least 2 characters long" }),
-		email: z.email("Invalid email address").min(2, {
-			error: "Email must be at least 2 characters long",
-		}),
-		password: requirementsToSchema(passwordRequirements),
-		confirmPassword: z.string().min(8, { error: "Confirm password must be at least 8 characters long" }),
-	})
-	.refine((data) => data.password === data.confirmPassword, {
-		message: "Passwords do not match",
-		path: ["confirmPassword"],
-	});
-
-type FormData = z.infer<typeof formSchema>;
 
 export default function Signup() {
 	const t = useTranslations("sign-up");
 	const router = useRouter();
-	const [errorMessage, setErrorMessage] = useState<string | null>(null); // global error message state
-	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-	const fields = useRef(new Map<string, TextInput>());
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const [currentStepIndex, setCurrentStepIndex] = useState(0);
+	const [currentStepValidator, setCurrentStepValidator] = useState(formSchema.pick({ stepOne: true }));
+
+	const steps = [
+		{ title: t("steps.stepOne.title"), subtitle: t("steps.stepOne.subtitle") },
+		{ title: t("steps.stepTwo.title"), subtitle: t("steps.stepTwo.subtitle") },
+		{ title: t("steps.stepThree.title"), subtitle: t("steps.stepThree.subtitle") },
+		{ title: t("steps.stepFour.title"), subtitle: t("steps.stepFour.subtitle") },
+	];
+
+	const submitSchemaByStep = [formSchema.pick({ stepOne: true }), formSchema.pick({ stepTwo: true }), formSchema.pick({ stepThree: true }), formSchema];
+
+	useEffect(() => {
+		setCurrentStepValidator(submitSchemaByStep[currentStepIndex] as unknown as typeof formSchema);
+	}, [currentStepIndex]);
 
 	const form = useAppForm({
-		defaultValues: {
-			firstname: "",
-			lastname: "",
-			username: "",
-			email: "",
-			password: "",
-			confirmPassword: "",
-		} satisfies FormData as FormData,
+		...sharedForm,
+		validationLogic: revalidateLogic({
+			mode: "submit",
+			modeAfterSubmission: "submit",
+		}),
 		validators: {
-			onSubmit: formSchema,
+			onSubmit: currentStepValidator as unknown as typeof formSchema,
+			onChange: currentStepValidator as unknown as typeof formSchema,
 		},
 		onSubmit: async ({ value }) => {
+			console.log("Submitting form:", { value });
+			if (!(currentStepIndex >= steps.length - 1)) {
+				return next();
+			}
 			setErrorMessage(null);
 
 			const { error } = await signUp({
-				firstname: value.firstname,
-				lastname: value.lastname,
-				username: value.username,
-				email: value.email,
-				password: value.password,
+				email: value.stepOne.email,
+				password: value.stepOne.password,
+				firstname: value.stepTwo.firstname,
+				lastname: value.stepTwo.lastname,
+				username: value.stepTwo.username,
+				experienceLevel: value.stepThree.experienceLevel || undefined,
+				bio: value.stepFour.bio || undefined,
+				goals: value.stepFour.goals || undefined,
+				pictureUrl: value.stepFour.pictureUrl || undefined,
 			});
 
 			if (error) {
@@ -87,227 +83,149 @@ export default function Signup() {
 		},
 	});
 
-	const registerRef = (name: keyof typeof formSchema.shape, input: TextInput | null) => {
-		if (!input) {
-			fields.current.delete(name);
-			return;
-		}
-		fields.current.set(name, input);
+	const handleSignInProvider = async (provider: "google" | "discord") => {
+		toast.error(`Social sign-in is for ${provider.slice(0, 1).toUpperCase() + provider.slice(1)} not implemented yet.`, { position: "top-center" });
 	};
 
-	const focusNext = (name: keyof typeof formSchema.shape) => {
-		fields.current.get(name)?.focus();
+	const back = () => setCurrentStepIndex((index) => Math.max(index - 1, 0));
+
+	const next = () => {
+		if (currentStepIndex === steps.length - 1) {
+			form.handleSubmit();
+			return;
+		}
+		setCurrentStepIndex((index) => Math.min(index + 1, steps.length - 1));
 	};
 
 	return (
-		<SafeAreaView>
+		<SafeAreaView className="flex-1">
 			<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
-				<View className="mt-4 mb-4">
-					<Card className="h-full">
-						<ScrollView className="flex-1" contentContainerClassName="grow gap-6">
-							<CardHeader>
-								<View className="flex flex-col items-center gap-2">
-									<Link href="/[locale]/index" className="flex flex-col items-center gap-2 font-medium">
-										<Icon as={Dumbbell} size={14 * 1.5} className="flex flex-row items-center justify-center rounded-md" />
-										{/* <Text screenReaderFocusable={true} className="sr-only">
-										Fitness Trainer Platform
-									</Text> */}
-									</Link>
-									<CardTitle>{t("title", { title: "FTP" })}</CardTitle>
-									<CardDescription>{t("subtitle", { title: "FTP" })}</CardDescription>
-								</View>
-							</CardHeader>
-							<CardContent>
-								{errorMessage ?
-									<Text className="text-center text-red-500">{errorMessage}</Text>
-								:	null}
-								<FieldGroup>
-									<FieldSet className="gap-4">
-										<form.AppField name="firstname" validators={{ onBlur: formSchema.shape.firstname }}>
-											{(field) => (
-												<>
-													<field.Input
-														label="First Name"
-														keyboardType="default"
-														placeholder="Enter your first name"
-														returnKeyType="next"
-														ref={(input) => registerRef(field.name, input)}
-														submitBehavior="submit"
-														onSubmitEditing={() => focusNext("lastname")}
-													/>
-												</>
-											)}
-										</form.AppField>
-										<form.AppField name="lastname" validators={{ onBlur: formSchema.shape.lastname }}>
-											{(field) => (
-												<>
-													<field.Input
-														label="Last Name"
-														keyboardType="default"
-														placeholder="Enter your last name"
-														returnKeyType="next"
-														ref={(input) => registerRef(field.name, input)}
-														submitBehavior="submit"
-														onSubmitEditing={() => focusNext("username")}
-													/>
-												</>
-											)}
-										</form.AppField>
-										<form.AppField name="username" validators={{ onBlur: formSchema.shape.username }}>
-											{(field) => (
-												<>
-													<field.Input
-														label="Username"
-														keyboardType="default"
-														placeholder="Enter your username"
-														returnKeyType="next"
-														ref={(input) => registerRef(field.name, input)}
-														submitBehavior="submit"
-														onSubmitEditing={() => focusNext("email")}
-													/>
-												</>
-											)}
-										</form.AppField>
-										<form.AppField name="email" validators={{ onBlur: formSchema.shape.email }}>
-											{(field) => (
-												<>
-													<field.Input
-														label="Email"
-														keyboardType="email-address"
-														placeholder="Enter your email"
-														returnKeyType="next"
-														ref={(input) => registerRef(field.name, input)}
-														submitBehavior="submit"
-														onSubmitEditing={() => focusNext("password")}
-													/>
-												</>
-											)}
-										</form.AppField>
-										<form.AppField name="password" validators={{ onBlur: formSchema.shape.password }}>
-											{(field) => (
-												<FormBase label="Password" horizontal>
-													{(isInvalid) => (
-														<AdvancedInput
-															id={field.name}
-															value={field.state.value}
-															onBlur={field.handleBlur}
-															onChangeText={field.handleChange}
-															aria-invalid={isInvalid}
-															textContentType="password"
-															placeholder="********"
-															requirements={passwordRequirements}
-															onStrengthChange={(strength) => {
-																if (strength === 0) return { color: "bg-border", text: "Enter a password" };
-																if (strength <= 1) return { color: "bg-red-500", text: "Very weak password" };
-																if (strength <= 2) return { color: "bg-orange-500", text: "Weak password" };
-																if (strength <= 3) return { color: "bg-amber-500", text: "Medium password" };
-																if (strength <= 4) return { color: "bg-yellow-500", text: "Good password" };
-																if (strength === 5) return { color: "bg-green-500", text: "Strong password" };
-																return { color: "bg-emerald-500", text: "Strong password" };
-															}}
-															returnKeyType="next"
-															ref={(input) => registerRef(field.name, input)}
-															submitBehavior="submit"
-															onSubmitEditing={() => focusNext("confirmPassword")}
-														/>
-													)}
-												</FormBase>
-											)}
-										</form.AppField>
-										<form.AppField name="confirmPassword" validators={{ onBlur: formSchema.shape.confirmPassword }}>
-											{(field) => (
-												<FormBase label="Confirm Password" horizontal>
-													{(isInvalid) => (
-														<InputGroup>
-															<InputGroupInput
-																id={field.name}
-																value={field.state.value}
-																onBlur={field.handleBlur}
-																onChangeText={field.handleChange}
-																aria-invalid={isInvalid}
-																secureTextEntry={!showPasswordConfirm}
-																placeholder="********"
-																returnKeyType="done"
-																ref={(input) => registerRef(field.name, input)}
-																submitBehavior="blurAndSubmit"
-															/>
-															<InputGroupAddon align="inline-end">
-																<InputGroupButton
-																	onPress={() => {
-																		setShowPasswordConfirm((prev) => !prev);
-																	}}
-																	aria-label="Toggle password visibility"
-																>
-																	{showPasswordConfirm ?
-																		<Icon as={EyeOff} />
-																	:	<Icon as={Eye} />}
-																</InputGroupButton>
-															</InputGroupAddon>
-														</InputGroup>
-													)}
-												</FormBase>
-											)}
-										</form.AppField>
-									</FieldSet>
-									<View className="gap-1">
-										<Button className="w-full" onPress={form.handleSubmit} disabled={form.state.isSubmitting}>
-											<Text>{form.state.isSubmitting ? "" : t("button")}</Text>
+				<ScrollView contentContainerClassName="grow px-6 py-6">
+					<View className="mb-auto h-full">
+						<View className="mb-8 flex-col items-center gap-1">
+							<View className="bg-muted border-primary mb-6 rounded-4xl border-2 p-3.5">
+								<Icon as={Dumbbell} size={14 * 2.25} className="text-primary items-center justify-center" />
+							</View>
+							<Text className="text-2xl font-bold">{t("title", { title: "FTP" })}</Text>
+							<Text
+								textBreakStrategy="balanced"
+								lineBreakStrategyIOS="push-out"
+								className="text-muted-foreground px-2 text-center font-mono text-sm"
+							>
+								{t("subtitle", { title: "Fitness Training Platform" })}
+							</Text>
+						</View>
+
+						<View className="mb-4 gap-2">
+							<View className="flex-row items-center justify-between">
+								<Text className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+									{t("steps.currentStep", { current: currentStepIndex + 1, total: steps.length })}
+								</Text>
+								<Text className="text-muted-foreground text-xs">{steps[currentStepIndex].title}</Text>
+							</View>
+							<View className="flex-row gap-2">
+								{steps.map((currentStep, index) => (
+									<View
+										key={currentStep.title}
+										className={`h-1.5 flex-1 rounded-full ${index <= currentStepIndex ? "bg-primary" : "bg-muted"}`}
+									/>
+								))}
+							</View>
+							<Text className="text-muted-foreground text-sm">{steps[currentStepIndex].subtitle}</Text>
+						</View>
+
+						{errorMessage ?
+							<Text className="text-destructive mb-4 text-center text-sm">{errorMessage}</Text>
+						:	null}
+
+						<FieldGroup>
+							<StepOne form={form} className={cn({ hidden: currentStepIndex !== 0 })} />
+							<StepTwo form={form} className={cn({ hidden: currentStepIndex !== 1 })} />
+							<StepThree form={form} className={cn({ hidden: currentStepIndex !== 2 })} />
+							<StepFour form={form} className={cn({ hidden: currentStepIndex !== 3 })} />
+
+							<View className="gap-1">
+								<View className={"flex-row gap-3"}>
+									{!(currentStepIndex === 0) && (
+										<Button variant="outline" className="flex-1" onPress={back}>
+											<Text>{t("back")}</Text>
 										</Button>
-										<Text className="text-center text-sm">
-											{t("have-account")}{" "}
-											<Link href="/[locale]/sign-in" className="underline underline-offset-4" asChild>
-												<Text>{t("linkText")}</Text>
-											</Link>
-										</Text>
-									</View>
-								</FieldGroup>
-								{/* <View className="flex flex-row items-center gap-1">
+									)}
+									<form.Subscribe
+										selector={(state) => [state.isSubmitting]}
+										children={([isSubmitting]) => (
+											<Button
+												className="flex-1"
+												onPress={() => {
+													console.log("Running next step");
+													next();
+												}}
+												disabled={isSubmitting}
+											>
+												{currentStepIndex === steps.length - 1 ?
+													<Text>{t("button")}</Text>
+												:	<Text>{t("continue")}</Text>}
+											</Button>
+										)}
+									/>
+								</View>
+								<Text className="text-center text-sm">
+									{t("have-account")}{" "}
+									<Link href="/[locale]/sign-in" className="underline underline-offset-4" asChild>
+										<Text>{t("linkText")}</Text>
+									</Link>
+								</Text>
+								<View className="gap-2">
+									<View className="mt-4 mb-4 flex flex-row items-center gap-1">
 										<Separator className="flex-1/2" />
 										<Text className="text-muted-foreground relative px-2">{t("divider")}</Text>
 										<Separator className="flex-1/2" />
 									</View>
-									<View className="grid gap-4 sm:grid-cols-2">
+									<View className="gap-2">
 										<Button
 											variant="outline"
 											className="w-full"
-											// onPress={() => handleSignInProvider("google")}
-											aria-label={t("continue", { provider: "Google" })}
+											onPress={() => handleSignInProvider("google")}
+											aria-label={t("continueWith", { provider: "Google" })}
 										>
 											<GoogleIcon className="text-foreground" />
-											<Text>{t("continue", { provider: "Google" })}</Text>
+											<Text>{t("continueWith", { provider: "Google" })}</Text>
 										</Button>
 										<Button
 											variant="outline"
 											className="w-full"
-											// onPress={() => handleSignInProvider("discord")}
-											aria-label={t("continue", { provider: "Discord" })}
+											onPress={() => handleSignInProvider("discord")}
+											aria-label={t("continueWith", { provider: "Discord" })}
 										>
 											<DiscordIcon className="text-foreground" />
-											<Text>{t("continue", { provider: "Discord" })}</Text>
+											<Text>{t("continueWith", { provider: "Discord" })}</Text>
 										</Button>
-									</View> */}
-							</CardContent>
-							<CardFooter>
-								<View className="w-7/12">
-									<Text className="text-muted-foreground text-center text-xs text-balance">
-										{t.rich("tos", {
-											tos: (chunks) => (
-												<Link href="/terms-of-service" className="underline">
-													{chunks}
-												</Link>
-											),
-											privacy: (chunks) => (
-												<Link href="/privacy-policy" className="underline">
-													{chunks}
-												</Link>
-											),
-										})}
-									</Text>
+									</View>
 								</View>
-							</CardFooter>
-						</ScrollView>
-					</Card>
-				</View>
+							</View>
+							<View className="mx-auto">
+								<Text
+									textBreakStrategy="balanced"
+									lineBreakStrategyIOS="push-out"
+									className="text-muted-foreground text-center text-xs text-balance"
+								>
+									{t.rich("tos", {
+										tos: (chunks) => (
+											<Link href="/terms-of-service" className="underline">
+												{chunks}
+											</Link>
+										),
+										privacy: (chunks) => (
+											<Link href="/privacy-policy" className="underline">
+												{chunks}
+											</Link>
+										),
+									})}
+								</Text>
+							</View>
+						</FieldGroup>
+					</View>
+				</ScrollView>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
 	);

@@ -5,6 +5,7 @@
     "tailwindCSS.classAttributes": [
         "class",
         "className",
+        "labelClassName",
         "headerClassName",
         "contentContainerClassName"
     ],
@@ -12,5 +13,16 @@
         "source.fixAll": "explicit",
         "source.organizeImports": "explicit",
         "source.sortMembers": "explicit"
-    }
+    },
+    "i18n-ally.localesPaths": [
+        "apps/app/messages",
+        "apps/web/messages",
+        "apps/web/src/i18n"
+    ],
+    "i18n-ally.keystyle": "nested",
+    "i18n-ally.enabledFrameworks": [
+        "next-intl",
+        "react",
+    ],
+    "i18n-ally.sourceLanguage": "en",
 }

@@ -1,5 +1,5 @@
 import { SplashScreenController } from "@/components/splash";
-import { SessionProvider, useSession } from "@/context/auth";
+import { SessionProvider, useSession } from "@/features/auth/context";
 import "@/global.css";
 import { useToasterParams } from "@/hooks/use-toast-params";
 import { NAV_THEME } from "@/lib/theme";
