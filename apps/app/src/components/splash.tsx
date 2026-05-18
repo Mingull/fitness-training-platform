@@ -45,13 +45,13 @@ export function SplashScreenController() {
 	});
 
 	useEffect(() => {
-		if (!isLoading || fontsLoaded || error) {
+		if (!isLoading && (fontsLoaded || error)) {
 			SplashScreen.hideAsync();
 		}
 		// if (!isLoading) {
 		// 	SplashScreen.hideAsync();
 		// }
-	}, [isLoading]);
+	}, [isLoading, fontsLoaded, error]);
 
 	if (!fontsLoaded && !error) {
 		return null;
