@@ -36,7 +36,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<typeof View> &
 }
 
 function CardTitle({ className, ref, ...props }: React.ComponentProps<typeof Text> & React.RefAttributes<typeof Text>) {
-	return <Text data-slot="card-title" ref={ref} role="heading" aria-level={3} className={cn("font-heading text-base font-medium", className)} {...props} />;
+	return <Text data-slot="card-title" ref={ref} role="heading" aria-level={3} className={cn("font-mono-medium text-base font-medium", className)} {...props} />;
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<typeof Text> & React.RefAttributes<typeof Text>) {
