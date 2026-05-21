@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Text } from "@/components/ui/text";
 import { Link } from "expo-router";
 import { ArrowRight, BarChart3, Dumbbell, Share2, Timer, Users } from "lucide-react-native";
-import { KeyboardAvoidingView, Platform, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslations } from "use-intl";
 
@@ -13,90 +13,88 @@ export default function Onboarding() {
 
 	return (
 		<SafeAreaView className="bg-background flex-1">
-			<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
-				<View className="mt-10 mb-auto h-full px-6 py-6">
-					<View className="mb-8 items-center gap-1">
-						<View className="bg-muted border-primary rounded-4xl border-2 p-3.5">
-							<Icon as={Dumbbell} size={14 * 2.25} className="text-primary items-center justify-center" />
-						</View>
-						<Text className="text-muted-foreground font-mono-semibold mb-4 text-xs uppercase">{t("eyebrow")}</Text>
-						<Text
-							textBreakStrategy="balanced"
-							lineBreakStrategyIOS="push-out"
-							className="font-mono-medium text-center text-2xl leading-tight font-medium tracking-tight"
-						>
-							{t("title")}
-						</Text>
-						<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-center text-base leading-6">
-							{t("subtitle")}
-						</Text>
+			<View className="mt-10 mb-auto h-full px-6 py-6">
+				<View className="mb-8 items-center gap-1">
+					<View className="bg-muted border-primary rounded-4xl border-2 p-3.5">
+						<Icon as={Dumbbell} size={14 * 2.25} className="text-primary items-center justify-center" />
 					</View>
-					<View className="bg-card rounded-4xl p-4 shadow-md">
-						<View className="flex-row items-start gap-3 pb-2">
-							<View className="bg-primary/20 mt-0.5 h-9 w-9 items-center justify-center rounded-full">
-								<Icon as={Users} size={18} />
-							</View>
-							<View className="flex-1 gap-0.5">
-								<Text className="text-foreground text-base font-medium">{t("features.findTrainer.title")}</Text>
-								<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-sm leading-5">
-									{t("features.findTrainer.description")}
-								</Text>
-							</View>
+					<Text className="text-muted-foreground font-mono-semibold mb-4 text-xs uppercase">{t("eyebrow")}</Text>
+					<Text
+						textBreakStrategy="balanced"
+						lineBreakStrategyIOS="push-out"
+						className="font-mono-medium text-center text-2xl leading-tight font-medium tracking-tight"
+					>
+						{t("title")}
+					</Text>
+					<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-center text-base leading-6">
+						{t("subtitle")}
+					</Text>
+				</View>
+				<View className="bg-card rounded-4xl p-4 shadow-md">
+					<View className="flex-row items-start gap-3 pb-2">
+						<View className="bg-primary/20 mt-0.5 h-9 w-9 items-center justify-center rounded-full">
+							<Icon as={Users} size={18} />
 						</View>
-
-						<Separator />
-
-						<View className="flex-row items-start gap-3 py-2">
-							<View className="bg-primary/20 mt-0.5 h-9 w-9 items-center justify-center rounded-full">
-								<Icon as={Timer} size={18} />
-							</View>
-							<View className="flex-1 gap-0.5">
-								<Text className="text-foreground text-base font-medium">{t("features.personalWorkouts.title")}</Text>
-								<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-sm leading-5">
-									{t("features.personalWorkouts.description")}
-								</Text>
-							</View>
-						</View>
-
-						<Separator />
-
-						<View className="flex-row items-start gap-3 py-2">
-							<View className="bg-primary/20 mt-0.5 h-9 w-9 items-center justify-center rounded-full">
-								<Icon as={Share2} size={18} />
-							</View>
-							<View className="flex-1 gap-0.5">
-								<Text className="text-foreground text-base font-medium">{t("features.shareProgress.title")}</Text>
-								<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-sm leading-5">
-									{t("features.shareProgress.description")}
-								</Text>
-							</View>
-						</View>
-						<Separator />
-
-						<View className="flex-row items-start gap-3 pt-2">
-							<View className="bg-primary/20 mt-0.5 h-9 w-9 items-center justify-center rounded-full">
-								<Icon as={BarChart3} size={18} />
-							</View>
-							<View className="flex-1 gap-0.5">
-								<Text className="text-foreground text-base font-medium">{t("features.track.title")}</Text>
-								<Text className="text-muted-foreground text-sm leading-5">{t("features.track.description")}</Text>
-							</View>
+						<View className="flex-1 gap-0.5">
+							<Text className="text-foreground text-base font-medium">{t("features.findTrainer.title")}</Text>
+							<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-sm leading-5">
+								{t("features.findTrainer.description")}
+							</Text>
 						</View>
 					</View>
 
-					<Link href="/[locale]/sign-in" asChild>
-						<Button className="my-4 h-12 w-full gap-2">
-							<Text>{t("continue")}</Text>
-							<Icon as={ArrowRight} size={18} />
-						</Button>
-					</Link>
-					<View className="flex items-center rounded-b-4xl px-6">
-						<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-center text-sm leading-5">
-							{t("footer")}
-						</Text>
+					<Separator />
+
+					<View className="flex-row items-start gap-3 py-2">
+						<View className="bg-primary/20 mt-0.5 h-9 w-9 items-center justify-center rounded-full">
+							<Icon as={Timer} size={18} />
+						</View>
+						<View className="flex-1 gap-0.5">
+							<Text className="text-foreground text-base font-medium">{t("features.personalWorkouts.title")}</Text>
+							<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-sm leading-5">
+								{t("features.personalWorkouts.description")}
+							</Text>
+						</View>
+					</View>
+
+					<Separator />
+
+					<View className="flex-row items-start gap-3 py-2">
+						<View className="bg-primary/20 mt-0.5 h-9 w-9 items-center justify-center rounded-full">
+							<Icon as={Share2} size={18} />
+						</View>
+						<View className="flex-1 gap-0.5">
+							<Text className="text-foreground text-base font-medium">{t("features.shareProgress.title")}</Text>
+							<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-sm leading-5">
+								{t("features.shareProgress.description")}
+							</Text>
+						</View>
+					</View>
+					<Separator />
+
+					<View className="flex-row items-start gap-3 pt-2">
+						<View className="bg-primary/20 mt-0.5 h-9 w-9 items-center justify-center rounded-full">
+							<Icon as={BarChart3} size={18} />
+						</View>
+						<View className="flex-1 gap-0.5">
+							<Text className="text-foreground text-base font-medium">{t("features.track.title")}</Text>
+							<Text className="text-muted-foreground text-sm leading-5">{t("features.track.description")}</Text>
+						</View>
 					</View>
 				</View>
-			</KeyboardAvoidingView>
+
+				<Link href="/[locale]/sign-in" asChild>
+					<Button className="my-4 h-12 w-full gap-2">
+						<Text>{t("continue")}</Text>
+						<Icon as={ArrowRight} size={18} />
+					</Button>
+				</Link>
+				<View className="flex items-center rounded-b-4xl px-6">
+					<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-center text-sm leading-5">
+						{t("footer")}
+					</Text>
+				</View>
+			</View>
 		</SafeAreaView>
 	);
 }

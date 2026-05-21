@@ -1,11 +1,13 @@
 using Fitness.API.Core.Utilities;
+using Fitness.API.Features.Auth.Models;
 using Fitness.API.Features.Profiles.Abstract;
 using Fitness.API.Features.Profiles.Contracts;
 using Fitness.API.Features.Profiles.Utilities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Fitness.API.Features.Profiles;
 
-public class ProfileService(IProfileRepository profileRepository) : IProfileService
+public class ProfileService(IProfileRepository profileRepository, UserManager<AppUser> userManager) : IProfileService
 {
     public async Task<Result<ProfileResponse>> GetProfileAsync(Guid userId)
     {
@@ -15,12 +17,15 @@ public class ProfileService(IProfileRepository profileRepository) : IProfileServ
             return ProfileErrors.NotFound;
         }
 
+        var roles = await userManager.GetRolesAsync(profile.User);
+
         return Result<ProfileResponse>.Success(new ProfileResponse
         {
             Id = profile.Id,
             UserId = profile.User.Id,
             Username = profile.User.UserName,
             Email = profile.User.Email,
+            Roles = roles,
             FirstName = profile.FirstName,
             LastName = profile.LastName,
             Bio = profile.Bio,
@@ -46,6 +51,7 @@ public class ProfileService(IProfileRepository profileRepository) : IProfileServ
         profile.PictureUrl = request.PictureUrl ?? profile.PictureUrl;
 
         await profileRepository.UpdateAsync(profile);
+        var roles = await userManager.GetRolesAsync(profile.User);
 
         return Result<ProfileResponse>.Success(new ProfileResponse
         {
@@ -53,6 +59,7 @@ public class ProfileService(IProfileRepository profileRepository) : IProfileServ
             UserId = profile.User.Id,
             Username = profile.User.UserName,
             Email = profile.User.Email,
+            Roles = roles,
             FirstName = profile.FirstName,
             LastName = profile.LastName,
             Bio = profile.Bio,

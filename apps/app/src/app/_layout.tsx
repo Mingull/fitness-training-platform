@@ -28,7 +28,7 @@ export default function RootLayout() {
 			<GestureHandlerRootView style={{ flex: 1 }}>
 				<SessionProvider>
 					<IntlProvider locale={locale} messages={messages}>
-						<ThemeProvider value={NAV_THEME[colorScheme ?? "dark"]}>
+						<ThemeProvider value={NAV_THEME[colorScheme === "unspecified" ? "dark" : colorScheme]}>
 							<SplashScreenController />
 							<StatusBar style={colorScheme === "dark" ? "light" : "dark"} animated />
 							<RootNavigator />
