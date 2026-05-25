@@ -5,14 +5,13 @@ import { Text } from "@/components/ui/text";
 import { Link } from "expo-router";
 import { ArrowRight, BarChart3, Dumbbell, Share2, Timer, Users } from "lucide-react-native";
 import { View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslations } from "use-intl";
 
 export default function Onboarding() {
 	const t = useTranslations("onboarding");
 
 	return (
-		<SafeAreaView className="bg-background flex-1">
+		<View className="bg-background flex-1 p-safe">
 			<View className="mt-10 mb-auto h-full px-6 py-6">
 				<View className="mb-8 items-center gap-1">
 					<View className="bg-muted border-primary rounded-4xl border-2 p-3.5">
@@ -95,6 +94,6 @@ export default function Onboarding() {
 					</Text>
 				</View>
 			</View>
-		</SafeAreaView>
+		</View>
 	);
 }

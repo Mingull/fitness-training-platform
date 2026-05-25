@@ -8,23 +8,14 @@
 				"title": "Vind jouw trainer",
 				"description": "Kom in contact met gecertificeerde personal trainers die aansluiten bij uw fitnessdoelen."
 			},
-			"personalWorkouts": {
-				"title": "Krijg snel trainingen",
-				"description": "Ontvang aangepaste trainingsschema's rechtstreeks van uw trainer."
-			},
-			"shareProgress": {
-				"title": "Deel je voortgang",
-				"description": "Deel je voortgang in realtime met je trainer en ontvang direct feedback."
-			},
-			"track": {
-				"title": "Volg je voortgang",
-				"description": "Bekijk je geschiedenis en statistieken om je voortgang in de tijd bij te houden."
-			}
+			"personalWorkouts": { "title": "Krijg snel trainingen", "description": "Ontvang aangepaste trainingsschema's rechtstreeks van uw trainer." },
+			"shareProgress": { "title": "Deel je voortgang", "description": "Deel je voortgang in realtime met je trainer en ontvang direct feedback." },
+			"track": { "title": "Volg je voortgang", "description": "Bekijk je geschiedenis en statistieken om je voortgang in de tijd bij te houden." }
 		},
 		"continue": "Doorgaan",
 		"footer": "Maak een account aan om trainers te vinden, gepersonaliseerde trainingen te ontvangen en uw fitnesstraject bij te houden."
 	},
-	"sign-in": {
+	"signIn": {
 		"title": "Meld je aan bij {title}",
 		"subtitle": "Meld je aan bij je account om door te gaan naar {title}",
 		"divider": "of",
@@ -34,11 +25,11 @@
 		"forgot": "Wachtwoord vergeten?",
 		"button": "Inloggen",
 		"continue": "Doorgaan met {provider}",
-		"no-account": "Nog geen account?",
+		"noAccount": "Nog geen account?",
 		"linkText": "Registreren",
 		"tos": "Door je in te loggen, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacybeleid</privacy>."
 	},
-	"sign-up": {
+	"signUp": {
 		"title": "Registreren voor {title}",
 		"subtitle": "Maak een account aan om door te gaan naar {title}",
 		"divider": "of",
@@ -48,7 +39,7 @@
 		"continue": "Doorgaan",
 		"continueWith": "Doorgaan met {provider}",
 		"back": "Terug",
-		"have-account": "Heb je al een account?",
+		"haveAccount": "Heb je al een account?",
 		"linkText": "Inloggen",
 		"tos": "Door je aan te melden, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacybeleid</privacy>.",
 		"steps": {
@@ -57,36 +48,18 @@
 				"title": "Accountgegevens",
 				"subtitle": "Start met je inloggegevens.",
 				"inputs": {
-					"email": {
-						"label": "E-mailadres",
-						"placeholder": "Voer je e-mailadres in"
-					},
-					"password": {
-						"label": "Wachtwoord",
-						"placeholder": "Voer je wachtwoord in"
-					},
-					"confirmPassword": {
-						"label": "Bevestig wachtwoord",
-						"placeholder": "Bevestig je wachtwoord"
-					}
+					"email": { "label": "E-mailadres", "placeholder": "Voer je e-mailadres in" },
+					"password": { "label": "Wachtwoord", "placeholder": "Voer je wachtwoord in" },
+					"confirmPassword": { "label": "Bevestig wachtwoord", "placeholder": "Bevestig je wachtwoord" }
 				}
 			},
 			"stepTwo": {
 				"title": "Persoonlijke gegevens",
 				"subtitle": "Vertel ons wie je bent.",
 				"inputs": {
-					"firstname": {
-						"label": "Voornaam",
-						"placeholder": "Voer je voornaam in"
-					},
-					"lastname": {
-						"label": "Achternaam",
-						"placeholder": "Voer je achternaam in"
-					},
-					"username": {
-						"label": "Gebruikersnaam",
-						"placeholder": "Kies een gebruikersnaam"
-					}
+					"firstname": { "label": "Voornaam", "placeholder": "Voer je voornaam in" },
+					"lastname": { "label": "Achternaam", "placeholder": "Voer je achternaam in" },
+					"username": { "label": "Gebruikersnaam", "placeholder": "Kies een gebruikersnaam" }
 				}
 			},
 			"stepThree": {
@@ -97,18 +70,10 @@
 						"label": "Ervaringsniveau",
 						"description": "We stemmen aanbevolen trainingen en intensiteit af op dit niveau.",
 						"options": {
-							"beginner": {
-								"label": "Beginner",
-								"description": "Nieuw in fitness of net begonnen."
-							},
-							"intermediate": {
-								"label": "Gemiddeld",
-								"description": "Redelijk ervaren, op zoek naar verbetering."
-							},
-							"advanced": {
-								"label": "Geavanceerd",
-								"description": "Ervaren, gericht op piekprestaties."
-							}
+							"beginner": { "label": "Beginner", "description": "Nieuw in fitness of net begonnen." },
+							"intermediate": { "label": "Gemiddeld", "description": "Redelijk ervaren, op zoek naar verbetering." },
+							"advanced": { "label": "Geavanceerd", "description": "Ervaren, gericht op piekprestaties." },
+							"professional": { "label": "Professioneel", "description": "Zeer ervaren, trainend op een concurrentie niveau." }
 						}
 					}
 				}
@@ -122,13 +87,55 @@
 						"description": "Een korte bio helpt bij gepersonaliseerde aanbevelingen.",
 						"placeholder": "Vertel ons iets over jezelf"
 					},
-					"goals": {
-						"label": "Doelen",
-						"description": "Vertel je belangrijkste fitnessdoelen.",
-						"placeholder": "Wat zijn je fitnessdoelen?"
-					}
+					"goals": { "label": "Doelen", "description": "Vertel je belangrijkste fitnessdoelen.", "placeholder": "Wat zijn je fitnessdoelen?" }
 				}
 			}
+		}
+	},
+	"profile": {
+		"title": { "label": "Profiel", "loading": "Bezig met laden...", "failed": "Profiel laden mislukt" },
+		"rows": {
+			"email": { "label": "E-mail" },
+			"role": { "label": "Rol" },
+			"experience": {
+				"label": "Ervaring",
+				"options": { "beginner": "Beginner", "intermediate": "Gemiddeld", "advanced": "Geavanceerd", "professional": "Professioneel" }
+			},
+			"goals": { "label": "Doelen", "empty": "Nog geen doelen ingesteld" },
+			"bio": { "label": "Bio", "empty": "Nog geen bio ingesteld" }
+		},
+		"tryAgain": "Probeer het later opnieuw.",
+		"actions": {
+			"retry": "Opnieuw",
+			"signOut": "Afmelden",
+			"editProfile": "Profiel bewerken"
+		},
+		"editModal": {
+			"title": "Profiel bewerken",
+			"inputs": {
+				"firstName": { "label": "Voornaam", "placeholder": "Voer je voornaam in" },
+				"lastName": { "label": "Achternaam", "placeholder": "Voer je achternaam in" },
+				"firstname": { "label": "Voornaam", "placeholder": "Voer je voornaam in" },
+				"lastname": { "label": "Achternaam", "placeholder": "Voer je achternaam in" },
+				"bio": {
+					"label": "Bio",
+					"description": "Een korte bio helpt bij gepersonaliseerde aanbevelingen.",
+					"placeholder": "Vertel ons iets over jezelf"
+				},
+				"goals": { "label": "Doelen", "description": "Vertel je belangrijkste fitnessdoelen.", "placeholder": "Wat zijn je fitnessdoelen?" },
+				"experienceLevel": {
+					"label": "Ervaringsniveau",
+					"description": "We stemmen aanbevolen trainingen en intensiteit af op dit niveau.",
+					"options": {
+						"beginner": { "label": "Beginner", "description": "Nieuw in fitness of net begonnen." },
+						"intermediate": { "label": "Gemiddeld", "description": "Redelijk ervaren, op zoek naar verbetering." },
+						"advanced": { "label": "Geavanceerd", "description": "Ervaren, gericht op piekprestaties." },
+						"professional": { "label": "Professioneel", "description": "Zeer ervaren, trainend op een concurrentie niveau." }
+					}
+				}
+			},
+			"buttons": { "save": "Wijzigingen opslaan", "saving": "Bezig met opslaan...", "cancel": "Annuleren" },
+			"messages": { "success": "Profiel succesvol bijgewerkt!", "error": "Fout bij het bijwerken van het profiel." }
 		}
 	}
 }

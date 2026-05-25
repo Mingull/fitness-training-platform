@@ -39,14 +39,16 @@ export type IconNode = [
 export type Icon = (props: IconProps) => React.ReactNode;
 
 export const createIcon = (name: string, node: IconNode, defaultProps?: IconProps): Icon => {
-	return ({ size, color, className, style, ...rest }: IconProps) => {
+	const IconComponent = ({ size, color, className, style, ...rest }: IconProps) => {
 		const hasColorClass = className?.match(/\b(text|bg)-\S+/);
 
 		const combinedStyle: ViewStyle = {
 			...style,
 			// If the caller passed a Tailwind color class (e.g., text-...), let that win.
 			// Otherwise only set an explicit color when the `color` prop is provided.
-			...(hasColorClass ? {} : color ? { color } : {}),
+			...(hasColorClass ? {}
+			: color ? { color }
+			: {}),
 		};
 
 		return (
@@ -89,6 +91,10 @@ export const createIcon = (name: string, node: IconNode, defaultProps?: IconProp
 			</StyledSvg>
 		);
 	};
+
+	IconComponent.displayName = name;
+
+	return IconComponent;
 };
 
 const StyledSvg = styled(Svg, {

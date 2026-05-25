@@ -11,26 +11,27 @@ export const profileContract = apiResponseBaseContract.extend({
 		userId: z.uuidv7(),
 		username: z.string(),
 		email: z.email(),
-		roles: z.array(z.union([z.literal("Sporter"), z.literal("Trainer"), z.literal("Admin")])),
+		roles: z.array(z.enum(["Sporter", "Trainer", "Admin"])),
 		firstName: z.string(),
 		lastName: z.string(),
-		bio: z.string().nullable(),
-		goals: z.string().nullable(),
-		experienceLevel: z.string().nullable(),
-		pictureUrl: z.string().nullable(),
-	})
+		experienceLevel: z.enum(["beginner", "intermediate", "advanced", "professional"]).default("beginner"),
+		bio: z.string().optional(),
+		goals: z.string().optional(),
+		pictureUrl: z.string().optional(),
+	}),
 });
 
+export type ProfileData = z.infer<typeof profileContract>;
 
 /**
- * This is the contract for updating the profile object. 
+ * This is the contract for updating the profile object.
  * All fields are optional, as the user may choose to update only a subset of their profile information.
  */
 export const updateProfileContract = z.object({
 	firstName: z.string().optional(),
 	lastName: z.string().optional(),
+	experienceLevel: z.enum(["beginner", "intermediate", "advanced", "professional"]).default("beginner").optional(),
 	bio: z.string().optional(),
 	goals: z.string().optional(),
-	experienceLevel: z.string().optional(),
 	pictureUrl: z.string().optional(),
 });

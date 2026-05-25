@@ -1,4 +1,4 @@
-import { FieldSet } from "@/components/ui/field";
+import { FieldGroup } from "@/components/ui/field";
 import { withForm } from "@/hooks/forms";
 import { cn } from "@fitness/ui/lib/utils";
 import { useTranslations } from "use-intl";
@@ -7,10 +7,10 @@ import { sharedForm } from "../../shared-form";
 export const StepFour = withForm({
 	...sharedForm,
 	render: function Render({ form, className }) {
-		const t = useTranslations("sign-up.steps.stepFour");
+		const t = useTranslations("signUp.steps.stepFour");
 
 		return (
-			<FieldSet className={cn("gap-4", className)}>
+			<FieldGroup className={cn("gap-4", className)}>
 				<form.AppField name="stepFour.bio">
 					{(field) => (
 						<field.Textarea label={t("inputs.bio.label")} description={t("inputs.bio.description")} placeholder={t("inputs.bio.placeholder")} />
@@ -88,7 +88,7 @@ export const StepFour = withForm({
 						);
 					}}
 				</form.AppField> */}
-			</FieldSet>
+			</FieldGroup>
 		);
 	},
 });

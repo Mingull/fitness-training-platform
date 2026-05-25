@@ -3,7 +3,7 @@ import { RouteNamespace } from "@fitness/api-client/types";
 import { apiErrorContract } from "@fitness/contracts/api-error";
 import { apiResponseBaseContract } from "@fitness/contracts/api-response";
 import { authTokensContract, signinContract, signupContract } from "@fitness/contracts/auth";
-import { profileContract } from "@fitness/contracts/profiles";
+import { profileContract, updateProfileContract } from "@fitness/contracts/profiles";
 import { fetch, FetchRequestInit } from "expo/fetch";
 import { z } from "zod";
 
@@ -33,6 +33,13 @@ const routes = {
 			method: "GET",
 			path: "/profiles/me",
 			requiresAuth: true,
+			out: profileContract,
+		},
+		update: {
+			method: "PATCH",
+			path: "/profiles/me",
+			requiresAuth: true,
+			in: updateProfileContract,
 			out: profileContract,
 		},
 	},

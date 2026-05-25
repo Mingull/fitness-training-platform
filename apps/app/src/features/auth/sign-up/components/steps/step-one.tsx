@@ -1,6 +1,6 @@
 import { FormBase } from "@/components/forms/base";
 import { AdvancedInput } from "@/components/ui/advanced-input";
-import { FieldSet } from "@/components/ui/field";
+import { FieldGroup } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
 import { FormSchema, passwordRequirements } from "@/features/auth/sign-up/schemas";
@@ -15,7 +15,7 @@ import { FlattenRefName, sharedForm } from "../../shared-form";
 export const StepOne = withForm({
 	...sharedForm,
 	render: function Render({ form, className }) {
-		const t = useTranslations("sign-up.steps.stepOne");
+		const t = useTranslations("signUp.steps.stepOne");
 		const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 		const fields = useRef(new Map<FlattenRefName<FormSchema>, TextInput>());
 
@@ -33,7 +33,7 @@ export const StepOne = withForm({
 		};
 
 		return (
-			<FieldSet className={cn("gap-4", className)}>
+			<FieldGroup className={cn("gap-4", className)}>
 				<form.AppField name="stepOne.email">
 					{(field) => (
 						<field.Input
@@ -110,7 +110,7 @@ export const StepOne = withForm({
 						</FormBase>
 					)}
 				</form.AppField>
-			</FieldSet>
+			</FieldGroup>
 		);
 	},
 });

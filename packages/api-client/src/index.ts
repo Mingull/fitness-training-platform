@@ -5,14 +5,25 @@ const isRouteConfig = (value: RouteNamespace | Route): value is Route => {
 	return typeof value === "object" && value !== null && "method" in value && "path" in value && "out" in value;
 };
 
+const isAbortError = (error: unknown): error is Error => {
+	return error instanceof Error && error.name === "AbortError";
+};
+
 export type ApiClientOptions<R extends RouteNamespace> = {
 	baseUrl: string;
 	routes: R;
 	errorSchema?: z.ZodType;
 	$fetch?: FetchFn;
+	defaultTimeout?: number;
 };
 
-export const createApiClient = <const R extends RouteNamespace>({ baseUrl, routes, errorSchema, $fetch }: ApiClientOptions<R>): Client<R> => {
+export const createApiClient = <const R extends RouteNamespace>({
+	baseUrl,
+	routes,
+	errorSchema,
+	$fetch,
+	defaultTimeout = 10_000,
+}: ApiClientOptions<R>): Client<R> => {
 	const asClientError = (error: unknown): ClientError => {
 		if (error instanceof Error) {
 			return {
@@ -64,9 +75,14 @@ export const createApiClient = <const R extends RouteNamespace>({ baseUrl, route
 
 		let controller: AbortController | undefined;
 		let timeoutId: ReturnType<typeof setTimeout> | undefined;
-		if (!options?.signal && options?.timeout != null) {
+		const effectiveTimeoutMs = options?.timeout ?? defaultTimeout;
+		let didTimeout = false;
+		if (!options?.signal && effectiveTimeoutMs != null) {
 			controller = new AbortController();
-			timeoutId = setTimeout(() => controller!.abort(), options.timeout);
+			timeoutId = setTimeout(() => {
+				didTimeout = true;
+				controller!.abort();
+			}, effectiveTimeoutMs);
 		}
 		const finalSignal = options?.signal ?? controller?.signal;
 
@@ -134,23 +150,23 @@ export const createApiClient = <const R extends RouteNamespace>({ baseUrl, route
 				error: null,
 			};
 		} catch (error) {
+			if (isAbortError(error)) {
+				return {
+					data: null,
+					error: {
+						code: "network",
+						message: didTimeout ? `Request timed out after ${effectiveTimeoutMs}ms` : "Request was aborted",
+						details: error,
+					},
+				};
+			}
+
 			if (error instanceof TypeError) {
 				return {
 					data: null,
 					error: {
 						code: "network",
 						message: error.message,
-						details: error,
-					},
-				};
-			}
-
-			if (error instanceof DOMException && error.name === "AbortError") {
-				return {
-					data: null,
-					error: {
-						code: "network",
-						message: "Request timeout or aborted",
 						details: error,
 					},
 				};
@@ -211,7 +227,6 @@ export const createApiClient = <const R extends RouteNamespace>({ baseUrl, route
 				result[key] = builder(value);
 			}
 		}
-
 		return result;
 	};
 

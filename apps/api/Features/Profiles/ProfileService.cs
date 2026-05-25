@@ -2,6 +2,7 @@ using Fitness.API.Core.Utilities;
 using Fitness.API.Features.Auth.Models;
 using Fitness.API.Features.Profiles.Abstract;
 using Fitness.API.Features.Profiles.Contracts;
+using Fitness.API.Features.Profiles.Models;
 using Fitness.API.Features.Profiles.Utilities;
 using Microsoft.AspNetCore.Identity;
 
@@ -23,14 +24,14 @@ public class ProfileService(IProfileRepository profileRepository, UserManager<Ap
         {
             Id = profile.Id,
             UserId = profile.User.Id,
-            Username = profile.User.UserName,
-            Email = profile.User.Email,
+            Username = profile.User.UserName!,
+            Email = profile.User.Email!,
             Roles = roles,
-            FirstName = profile.FirstName,
-            LastName = profile.LastName,
+            FirstName = profile.FirstName!,
+            LastName = profile.LastName!,
             Bio = profile.Bio,
             Goals = profile.Goals,
-            ExperienceLevel = profile.ExperienceLevel,
+            ExperienceLevel = profile.ExperienceLevel.Value,
             PictureUrl = profile.PictureUrl
         });
     }
@@ -47,7 +48,7 @@ public class ProfileService(IProfileRepository profileRepository, UserManager<Ap
         profile.LastName = request.LastName ?? profile.LastName;
         profile.Bio = request.Bio ?? profile.Bio;
         profile.Goals = request.Goals ?? profile.Goals;
-        profile.ExperienceLevel = request.ExperienceLevel ?? profile.ExperienceLevel;
+        profile.ExperienceLevel = ExperienceLevel.From(request.ExperienceLevel);
         profile.PictureUrl = request.PictureUrl ?? profile.PictureUrl;
 
         await profileRepository.UpdateAsync(profile);
@@ -57,14 +58,14 @@ public class ProfileService(IProfileRepository profileRepository, UserManager<Ap
         {
             Id = profile.Id,
             UserId = profile.User.Id,
-            Username = profile.User.UserName,
-            Email = profile.User.Email,
+            Username = profile.User.UserName!,
+            Email = profile.User.Email!,
             Roles = roles,
-            FirstName = profile.FirstName,
-            LastName = profile.LastName,
+            FirstName = profile.FirstName!,
+            LastName = profile.LastName!,
             Bio = profile.Bio,
             Goals = profile.Goals,
-            ExperienceLevel = profile.ExperienceLevel,
+            ExperienceLevel = profile.ExperienceLevel.Value,
             PictureUrl = profile.PictureUrl
         });
     }

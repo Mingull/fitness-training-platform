@@ -45,12 +45,9 @@ function FieldSet({ className, children, ...props }: ViewProps) {
 
 	return (
 		<TextClassContext.Provider value="text-foreground">
-			<View
-				data-slot="field-set"
-				className={cn("flex flex-col gap-6", { "gap-3": hasCheckboxGroup || hasRadioGroup }, className)}
-				{...props}
-				children={children}
-			/>
+			<View data-slot="field-set" className={cn("flex flex-col gap-6", { "gap-3": hasCheckboxGroup || hasRadioGroup }, className)} {...props}>
+				{children}
+			</View>
 		</TextClassContext.Provider>
 	);
 }
@@ -142,8 +139,9 @@ function FieldLabel({
 				className,
 			)}
 			{...props}
-			children={children}
-		/>
+		>
+			{children}
+		</Label>
 	);
 }
 
@@ -188,7 +186,7 @@ function FieldSeparator({ children, className, ...props }: ViewProps & { childre
 
 FieldSeparator.slot = "field-separator";
 
-function FieldError({ className, children, errors, ...props }: ViewProps & { errors?: Array<{ message?: string } | undefined> }) {
+function FieldError({ className, children, errors, ...props }: ViewProps & { errors?: ({ message?: string } | undefined)[] }) {
 	const content = useMemo(() => {
 		if (children) {
 			return children;
@@ -200,7 +198,7 @@ function FieldError({ className, children, errors, ...props }: ViewProps & { err
 
 		const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()];
 
-		if (uniqueErrors?.length == 1) {
+		if (uniqueErrors?.length === 1) {
 			return <Text className="text-destructive text-sm font-normal">{uniqueErrors[0]?.message}</Text>;
 		}
 

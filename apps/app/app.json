@@ -8,7 +8,13 @@
     "scheme": "app",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "CFBundleLocalizations": [
+          "en",
+          "nl"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -20,9 +26,10 @@
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.INTERNET"
-      ]
+      ],
+      "package": "nl.mingull.ftp"
     },
-    "owner": "Mingull",
+    "owner": "mingull",
     "locales": {
       "en": "./messages/en.json",
       "nl": "./messages/nl.json"
@@ -68,11 +75,18 @@
           "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-image"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "10c570de-7c4a-47a4-a7db-54116b46cf53"
+      }
     }
   }
 }
