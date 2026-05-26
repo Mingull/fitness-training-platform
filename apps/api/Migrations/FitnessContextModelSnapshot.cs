@@ -155,7 +155,9 @@ namespace Fitness.API.Migrations
                     b.Property<string>("ExperienceLevel")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("longtext")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasDefaultValue("beginner")
                         .HasColumnName("experience_level");
 
                     b.Property<string>("FirstName")

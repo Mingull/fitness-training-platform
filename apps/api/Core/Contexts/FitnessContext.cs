@@ -29,7 +29,10 @@ public sealed class FitnessContext(DbContextOptions<FitnessContext> options) : I
 
         builder.Entity<Profile>()
             .Property(p => p.ExperienceLevel)
-            .HasConversion(v => v.Value, v => ExperienceLevel.From(v));
+            .HasConversion(v => v.Value, v => ExperienceLevel.From(v))
+            .HasColumnType("varchar(50)")
+            .HasMaxLength(50)
+            .HasDefaultValue(ExperienceLevel.Beginner);
 
         builder.Entity<RefreshToken>()
             .HasOne(rt => rt.User)

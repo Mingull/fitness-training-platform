@@ -13,8 +13,10 @@ namespace Fitness.API.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "experience_level",
                 table: "profiles",
-                type: "longtext",
+                type: "varchar(50)",
+                maxLength: 50,
                 nullable: false,
+                defaultValue: "beginner",
                 oldClrType: typeof(string),
                 oldType: "longtext",
                 oldNullable: true)
@@ -31,7 +33,9 @@ namespace Fitness.API.Migrations
                 type: "longtext",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "longtext")
+                oldType: "varchar(50)",
+                oldMaxLength: 50,
+                oldDefaultValue: "beginner")
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .OldAnnotation("MySql:CharSet", "utf8mb4");
         }

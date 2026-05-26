@@ -29,9 +29,9 @@ public class ProfileService(IProfileRepository profileRepository, UserManager<Ap
             Roles = roles,
             FirstName = profile.FirstName!,
             LastName = profile.LastName!,
+            ExperienceLevel = profile.ExperienceLevel.Value,
             Bio = profile.Bio,
             Goals = profile.Goals,
-            ExperienceLevel = profile.ExperienceLevel.Value,
             PictureUrl = profile.PictureUrl
         });
     }
@@ -63,9 +63,9 @@ public class ProfileService(IProfileRepository profileRepository, UserManager<Ap
             Roles = roles,
             FirstName = profile.FirstName!,
             LastName = profile.LastName!,
+            ExperienceLevel = profile.ExperienceLevel.Value,
             Bio = profile.Bio,
             Goals = profile.Goals,
-            ExperienceLevel = profile.ExperienceLevel.Value,
             PictureUrl = profile.PictureUrl
         });
     }
