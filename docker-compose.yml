@@ -36,4 +36,4 @@ volumes:
     mysql-data:
         driver: local
 
-name: "Fitness-Training-Platform"
+name: "fitness-training-platform"
