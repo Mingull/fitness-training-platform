@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useRouter } from "expo-router";
 import { View } from "react-native";
+import { useLocale } from "use-intl";
 
 export default function Index() {
+	const locale = useLocale();
 	const router = useRouter();
 
 	return (
@@ -14,7 +16,7 @@ export default function Index() {
 				<Button
 					variant={"default"}
 					onPress={() => {
-						router.push("/[locale]/(app)/profile");
+						router.push({ pathname: "/[locale]/(app)/profile", params: { locale } });
 					}}
 				>
 					<Text>Profile</Text>

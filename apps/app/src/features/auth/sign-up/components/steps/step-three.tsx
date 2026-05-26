@@ -1,20 +1,16 @@
 import { FormBase } from "@/components/forms/base";
-import { Field, FieldContent, FieldDescription, FieldLabel, FieldSet, FieldTitle } from "@/components/ui/field";
+import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldTitle } from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { withForm } from "@/hooks/forms";
 import { cn } from "@fitness/ui/lib/utils";
 import * as Haptics from "expo-haptics";
-import { useRef } from "react";
-import { TextInput } from "react-native";
 import { useTranslations } from "use-intl";
-import { FormSchema } from "../../schemas";
-import { FlattenRefName, sharedForm } from "../../shared-form";
+import { sharedForm } from "../../shared-form";
 
 export const StepThree = withForm({
 	...sharedForm,
 	render: function Render({ form, className }) {
-		const t = useTranslations("sign-up.steps.stepThree");
-		const fields = useRef(new Map<FlattenRefName<FormSchema>, TextInput>());
+		const t = useTranslations("signUp.steps.stepThree");
 		const options = [
 			{
 				value: "beginner",
@@ -31,10 +27,15 @@ export const StepThree = withForm({
 				label: t("inputs.experienceLevel.options.advanced.label"),
 				description: t("inputs.experienceLevel.options.advanced.description"),
 			},
+			{
+				value: "professional",
+				label: t("inputs.experienceLevel.options.professional.label"),
+				description: t("inputs.experienceLevel.options.professional.description"),
+			},
 		] as const;
 
 		return (
-			<FieldSet className={cn("gap-4", className)}>
+			<FieldGroup className={cn("gap-4", className)}>
 				<form.AppField name="stepThree.experienceLevel">
 					{(field) => {
 						const handleChange = (value: string) => {
@@ -70,7 +71,7 @@ export const StepThree = withForm({
 						);
 					}}
 				</form.AppField>
-			</FieldSet>
+			</FieldGroup>
 		);
 	},
 });

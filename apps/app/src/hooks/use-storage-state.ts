@@ -47,7 +47,7 @@ export function useStorageState<T extends string>(key: string): UseStateHook<T> 
 				setState(value as T);
 			});
 		}
-	}, [key]);
+	}, [key, setState]);
 
 	// Set
 	const setValue = useCallback(
@@ -55,7 +55,7 @@ export function useStorageState<T extends string>(key: string): UseStateHook<T> 
 			setState(value);
 			setStorageItemAsync(key, value);
 		},
-		[key],
+		[key, setState],
 	);
 
 	return [state, setValue];

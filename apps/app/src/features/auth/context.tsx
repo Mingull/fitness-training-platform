@@ -1,34 +1,88 @@
 import { useStorageState } from "@/hooks/use-storage-state";
-import { apiClient } from "@/lib/api-client";
-import { ClientResult } from "@fitness/api-client/types";
-import { signinContract } from "@fitness/contracts/auth";
 import { createContext, use, useCallback, useEffect, useMemo, useRef, type PropsWithChildren } from "react";
-import { z } from "zod";
 
-type AuthContext = {
-	signIn: (data: z.infer<typeof signinContract>) => Promise<ClientResult<{ success: boolean }>>;
-	signOut: () => void;
+type SessionContext = {
 	/**
-	 * Manually trigger a refresh of the access token using the current refresh token. This is useful for retrying API calls after a token has expired.
-	 * @returns The result of the token refresh attempt, which will indicate success or provide an error if the refresh fails (e.g. due to an invalid or expired refresh token).
+	 * The current access token for the session.
+	 * This is reactive state and should be used for rendering and auth-related UI decisions.
+	 * It may be null while storage is loading or when the session has been cleared.
 	 */
-	refresh: () => Promise<ClientResult<{ success: boolean }>>;
+	accessToken: string | null;
 	/**
-	 * A "middleware" function that will attempt to refresh the access token and retry the provided function once if it receives an auth error.
-	 * @see {@link AuthContext.refresh} for manually triggering a token refresh.
-	 * @param fn The function to execute with the current access token, and again with a refreshed token if needed.
-	 * @returns The result of the provided function, or an auth error if the token refresh fails.
+	 * The current access token as a ref.
+	 * This is intended for imperative and async code that needs the latest token without re-rendering.
+	 * Do not use it as the source of truth for UI state.
 	 */
-	withRefresh: <R>(fn: (accessToken?: string | null) => Promise<ClientResult<R>> | ClientResult<R>) => Promise<ClientResult<R>>;
-	session?: string | null;
+	accessTokenRef: React.RefObject<string | null>;
+	/**
+	 * Updates the current access token state and keeps the ref in sync.
+	 * Use this instead of calling the storage setter directly when the latest token must be available immediately to async code.
+	 * @param token The new access token value, or null to clear the token on sign out.
+	 */
+	updateAccessToken: (token: string | null) => void;
+	/**
+	 * The current refresh token for the session.
+	 * This is reactive state and should be used for rendering and auth-related UI decisions.
+	 * It may be null while storage is loading or when the session has been cleared.
+	 */
+	refreshToken: string | null;
+	/**
+	 * The current refresh token as a ref.
+	 * This is intended for imperative and async code that needs the latest token without re-rendering.
+	 * Do not use it as the source of truth for UI state.
+	 */
+	refreshTokenRef: React.RefObject<string | null>;
+	/**
+	 * Updates the current refresh token state and keeps the ref in sync.
+	 * Use this instead of calling the storage setter directly when the latest token must be available immediately to async code.
+	 * @param token The new refresh token value, or null to clear the token on sign out.
+	 */
+	updateRefreshToken: (token: string | null) => void;
+	/**
+	 * The current session's user ID provided by the auth API responses.
+	 * This is reactive state and should be used for rendering and route protection.
+	 * It is stored alongside the session tokens so consumers do not need to decode JWTs client-side.
+	 */
+	userId: string | null;
+	/**
+	 * Setter for the current user ID stored alongside the session tokens.
+	 * @param id The new user ID value, or null to clear it on sign out.
+	 */
+	setUserId: (id: string | null) => void;
+	/**
+	 * The current session's user role, which can be used for role-based access control in the app.
+	 * Like the user ID, this is stored alongside the tokens for easy access without decoding JWTs.
+	 * This value comes from the session payload or a decoded JWT claim and may be cleared when the session is cleared.
+	 */
+	userRole: string | null;
+	/**
+	 * Setter for the current user role.
+	 * Use this when the role is known from a successful sign-in, refresh, or decoded session payload.
+	 * @param role The new user role value, or null to clear it on sign out.
+	 */
+	setUserRole: (role: string | null) => void;
+	/**
+	 * Indicates whether the auth state is still loading, such as when the stored session is being restored.
+	 * Consumers should wait for this to become false before making route or auth decisions.
+	 */
 	isLoading: boolean;
+	/**
+	 * Indicates whether the app currently has a usable session loaded.
+	 * This is a convenience flag for route guards and UI and is derived from the loaded session state.
+	 * It is false while loading and becomes true when at least one session token is present.
+	 */
+	isAuthenticated: boolean;
 };
 
-const AuthContext = createContext<AuthContext | null>(null);
+const sessionContext = createContext<SessionContext | null>(null);
 
-// Use this hook to access the user info.
+/**
+ * Returns the current session context.
+ * Use this hook inside components that need access to auth state, tokens, or auth actions.
+ * It throws if the component is rendered outside of a `SessionProvider`.
+ */
 export function useSession() {
-	const value = use(AuthContext);
+	const value = use(sessionContext);
 	if (!value) {
 		throw new Error("useSession must be wrapped in a <SessionProvider />");
 	}
@@ -36,121 +90,72 @@ export function useSession() {
 	return value;
 }
 
+/**
+ * Provides session state and auth helpers to the app.
+ * This provider restores persisted session data, keeps the reactive state and refs in sync,
+ * and exposes a derived `isAuthenticated` flag for route guards and UI.
+ */
 export function SessionProvider({ children }: PropsWithChildren) {
 	const [[isLoadingAccessToken, accessToken], setAccessToken] = useStorageState("session.accessToken");
 	const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState("session.refreshToken");
+	const [[isLoadingUserId, userId], setUserId] = useStorageState("session.userId");
+	const [[isLoadingUserRole, userRole], setUserRole] = useStorageState("session.userRole");
+	const isLoading = isLoadingAccessToken || isLoadingRefreshToken || isLoadingUserId || isLoadingUserRole;
+
 	const accessTokenRef = useRef(accessToken);
 	const refreshTokenRef = useRef(refreshToken);
+
 	useEffect(() => {
 		accessTokenRef.current = accessToken;
 		refreshTokenRef.current = refreshToken;
-	}, [refreshToken, accessToken]);
-	// Memoize the auth actions so consumers don't receive new callback references on every render.
-	const signIn = useCallback(
-		async (data: z.infer<typeof signinContract>): Promise<ClientResult<{ success: boolean }>> => {
-			const result = await apiClient.auth.signIn(data);
+	}, [accessToken, refreshToken]);
 
-			if (result.error) {
-				return {
-					data: null,
-					error: {
-						code: result.error.code,
-						message: result.error.message || "Failed to sign in.",
-						statusCode: result.error.statusCode,
-						details: result.error.details,
-					},
-				};
-			}
-
-			const tokens = result.data.data;
-			setAccessToken(tokens.accessToken);
-			accessTokenRef.current = tokens.accessToken;
-			setRefreshToken(tokens.refreshToken);
-			refreshTokenRef.current = tokens.refreshToken;
-			return {
-				data: { success: true },
-				error: null,
-			};
+	const updateAccessToken = useCallback(
+		(token: string | null) => {
+			setAccessToken(token);
+			accessTokenRef.current = token;
 		},
-		[setAccessToken, setRefreshToken],
+		[setAccessToken],
 	);
-	const signOut = useCallback(() => {
-		setAccessToken(null);
-		accessTokenRef.current = null;
-		setRefreshToken(null);
-		refreshTokenRef.current = null;
-	}, [setAccessToken, setRefreshToken]);
-	const refresh = useCallback(async (): Promise<ClientResult<{ success: boolean }>> => {
-		const currentRefreshToken = refreshTokenRef.current;
 
-		if (!currentRefreshToken) {
-			setAccessToken(null);
-			accessTokenRef.current = null;
-			setRefreshToken(null);
-			refreshTokenRef.current = null;
-			return {
-				data: null,
-				error: {
-					code: "missing_token",
-					message: "No refresh token available.",
-				},
-			};
-		}
-
-		const result = await apiClient.auth.refresh({ refreshToken: currentRefreshToken });
-		if (result.error) {
-			if (result.error.code === "http" && (result.error.statusCode === 400 || result.error.statusCode === 401 || result.error.statusCode === 403)) {
-				setAccessToken(null);
-				accessTokenRef.current = null;
-				setRefreshToken(null);
-				refreshTokenRef.current = null;
-			}
-			return {
-				data: null,
-				error: result.error,
-			};
-		}
-
-		const tokens = result.data.data;
-		setAccessToken(tokens.accessToken);
-		accessTokenRef.current = tokens.accessToken;
-		setRefreshToken(tokens.refreshToken);
-		refreshTokenRef.current = tokens.refreshToken;
-
-		return {
-			data: { success: true },
-			error: null,
-		};
-	}, [setAccessToken, setRefreshToken]);
-
-	const withRefresh = useCallback(
-		async <R,>(fn: (token?: string | null) => Promise<ClientResult<R>> | ClientResult<R>): Promise<ClientResult<R>> => {
-			const result = await fn(accessTokenRef.current);
-
-			if (result.error && (result.error.code === "missing_token" || (result.error.code === "http" && result.error.statusCode === 401))) {
-				// If the error indicates an auth issue, attempt to refresh the token and retry the original function once.
-				const refreshResult = await refresh();
-				if (refreshResult.error) {
-					return refreshResult as ClientResult<R>;
-				}
-				return await fn(accessTokenRef.current);
-			}
-			return result;
+	const updateRefreshToken = useCallback(
+		(token: string | null) => {
+			setRefreshToken(token);
+			refreshTokenRef.current = token;
 		},
-		[refresh],
+		[setRefreshToken],
 	);
+
 	// Memoize the provider value so consumers only re-render when exposed auth state actually changes.
-	const value = useMemo<AuthContext>(
+	const value = useMemo<SessionContext>(
 		() => ({
-			signIn,
-			signOut,
-			refresh,
-			withRefresh,
-			session: accessToken,
-			isLoading: isLoadingAccessToken || isLoadingRefreshToken,
+			accessToken,
+			accessTokenRef,
+			updateAccessToken,
+			refreshToken,
+			refreshTokenRef,
+			updateRefreshToken,
+			userId,
+			setUserId,
+			userRole,
+			setUserRole,
+			isLoading,
+			isAuthenticated: !isLoading && (!!accessToken || !!refreshToken),
 		}),
-		[accessToken, isLoadingAccessToken, isLoadingRefreshToken, refresh, signIn, signOut, withRefresh],
+		[
+			accessToken,
+			accessTokenRef,
+			updateAccessToken,
+			refreshToken,
+			refreshTokenRef,
+			updateRefreshToken,
+			userId,
+			setUserId,
+			userRole,
+			setUserRole,
+			isLoading,
+		],
 	);
 
-	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+	return <sessionContext.Provider value={value}>{children}</sessionContext.Provider>;
 }

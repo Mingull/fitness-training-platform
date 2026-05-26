@@ -30,5 +30,5 @@ type Primitive = string | number | boolean | bigint | symbol | null | undefined 
 export type FlattenRefName<T> =
 	T extends Primitive ? never
 	:	{
-			[K in Extract<keyof T, string>]: T[K] extends Primitive | Array<unknown> ? `${K}` : `${K}` | `${K}.${FlattenRefName<T[K]>}`;
+			[K in Extract<keyof T, string>]: T[K] extends Primitive | unknown[] ? `${K}` : `${K}` | `${K}.${FlattenRefName<T[K]>}`;
 		}[Extract<keyof T, string>];

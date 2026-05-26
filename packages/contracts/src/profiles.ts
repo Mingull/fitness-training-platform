@@ -1,14 +1,37 @@
 import { z } from "zod";
+import { apiResponseBaseContract } from "./api-response";
 
-// This is a temporary contract for the profile data returned by the /profiles/me endpoint.
-// This will change when we implement the actual profile features, but for now we just want to verify that authentication is working correctly and that we can retrieve the claims of the authenticated user.
-export const profileContract = z.object({
-	aud: z.string(),
-	iss: z.string(),
-	exp: z.string(),
-	"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": z.string(),
-	"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress": z.string(),
-	"http://schemas.microsoft.com/ws/2008/06/identity/claims/role": z.string(),
-	iat: z.string(),
-	nbf: z.string(),
+/**
+ * This is the contract for the profile object that will be returned from the API.
+ * It is used to validate the data that is returned from the API and to ensure that it is in the correct format.
+ */
+export const profileContract = apiResponseBaseContract.extend({
+	data: z.object({
+		id: z.uuidv7(),
+		userId: z.uuidv7(),
+		username: z.string(),
+		email: z.email(),
+		roles: z.array(z.enum(["Sporter", "Trainer", "Admin"])),
+		firstName: z.string(),
+		lastName: z.string(),
+		experienceLevel: z.enum(["beginner", "intermediate", "advanced", "professional"]).default("beginner"),
+		bio: z.string().optional(),
+		goals: z.string().optional(),
+		pictureUrl: z.string().optional(),
+	}),
+});
+
+export type ProfileData = z.infer<typeof profileContract>;
+
+/**
+ * This is the contract for updating the profile object.
+ * All fields are optional, as the user may choose to update only a subset of their profile information.
+ */
+export const updateProfileContract = z.object({
+	firstName: z.string().optional(),
+	lastName: z.string().optional(),
+	experienceLevel: z.enum(["beginner", "intermediate", "advanced", "professional"]).optional(),
+	bio: z.string().optional(),
+	goals: z.string().optional(),
+	pictureUrl: z.string().optional(),
 });

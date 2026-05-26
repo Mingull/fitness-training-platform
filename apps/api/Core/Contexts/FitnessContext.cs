@@ -27,6 +27,13 @@ public sealed class FitnessContext(DbContextOptions<FitnessContext> options) : I
             .WithOne(u => u.Profile)
             .HasForeignKey<Profile>(p => p.UserId);
 
+        builder.Entity<Profile>()
+            .Property(p => p.ExperienceLevel)
+            .HasConversion(v => v.Value, v => ExperienceLevel.From(v))
+            .HasColumnType("varchar(50)")
+            .HasMaxLength(50)
+            .HasDefaultValue(ExperienceLevel.Beginner);
+
         builder.Entity<RefreshToken>()
             .HasOne(rt => rt.User)
             .WithMany()

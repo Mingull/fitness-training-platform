@@ -1,4 +1,4 @@
-import { FieldSet } from "@/components/ui/field";
+import { FieldGroup } from "@/components/ui/field";
 import { withForm } from "@/hooks/forms";
 import { cn } from "@fitness/ui/lib/utils";
 import { useRef } from "react";
@@ -11,7 +11,7 @@ export const StepTwo = withForm({
 	...sharedForm,
 	asyncAlways: true,
 	render: function Render({ form, className }) {
-		const t = useTranslations("sign-up.steps.stepTwo");
+		const t = useTranslations("signUp.steps.stepTwo");
 		const fields = useRef(new Map<FlattenRefName<FormSchema>, TextInput>());
 
 		const registerRef = (name: FlattenRefName<FormSchema>, input: TextInput | null) => {
@@ -28,7 +28,7 @@ export const StepTwo = withForm({
 		};
 
 		return (
-			<FieldSet className={cn("gap-4", className)}>
+			<FieldGroup className={cn("gap-4", className)}>
 				<form.AppField name="stepTwo.firstname">
 					{(field) => (
 						<field.Input
@@ -67,7 +67,7 @@ export const StepTwo = withForm({
 						/>
 					)}
 				</form.AppField>
-			</FieldSet>
+			</FieldGroup>
 		);
 	},
 });

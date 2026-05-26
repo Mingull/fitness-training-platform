@@ -1,19 +1,18 @@
 import { FormBase } from "@/components/forms/base";
 import { DiscordIcon, GoogleIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { FieldGroup, FieldSet } from "@/components/ui/field_old";
+import { FieldGroup, FieldSet } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
 import { Separator } from "@/components/ui/separator";
 import { Text } from "@/components/ui/text";
-import { useSession } from "@/features/auth/context";
+import { useAuthActions } from "@/features/auth/hooks/use-auth-actions";
 import { useAppForm } from "@/hooks/forms";
 import { Link } from "expo-router";
 import { Dumbbell, Eye, EyeOff } from "lucide-react-native";
 import { useRef, useState } from "react";
 import { KeyboardAvoidingView, Platform, TextInput, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import { useTranslations } from "use-intl";
 import { z } from "zod";
@@ -29,8 +28,8 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export default function Signin() {
-	const t = useTranslations("sign-in");
-	const { signIn } = useSession();
+	const t = useTranslations("signIn");
+	const { signIn } = useAuthActions();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null); // global error message state
 	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 	const fields = useRef(new Map<string, TextInput>());
@@ -80,7 +79,7 @@ export default function Signin() {
 	};
 
 	return (
-		<SafeAreaView className="flex-1">
+		<View className="p-safe flex-1">
 			<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
 				<ScrollView contentContainerClassName="h-full py-6 px-6">
 					<View className="mt-18 mb-auto">
@@ -97,8 +96,8 @@ export default function Signin() {
 						{errorMessage ?
 							<Text className="text-destructive mb-4 text-center text-sm">{errorMessage}</Text>
 						:	null}
-						<FieldGroup>
-							<FieldSet className="gap-4">
+						<FieldSet>
+							<FieldGroup className="gap-4">
 								<form.AppField name="email" validators={{ onBlur: formSchema.shape.email }}>
 									{(field) => (
 										<>
@@ -149,13 +148,13 @@ export default function Signin() {
 										</FormBase>
 									)}
 								</form.AppField>
-							</FieldSet>
+							</FieldGroup>
 							<View className="gap-1">
 								<Button className="w-full" onPress={form.handleSubmit} disabled={form.state.isSubmitting}>
 									<Text>{form.state.isSubmitting ? "" : t("button")}</Text>
 								</Button>
 								<Text className="text-center text-sm">
-									{t("no-account")}{" "}
+									{t("noAccount")}{" "}
 									<Link href="/[locale]/sign-up" className="underline underline-offset-4" asChild>
 										<Text>{t("linkText")}</Text>
 									</Link>
@@ -209,10 +208,10 @@ export default function Signin() {
 									})}
 								</Text>
 							</View>
-						</FieldGroup>
+						</FieldSet>
 					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
-		</SafeAreaView>
+		</View>
 	);
 }

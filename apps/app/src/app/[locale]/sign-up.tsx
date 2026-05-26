@@ -1,6 +1,6 @@
 import { DiscordIcon, GoogleIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { FieldGroup } from "@/components/ui/field";
+import { FieldSet } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
 import { Separator } from "@/components/ui/separator";
 import { Text } from "@/components/ui/text";
@@ -16,14 +16,13 @@ import { cn } from "@fitness/ui/lib/utils";
 import { revalidateLogic } from "@tanstack/react-form";
 import { Link, useRouter } from "expo-router";
 import { Dumbbell } from "lucide-react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import { useTranslations } from "use-intl";
 
 export default function Signup() {
-	const t = useTranslations("sign-up");
+	const t = useTranslations("signUp");
 	const router = useRouter();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -36,11 +35,14 @@ export default function Signup() {
 		{ title: t("steps.stepFour.title"), subtitle: t("steps.stepFour.subtitle") },
 	];
 
-	const submitSchemaByStep = [formSchema.pick({ stepOne: true }), formSchema.pick({ stepTwo: true }), formSchema.pick({ stepThree: true }), formSchema];
+	const submitSchemaByStep = useMemo(
+		() => [formSchema.pick({ stepOne: true }), formSchema.pick({ stepTwo: true }), formSchema.pick({ stepThree: true }), formSchema],
+		[],
+	);
 
 	useEffect(() => {
 		setCurrentStepValidator(submitSchemaByStep[currentStepIndex] as unknown as typeof formSchema);
-	}, [currentStepIndex]);
+	}, [currentStepIndex, submitSchemaByStep]);
 
 	const form = useAppForm({
 		...sharedForm,
@@ -98,7 +100,7 @@ export default function Signup() {
 	};
 
 	return (
-		<SafeAreaView className="flex-1">
+		<View className="p-safe flex-1">
 			<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
 				<ScrollView contentContainerClassName="grow px-6 py-6">
 					<View className="mb-auto h-full">
@@ -138,7 +140,7 @@ export default function Signup() {
 							<Text className="text-destructive mb-4 text-center text-sm">{errorMessage}</Text>
 						:	null}
 
-						<FieldGroup>
+						<FieldSet>
 							<StepOne form={form} className={cn({ hidden: currentStepIndex !== 0 })} />
 							<StepTwo form={form} className={cn({ hidden: currentStepIndex !== 1 })} />
 							<StepThree form={form} className={cn({ hidden: currentStepIndex !== 2 })} />
@@ -151,9 +153,8 @@ export default function Signup() {
 											<Text>{t("back")}</Text>
 										</Button>
 									)}
-									<form.Subscribe
-										selector={(state) => [state.isSubmitting]}
-										children={([isSubmitting]) => (
+									<form.Subscribe selector={(state) => [state.isSubmitting]}>
+										{([isSubmitting]) => (
 											<Button
 												className="flex-1"
 												onPress={() => {
@@ -167,10 +168,10 @@ export default function Signup() {
 												:	<Text>{t("continue")}</Text>}
 											</Button>
 										)}
-									/>
+									</form.Subscribe>
 								</View>
 								<Text className="text-center text-sm">
-									{t("have-account")}{" "}
+									{t("haveAccount")}{" "}
 									<Link href="/[locale]/sign-in" className="underline underline-offset-4" asChild>
 										<Text>{t("linkText")}</Text>
 									</Link>
@@ -223,10 +224,10 @@ export default function Signup() {
 									})}
 								</Text>
 							</View>
-						</FieldGroup>
+						</FieldSet>
 					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
-		</SafeAreaView>
+		</View>
 	);
 }

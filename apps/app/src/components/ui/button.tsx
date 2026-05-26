@@ -13,7 +13,16 @@ const buttonVariants = cva(
 	{
 		variants: {
 			variant: {
+				accent: cn("bg-accent aria-expanded:bg-accent/90", Platform.select({ web: "hover:bg-accent/90 focus-visible:ring-accent/30" })),
 				default: cn("bg-primary", Platform.select({ web: "hover:bg-primary/80" })),
+				destructive: cn(
+					"bg-destructive/10 dark:bg-destructive/20",
+					Platform.select({
+					web: "hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
+					}),
+				),
+				ghost: cn("aria-expanded:bg-muted", Platform.select({ web: "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50" })),
+				link: "",
 				outline: cn(
 					"border-border bg-background aria-expanded:bg-muted dark:bg-transparent",
 					Platform.select({
@@ -21,14 +30,6 @@ const buttonVariants = cva(
 					}),
 				),
 				secondary: cn("bg-secondary aria-expanded:bg-secondary", Platform.select({ web: "hover:bg-secondary/80" })),
-				ghost: cn("aria-expanded:bg-muted", Platform.select({ web: "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50" })),
-				destructive: cn(
-					"bg-destructive/10 dark:bg-destructive/20",
-					Platform.select({
-						web: "hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
-					}),
-				),
-				link: "",
 			},
 			size: {
 				default: "h-9 gap-1.5 px-3 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5",
@@ -54,12 +55,13 @@ const buttonVariants = cva(
 const buttonTextVariants = cva(cn("text-foreground text-sm font-medium", Platform.select({ web: "pointer-events-none transition-colors" })), {
 	variants: {
 		variant: {
+			accent: "text-accent-foreground",
 			default: "text-primary-foreground",
+			destructive: "text-destructive",
+			ghost: "aria-expanded:text-foreground",
+			link: cn("text-primary group-active:underline", Platform.select({ web: "underline-offset-4 hover:underline group-hover:underline" })),
 			outline: cn("aria-expanded:text-foreground ", Platform.select({ web: " hover:text-foreground " })),
 			secondary: "text-secondary-foreground aria-expanded:text-secondary-foreground",
-			ghost: "aria-expanded:text-foreground",
-			destructive: "text-destructive",
-			link: cn("text-primary group-active:underline", Platform.select({ web: "underline-offset-4 hover:underline group-hover:underline" })),
 		},
 		size: {
 			default: "",

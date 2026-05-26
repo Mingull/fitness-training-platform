@@ -27,7 +27,7 @@ declare const messages: {
 		continue: "Continue";
 		footer: "Create an account to find trainers, receive personalized workouts, and track your fitness journey.";
 	};
-	"sign-in": {
+	signIn: {
 		title: "Sign In to {title}";
 		subtitle: "Sign in to your account to continue to {title}";
 		divider: "or";
@@ -37,11 +37,11 @@ declare const messages: {
 		forgot: "Forgot password?";
 		button: "Sign In";
 		continue: "Continue with {provider}";
-		"no-account": "Don't have an account?";
+		noAccount: "Don't have an account?";
 		linkText: "Sign Up";
 		tos: "By clicking sign in, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>.";
 	};
-	"sign-up": {
+	signUp: {
 		title: "Sign Up for {title}";
 		subtitle: "Create an account to continue to {title}";
 		divider: "or";
@@ -53,7 +53,7 @@ declare const messages: {
 		continue: "Continue";
 		continueWith: "Continue with {provider}";
 		back: "Back";
-		"have-account": "Already have an account?";
+		haveAccount: "Already have an account?";
 		linkText: "Sign In";
 		tos: "By clicking sign up, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>.";
 		steps: {
@@ -100,7 +100,7 @@ declare const messages: {
 				inputs: {
 					experienceLevel: {
 						label: "Experience Level";
-						description: "This helps us tailor your experience.";
+						description: "We will tailor recommended workouts and intensity to this level.";
 						options: {
 							beginner: {
 								label: "Beginner";
@@ -114,6 +114,10 @@ declare const messages: {
 								label: "Advanced";
 								description: "Experienced, aiming for peak performance.";
 							};
+							professional: {
+								label: "Professional";
+								description: "Highly experienced, training at a competitive level.";
+							};
 						};
 					};
 				};
@@ -124,16 +128,58 @@ declare const messages: {
 				inputs: {
 					bio: {
 						label: "Bio";
-						description: "A short bio helps us personalize your experience. Share a bit about your fitness journey!";
+						description: "A short bio helps personalize recommendations.";
 						placeholder: "Tell us a little about yourself";
 					};
 					goals: {
 						label: "Goals";
-						description: "Share your fitness goals with us so we can help you achieve them!";
+						description: "Tell us your main fitness goals.";
 						placeholder: "What are your fitness goals?";
 					};
 				};
 			};
+		};
+	};
+	profile: {
+		title: { label: "Profile"; loading: "Loading..."; failed: "Failed to load profile" };
+		rows: {
+			email: { label: "Email" };
+			role: { label: "Role" };
+			experience: {
+				label: "Experience";
+				options: { beginner: "Beginner"; intermediate: "Intermediate"; advanced: "Advanced"; professional: "Professional" };
+			};
+			goals: { label: "Goals"; empty: "No goals set" };
+			bio: { label: "Bio"; empty: "No bio set" };
+		};
+		tryAgain: "Please try again later.";
+		actions: {
+			retry: "Retry";
+			signOut: "Sign Out";
+			editProfile: "Edit Profile";
+		};
+		editModal: {
+			title: "Edit Profile";
+			inputs: {
+				firstName: { label: "First Name"; placeholder: "Enter your first name" };
+				lastName: { label: "Last Name"; placeholder: "Enter your last name" };
+				firstname: { label: "First Name"; placeholder: "Enter your first name" };
+				lastname: { label: "Last Name"; placeholder: "Enter your last name" };
+				bio: { label: "Bio"; description: "A short bio helps personalize recommendations."; placeholder: "Tell us a little about yourself" };
+				goals: { label: "Goals"; description: "Tell us your main fitness goals."; placeholder: "What are your fitness goals?" };
+				experienceLevel: {
+					label: "Experience Level";
+					description: "We will tailor recommended workouts and intensity to this level.";
+					options: {
+						beginner: { label: "Beginner"; description: "New to fitness or just starting out." };
+						intermediate: { label: "Intermediate"; description: "Somewhat experienced, looking to improve." };
+						advanced: { label: "Advanced"; description: "Experienced, aiming for peak performance." };
+						professional: { label: "Professional"; description: "Highly experienced, training at a competitive level." };
+					};
+				};
+			};
+			buttons: { save: "Save Changes"; saving: "Saving..."; cancel: "Cancel" };
+			messages: { success: "Profile updated successfully!"; error: "Failed to update profile." };
 		};
 	};
 };
