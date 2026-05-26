@@ -48,7 +48,7 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
                 LastName = request.LastName,
                 // Optional fields
                 Bio = request.Bio,
-                ExperienceLevel = ExperienceLevel.From(request.ExperienceLevel) ?? ExperienceLevel.Beginner,
+                ExperienceLevel = ExperienceLevel.From(request.ExperienceLevel),
                 Goals = request.Goals,
                 PictureUrl = request.PictureUrl
             });
