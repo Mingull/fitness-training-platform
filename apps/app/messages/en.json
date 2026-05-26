@@ -158,10 +158,8 @@
 		"editModal": {
 			"title": "Edit Profile",
 			"inputs": {
-				"firstName": { "label": "First Name", "placeholder": "Enter your first name" },
-				"lastName": { "label": "Last Name", "placeholder": "Enter your last name" },
-				"firstname": { "label": "First Name", "placeholder": "Enter your first name" },
-				"lastname": { "label": "Last Name", "placeholder": "Enter your last name" },
+			"firstName": { "label": "First Name", "placeholder": "Enter your first name" },
+			"lastName": { "label": "Last Name", "placeholder": "Enter your last name" },
 				"bio": { "label": "Bio", "description": "A short bio helps personalize recommendations.", "placeholder": "Tell us a little about yourself" },
 				"goals": { "label": "Goals", "description": "Tell us your main fitness goals.", "placeholder": "What are your fitness goals?" },
 				"experienceLevel": {
