@@ -48,7 +48,7 @@ public class ProfileService(IProfileRepository profileRepository, UserManager<Ap
         profile.LastName = request.LastName ?? profile.LastName;
         profile.Bio = request.Bio ?? profile.Bio;
         profile.Goals = request.Goals ?? profile.Goals;
-        profile.ExperienceLevel = ExperienceLevel.From(request.ExperienceLevel);
+        profile.ExperienceLevel = request.ExperienceLevel is null ? profile.ExperienceLevel : ExperienceLevel.From(request.ExperienceLevel);
         profile.PictureUrl = request.PictureUrl ?? profile.PictureUrl;
 
         await profileRepository.UpdateAsync(profile);
