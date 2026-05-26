@@ -1,4 +1,5 @@
 using Fitness.API.Features.Auth.Models;
+using Fitness.API.Features.Plans.Models;
 using Fitness.API.Features.Profiles.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -10,6 +11,7 @@ public sealed class FitnessContext(DbContextOptions<FitnessContext> options) : I
 {
     public DbSet<Profile> Profiles => Set<Profile>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<Plan> Plans => Set<Plan>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

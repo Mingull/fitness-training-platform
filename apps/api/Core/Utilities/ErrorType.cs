@@ -8,4 +8,5 @@ public enum ErrorType
     Forbidden,
     Conflict,
     InternalError,
+    NoContent
 }
