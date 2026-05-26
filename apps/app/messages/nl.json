@@ -113,10 +113,8 @@
 		"editModal": {
 			"title": "Profiel bewerken",
 			"inputs": {
-				"firstName": { "label": "Voornaam", "placeholder": "Voer je voornaam in" },
-				"lastName": { "label": "Achternaam", "placeholder": "Voer je achternaam in" },
-				"firstname": { "label": "Voornaam", "placeholder": "Voer je voornaam in" },
-				"lastname": { "label": "Achternaam", "placeholder": "Voer je achternaam in" },
+			"firstName": { "label": "Voornaam", "placeholder": "Voer je voornaam in" },
+			"lastName": { "label": "Achternaam", "placeholder": "Voer je achternaam in" },
 				"bio": {
 					"label": "Bio",
 					"description": "Een korte bio helpt bij gepersonaliseerde aanbevelingen.",
