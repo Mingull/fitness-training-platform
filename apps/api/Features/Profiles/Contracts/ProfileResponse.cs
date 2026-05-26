@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using Fitness.API.Features.Profiles.Models;
 
 namespace Fitness.API.Features.Profiles.Contracts;
 
