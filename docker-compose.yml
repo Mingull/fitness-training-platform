@@ -1,0 +1,39 @@
+services:
+    mysql:
+        image: mysql:8.4.9
+        container_name: mysql-server
+        restart: unless-stopped
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            MYSQL_DATABASE: fitness_dev
+            MYSQL_ROOT_HOST: "%"
+        ports:
+            - "127.0.0.1:3306:3306"
+        volumes:
+            - mysql-data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD-SHELL", "mysqladmin ping -h localhost --silent"]
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 20s
+
+    phpmyadmin:
+        image: phpmyadmin:latest
+        container_name: phpmyadmin-ui
+        restart: unless-stopped
+        depends_on:
+            mysql:
+                condition: service_healthy
+        environment:
+            PMA_HOST: mysql
+            PMA_PORT: 3306
+            PMA_ARBITRARY: 0
+        ports:
+            - "8080:80"
+
+volumes:
+    mysql-data:
+        driver: local
+
+name: "Fitness-Training-Platform"
