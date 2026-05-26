@@ -30,7 +30,7 @@ export type ProfileData = z.infer<typeof profileContract>;
 export const updateProfileContract = z.object({
 	firstName: z.string().optional(),
 	lastName: z.string().optional(),
-	experienceLevel: z.enum(["beginner", "intermediate", "advanced", "professional"]).default("beginner").optional(),
+	experienceLevel: z.enum(["beginner", "intermediate", "advanced", "professional"]).optional(),
 	bio: z.string().optional(),
 	goals: z.string().optional(),
 	pictureUrl: z.string().optional(),
