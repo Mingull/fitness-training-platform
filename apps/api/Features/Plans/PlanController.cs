@@ -14,6 +14,10 @@ public class PlanController(IPlanService planService) : ControllerBase
 {
     [HttpGet]
     [Authorize]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllPlansAsync()
     {
         // Read the authenticated user's ID from the claims principal and return that user's profile.
