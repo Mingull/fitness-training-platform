@@ -3,33 +3,33 @@
 
 declare const messages: {
 	"sign-in": {
-		"title": "Meld je aan bij {title}",
-		"subtitle": "Meld je aan bij je account om door te gaan naar {title}",
-		"divider": "of",
-		"email": "E-mail",
-		"password": "Wachtwoord",
-		"remember": "Onthoud mij",
-		"forgot": "Wachtwoord vergeten?",
-		"button": "Inloggen",
-		"continue": "Doorgaan met {provider}",
-		"no-account": "Nog geen account?",
-		"linkText": "Registreren",
-		"tos": "Door je in te loggen, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacy Policy</privacy>."
-	},
+		title: "Meld je aan bij {title}";
+		subtitle: "Meld je aan bij je account om door te gaan naar {title}";
+		divider: "of";
+		email: "E-mail";
+		password: "Wachtwoord";
+		remember: "Onthoud mij";
+		forgot: "Wachtwoord vergeten?";
+		button: "Inloggen";
+		continue: "Doorgaan met {provider}";
+		"no-account": "Nog geen account?";
+		linkText: "Registreren";
+		tos: "Door je in te loggen, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacy Policy</privacy>.";
+	};
 	"sign-up": {
-		"title": "Registreren voor {title}",
-		"subtitle": "Maak een account aan om door te gaan naar {title}",
-		"divider": "of",
-		"username": "Gebruikersnaam",
-		"email": "E-mailadres",
-		"password": "Wachtwoord",
-		"confirmPassword": "Bevestig wachtwoord",
-		"button": "Registreren",
-		"continue": "Doorgaan met {provider}",
-		"have-account": "Heb je al een account?",
-		"linkText": "Inloggen",
-		"tos": "Door je aan te melden, ga je akkoord met onze <tos>Terms of Service</tos> en <privacy>Privacy Policy</privacy>.",
-		"name": "Naam"
-	}
+		title: "Registreren voor {title}";
+		subtitle: "Maak een account aan om door te gaan naar {title}";
+		divider: "of";
+		username: "Gebruikersnaam";
+		email: "E-mailadres";
+		password: "Wachtwoord";
+		confirmPassword: "Bevestig wachtwoord";
+		button: "Registreren";
+		continue: "Doorgaan met {provider}";
+		"have-account": "Heb je al een account?";
+		linkText: "Inloggen";
+		tos: "Door je aan te melden, ga je akkoord met onze <tos>Terms of Service</tos> en <privacy>Privacy Policy</privacy>.";
+		name: "Naam";
+	};
 };
 export default messages;

@@ -10,19 +10,19 @@
 		"start": "node dist/index.js"
 	},
 	"dependencies": {
-		"react": "^19.2.5",
-		"react-dom": "^19.2.5"
+		"react": "19.2.6",
+		"react-dom": "19.2.6"
 	},
 	"devDependencies": {
 		"@fitness/eslint-config": "workspace:*",
 		"@fitness/registry": "workspace:*",
 		"@fitness/typescript-config": "workspace:*",
 		"@tailwindcss/postcss": "^4.3.0",
-		"@turbo/gen": "^2.9.14",
-		"@types/node": "^25.6.2",
-		"@types/react": "^19.2.14",
+		"@turbo/gen": "^2.9.15",
+		"@types/node": "^25.9.1",
+		"@types/react": "^19.2.15",
 		"@types/react-dom": "^19.2.3",
-		"eslint": "^10.2.0",
+		"eslint": "^10.4.0",
 		"tsdown": "^0.22.0"
 	},
 	"exports": {
