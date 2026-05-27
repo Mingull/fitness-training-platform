@@ -20,7 +20,7 @@ public class PlanController(IPlanService planService) : ControllerBase
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllPlansAsync()
     {
-        // Read the authenticated user's ID from the claims principal and return that user's profile.
+        // Read the authenticated user's ID from the claims principal and return that user's training plans.
         var userId = this.UserIdFromJwt();
         if (!userId.HasValue)
         {
