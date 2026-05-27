@@ -18,7 +18,7 @@ const buttonVariants = cva(
 				destructive: cn(
 					"bg-destructive/10 dark:bg-destructive/20",
 					Platform.select({
-					web: "hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
+						web: "hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
 					}),
 				),
 				ghost: cn("aria-expanded:bg-muted", Platform.select({ web: "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50" })),

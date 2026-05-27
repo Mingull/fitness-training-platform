@@ -14,10 +14,10 @@
 	"devDependencies": {
 		"@fitness/eslint-config": "workspace:*",
 		"@fitness/typescript-config": "workspace:*",
-		"@types/node": "^25.6.2",
-		"eslint": "^10.2.0",
+		"@types/node": "^25.9.1",
+		"eslint": "^10.4.0",
 		"tsdown": "^0.22.0",
-		"vitest": "^4.1.4"
+		"vitest": "^4.1.7"
 	},
 	"exports": {
 		".": "./src/index.ts"

@@ -11,7 +11,7 @@ export default function Onboarding() {
 	const t = useTranslations("onboarding");
 
 	return (
-		<View className="bg-background flex-1 p-safe">
+		<View className="bg-background p-safe flex-1">
 			<View className="mt-10 mb-auto h-full px-6 py-6">
 				<View className="mb-8 items-center gap-1">
 					<View className="bg-muted border-primary rounded-4xl border-2 p-3.5">

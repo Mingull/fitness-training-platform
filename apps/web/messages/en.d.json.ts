@@ -3,33 +3,33 @@
 
 declare const messages: {
 	"sign-in": {
-		"title": "Sign In to {title}",
-		"subtitle": "Sign in to your account to continue to {title}",
-		"divider": "or",
-		"email": "Email",
-		"password": "Password",
-		"remember": "Remember me",
-		"forgot": "Forgot password?",
-		"button": "Sign In",
-		"continue": "Continue with {provider}",
-		"no-account": "Don't have an account?",
-		"linkText": "Sign Up",
-		"tos": "By clicking sign in, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>."
-	},
+		title: "Sign In to {title}";
+		subtitle: "Sign in to your account to continue to {title}";
+		divider: "or";
+		email: "Email";
+		password: "Password";
+		remember: "Remember me";
+		forgot: "Forgot password?";
+		button: "Sign In";
+		continue: "Continue with {provider}";
+		"no-account": "Don't have an account?";
+		linkText: "Sign Up";
+		tos: "By clicking sign in, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>.";
+	};
 	"sign-up": {
-		"title": "Sign Up for {title}",
-		"subtitle": "Create an account to continue to {title}",
-		"divider": "or",
-		"username": "Username",
-		"email": "Email",
-		"password": "Password",
-		"confirmPassword": "Confirm Password",
-		"button": "Sign Up",
-		"continue": "Continue with {provider}",
-		"have-account": "Already have an account?",
-		"linkText": "Sign In",
-		"tos": "By clicking sign up, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>.",
-		"name": "Name"
-	}
+		title: "Sign Up for {title}";
+		subtitle: "Create an account to continue to {title}";
+		divider: "or";
+		username: "Username";
+		email: "Email";
+		password: "Password";
+		confirmPassword: "Confirm Password";
+		button: "Sign Up";
+		continue: "Continue with {provider}";
+		"have-account": "Already have an account?";
+		linkText: "Sign In";
+		tos: "By clicking sign up, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>.";
+		name: "Name";
+	};
 };
 export default messages;

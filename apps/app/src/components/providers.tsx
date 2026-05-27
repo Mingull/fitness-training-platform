@@ -4,12 +4,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { IntlProvider, Locale, Messages } from "use-intl";
 
-function Providers({
-	queryClient,
-	locale,
-	messages,
-	children,
-}: React.PropsWithChildren<{ queryClient: QueryClient; locale: Locale; messages: Messages }>) {
+function Providers({ queryClient, locale, messages, children }: React.PropsWithChildren<{ queryClient: QueryClient; locale: Locale; messages: Messages }>) {
 	return (
 		<SafeAreaProvider>
 			<GestureHandlerRootView style={{ flex: 1 }}>
