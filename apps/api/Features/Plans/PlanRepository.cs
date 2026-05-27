@@ -7,8 +7,13 @@ namespace Fitness.API.Features.Plans;
 
 public class PlanRepository(FitnessContext context) : IPlanRepository
 {
-    public async Task<IEnumerable<Plan>> GetAllPlansAsync()
+    public async Task<IEnumerable<Plan>> GetAllPlansAsync(Guid userId)
     {
-        return await context.Plans.ToListAsync();
+        // Filter out private plans that do not belong to the authenticated user
+        return await context.Plans
+            .Where(plan => plan.IsPublic || plan.CreatedById == userId)
+            .Include(plan => plan.CreatedBy)
+                .ThenInclude(user => user.Profile)
+            .ToListAsync();
     }
 }

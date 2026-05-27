@@ -1,6 +1,8 @@
+using Fitness.API.Core.Contracts;
 using Fitness.API.Core.Extensions;
 using Fitness.API.Core.Utilities;
 using Fitness.API.Features.Plans.Abstract;
+using Fitness.API.Features.Plans.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +16,17 @@ public class PlanController(IPlanService planService) : ControllerBase
 {
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> GetAllPlansAsync()
+    [ProducesResponseType(typeof(ApiResponse<IEnumerable<PlanResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetAllPlansAsync(
+        // The query parameters below are not currently used but are needed in the future when implementing pagination, filtering and sorting.
+        [FromQuery] int? limit = 20,
+        [FromQuery] Guid? cursor = null,
+        [FromQuery] bool? includeCreator = false,
+        [FromQuery] string? query = null,
+        [FromQuery] bool? includePrivate = false,
+        [FromQuery] string? sort = "[\'createdAt\', \'desc\']")
     {
         // Read the authenticated user's ID from the claims principal and return that user's profile.
         var userId = this.UserIdFromJwt();
@@ -31,12 +43,12 @@ public class PlanController(IPlanService planService) : ControllerBase
             return StatusCode(error.Status ?? StatusCodes.Status500InternalServerError, error);
         }
 
-        // Check if there are any plans left after filtering, if not return a NoContent error
-        if (!result.Value.Any())
+        return Ok(new ApiResponse<IEnumerable<PlanResponse>>
         {
-            return NoContent(); // 204 No Content indicates that the request was successful but there is no content to return
-        }
-
-        return Ok(result.Value);
+            Status = StatusCodes.Status200OK,
+            StatusCode = "Ok",
+            Message = "Training plans retrieved successfully",
+            Data = result.Value
+        });
     }
 }

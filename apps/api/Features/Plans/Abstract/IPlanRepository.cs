@@ -4,5 +4,5 @@ namespace Fitness.API.Features.Plans.Abstract;
 
 public interface IPlanRepository
 {
-    Task<IEnumerable<Plan>> GetAllPlansAsync();
+    Task<IEnumerable<Plan>> GetAllPlansAsync(Guid userId);
 }

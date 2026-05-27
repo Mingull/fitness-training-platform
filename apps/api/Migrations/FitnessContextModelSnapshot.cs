@@ -148,6 +148,12 @@ namespace Fitness.API.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("id");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
                     b.Property<Guid>("CreatedById")
                         .HasColumnType("char(36)")
                         .HasColumnName("created_by_id");
@@ -170,6 +176,12 @@ namespace Fitness.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("name");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
 
                     b.HasKey("Id")
                         .HasName("pk_plans");

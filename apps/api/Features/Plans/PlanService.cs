@@ -1,8 +1,7 @@
 using Fitness.API.Core.Utilities;
 using Fitness.API.Features.Plans.Abstract;
 using Fitness.API.Features.Plans.Contracts;
-using Fitness.API.Features.Plans.Models;
-using Fitness.API.Features.Plans.Utilities;
+using Fitness.API.Features.Profiles.Abstract;
 
 namespace Fitness.API.Features.Plans;
 
@@ -15,21 +14,30 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
     public async Task<Result<IEnumerable<PlanResponse>>> GetAllPlansAsync(Guid userId)
     {
         // Get all plans from the repository
-        var plans = await planRepository.GetAllPlansAsync();
+        var plans = await planRepository.GetAllPlansAsync(userId);
+        // Plans now include the CreatedBy -> AppUser -> Profile navigation
 
-        // Filter out private plans that do not belong to the authenticated user
-        plans = plans.Where(plan => plan.IsPublic || plan.CreatedById == userId);
+        var planResponses = new List<PlanResponse>();
 
-        // Map the remaining plans to PlanResponse DTOs
-        var planResponses = plans.Select(plan => new PlanResponse
+        foreach (var plan in plans)
         {
-            Id = plan.Id,
-            Name = plan.Name,
-            Description = plan.Description,
-            EstimatedDuration = plan.EstimatedDuration,
-            CreatedById = plan.CreatedById,
-            IsPublic = plan.IsPublic
-        }).ToList();
+            var creatorProfile = plan.CreatedBy?.Profile;
+            planResponses.Add(new PlanResponse
+            {
+                Id = plan.Id,
+                    Creator = new PlanCreator
+                    {
+                        Id = creatorProfile?.Id ?? Guid.Empty,
+                        Username = plan.CreatedBy?.UserName ?? creatorProfile?.User?.UserName ?? "Unknown",
+                        PictureUrl = creatorProfile?.PictureUrl
+                    },
+                Name = plan.Name,
+                Description = plan.Description,
+                EstimatedDuration = plan.EstimatedDuration,
+                IsPublic = plan.IsPublic
+            });
+            continue;
+        }
 
         return Result<IEnumerable<PlanResponse>>.Success(planResponses);
     }

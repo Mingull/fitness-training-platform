@@ -40,5 +40,15 @@ public sealed class FitnessContext(DbContextOptions<FitnessContext> options) : I
             .HasOne(rt => rt.User)
             .WithMany()
             .HasForeignKey(rt => rt.UserId);
+
+        builder.Entity<Plan>()
+            .Property(p => p.CreatedAt)
+            .ValueGeneratedOnAdd()
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+        builder.Entity<Plan>()
+            .Property(p => p.UpdatedAt)
+            .ValueGeneratedOnUpdate()
+            .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
     }
 }
