@@ -28,7 +28,7 @@ public class PlanController(IPlanService planService) : ControllerBase
         [FromQuery] bool? includePrivate = false,
         [FromQuery] string? sort = "[\'createdAt\', \'desc\']")
     {
-        // Read the authenticated user's ID from the claims principal and return that user's profile.
+        // Read the authenticated user's ID from the claims principal and return that user's training plans.
         var userId = this.UserIdFromJwt();
         if (!userId.HasValue)
         {
