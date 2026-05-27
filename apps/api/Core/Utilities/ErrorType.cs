@@ -7,5 +7,5 @@ public enum ErrorType
     Unauthorized,
     Forbidden,
     Conflict,
-    InternalError,
+    InternalError
 }

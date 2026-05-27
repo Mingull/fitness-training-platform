@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Fitness.API.Features.Plans;
+using Fitness.API.Features.Plans.Abstract;
 
 namespace Fitness.API;
 
@@ -94,13 +96,15 @@ public class Startup(IConfiguration configuration)
     private void InitializeRepositories(IServiceCollection services)
     {
         services.AddScoped<IAuthRepository, AuthRepository>() // for repositories that should be created per request
-            .AddScoped<IProfileRepository, ProfileRepository>();
+            .AddScoped<IProfileRepository, ProfileRepository>()
+            .AddScoped<IPlanRepository, PlanRepository>();
         // services.AddSingleton<IRepository, Repository>() for repositories that should be created once and shared across the application
     }
     private void InitializeServices(IServiceCollection services)
     {
         services.AddScoped<IAuthService, AuthService>() // for services that should be created per request
             .AddScoped<IProfileService, ProfileService>()
+            .AddScoped<IPlanService, PlanService>()
             .AddSingleton<TokenProvider>(); // for services that should be created once and shared across the application
     }
 }

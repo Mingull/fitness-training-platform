@@ -4,6 +4,7 @@ using Fitness.API.Core.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fitness.API.Migrations
 {
     [DbContext(typeof(FitnessContext))]
-    partial class FitnessContextModelSnapshot : ModelSnapshot
+    [Migration("20260526220430_TrainingPlan")]
+    partial class TrainingPlan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,15 +151,15 @@ namespace Fitness.API.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("created_at")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
                     b.Property<Guid>("CreatedById")
                         .HasColumnType("char(36)")
                         .HasColumnName("created_by_id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -171,15 +174,15 @@ namespace Fitness.API.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("is_public");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("name");
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdate()
-                        .HasColumnType("datetime(6)")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime")
                         .HasColumnName("updated_at")
                         .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
 
