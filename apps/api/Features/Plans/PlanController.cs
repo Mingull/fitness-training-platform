@@ -37,6 +37,12 @@ public class PlanController(IPlanService planService) : ControllerBase
             return NoContent(); // 204 No Content indicates that the request was successful but there is no content to return
         }
 
-        return Ok(result.Value);
+        return Ok(new ApiResponse<IEnumerable<PlanResponse>>
+        {
+            Status = "Success",
+            StatusCode = StatusCodes.Status200OK,
+            Message = "Plans retrieved successfully.",
+            Data = result.Value
+        });
     }
 }
