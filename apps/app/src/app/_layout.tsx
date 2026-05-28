@@ -4,7 +4,7 @@ import { useSession } from "@/features/auth/context";
 import "@/globals.css";
 import { useToasterParams } from "@/hooks/use-toast-params";
 import { NAV_THEME } from "@/lib/theme";
-import { ThemeProvider } from "@react-navigation/native";
+import { ThemeProvider } from "expo-router/react-navigation";
 import { PortalHost } from "@rn-primitives/portal";
 import { QueryClient } from "@tanstack/react-query";
 import { getLocales } from "expo-localization";
