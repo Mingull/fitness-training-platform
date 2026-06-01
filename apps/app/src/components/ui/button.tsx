@@ -24,7 +24,7 @@ const buttonVariants = cva(
 				ghost: cn("aria-expanded:bg-muted", Platform.select({ web: "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50" })),
 				link: "",
 				outline: cn(
-					"border-border bg-background aria-expanded:bg-muted dark:bg-transparent",
+					"border-border border-solid bg-background aria-expanded:bg-muted dark:bg-transparent",
 					Platform.select({
 						web: "hover:bg-muted dark:hover:bg-input/30",
 					}),

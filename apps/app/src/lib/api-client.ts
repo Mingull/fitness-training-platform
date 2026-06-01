@@ -4,6 +4,7 @@ import { apiErrorContract } from "@fitness/contracts/api-error";
 import { apiResponseBaseContract } from "@fitness/contracts/api-response";
 import { authTokensContract, signinContract, signupContract } from "@fitness/contracts/auth";
 import { profileContract, updateProfileContract } from "@fitness/contracts/profiles";
+import { trainingPlanListContract } from "@fitness/contracts/training-plans";
 import { fetch, FetchRequestInit } from "expo/fetch";
 import { z } from "zod";
 
@@ -41,6 +42,14 @@ const routes = {
 			requiresAuth: true,
 			in: updateProfileContract,
 			out: profileContract,
+		},
+	},
+	plans: {
+		list: {
+			method: "GET",
+			path: "/plans",
+			requiresAuth: true,
+			out: trainingPlanListContract,
 		},
 	},
 } as const satisfies RouteNamespace;

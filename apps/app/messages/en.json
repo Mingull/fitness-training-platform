@@ -138,16 +138,35 @@
 		}
 	},
 	"profile": {
-		"title": { "label": "Profile", "loading": "Loading...", "failed": "Failed to load profile" },
+		"title": {
+			"label": "Profile",
+			"loading": "Loading...",
+			"failed": "Failed to load profile"
+		},
 		"rows": {
-			"email": { "label": "Email" },
-			"role": { "label": "Role" },
+			"email": {
+				"label": "Email"
+			},
+			"role": {
+				"label": "Role"
+			},
 			"experience": {
 				"label": "Experience",
-				"options": { "beginner": "Beginner", "intermediate": "Intermediate", "advanced": "Advanced", "professional": "Professional" }
+				"options": {
+					"beginner": "Beginner",
+					"intermediate": "Intermediate",
+					"advanced": "Advanced",
+					"professional": "Professional"
+				}
 			},
-			"goals": { "label": "Goals", "empty": "No goals set" },
-			"bio": { "label": "Bio", "empty": "No bio set" }
+			"goals": {
+				"label": "Goals",
+				"empty": "No goals set"
+			},
+			"bio": {
+				"label": "Bio",
+				"empty": "No bio set"
+			}
 		},
 		"tryAgain": "Please try again later.",
 		"actions": {
@@ -158,23 +177,84 @@
 		"editModal": {
 			"title": "Edit Profile",
 			"inputs": {
-				"firstName": { "label": "First Name", "placeholder": "Enter your first name" },
-				"lastName": { "label": "Last Name", "placeholder": "Enter your last name" },
-				"bio": { "label": "Bio", "description": "A short bio helps personalize recommendations.", "placeholder": "Tell us a little about yourself" },
-				"goals": { "label": "Goals", "description": "Tell us your main fitness goals.", "placeholder": "What are your fitness goals?" },
+				"firstName": {
+					"label": "First Name",
+					"placeholder": "Enter your first name"
+				},
+				"lastName": {
+					"label": "Last Name",
+					"placeholder": "Enter your last name"
+				},
+				"bio": {
+					"label": "Bio",
+					"description": "A short bio helps personalize recommendations.",
+					"placeholder": "Tell us a little about yourself"
+				},
+				"goals": {
+					"label": "Goals",
+					"description": "Tell us your main fitness goals.",
+					"placeholder": "What are your fitness goals?"
+				},
 				"experienceLevel": {
 					"label": "Experience Level",
 					"description": "We will tailor recommended workouts and intensity to this level.",
 					"options": {
-						"beginner": { "label": "Beginner", "description": "New to fitness or just starting out." },
-						"intermediate": { "label": "Intermediate", "description": "Somewhat experienced, looking to improve." },
-						"advanced": { "label": "Advanced", "description": "Experienced, aiming for peak performance." },
-						"professional": { "label": "Professional", "description": "Highly experienced, training at a competitive level." }
+						"beginner": {
+							"label": "Beginner",
+							"description": "New to fitness or just starting out."
+						},
+						"intermediate": {
+							"label": "Intermediate",
+							"description": "Somewhat experienced, looking to improve."
+						},
+						"advanced": {
+							"label": "Advanced",
+							"description": "Experienced, aiming for peak performance."
+						},
+						"professional": {
+							"label": "Professional",
+							"description": "Highly experienced, training at a competitive level."
+						}
 					}
 				}
 			},
-			"buttons": { "save": "Save Changes", "saving": "Saving...", "cancel": "Cancel" },
-			"messages": { "success": "Profile updated successfully!", "error": "Failed to update profile." }
+			"buttons": {
+				"save": "Save Changes",
+				"saving": "Saving...",
+				"cancel": "Cancel"
+			},
+			"messages": {
+				"success": "Profile updated successfully!",
+				"error": "Failed to update profile."
+			}
+		}
+	},
+	"trainingPrograms": {
+		"header": {
+			"title": "Training programs",
+			"available": "{count, plural, =0 {No programs} =1 {One program} other {# programs}} available.",
+			"indicators": {
+				"loading": "Loading programs",
+				"refreshing": "Refreshing programs",
+				"none": "No programs available"
+			},
+			"badge": {
+				"loading": "Loading",
+				"refreshing": "Refreshing",
+				"updated": "Updated"
+			}
+		},
+		"states": {
+			"empty": {
+				"title": "No training programs",
+				"description": "You do not have any training programs yet. If a trainer assigned a program it will appear here; otherwise create your first program to get started.",
+				"refresh": "Refresh"
+			},
+			"error": {
+				"title": "Training programs unavailable",
+				"description": "Could not load training programs. Check your connection and try again.",
+				"tryAgain": "Try again"
+			}
 		}
 	}
 }

@@ -21,7 +21,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { toast } from "sonner-native";
 import { useTranslations } from "use-intl";
 
-export default function Signup() {
+export default function SignupScreen() {
 	const t = useTranslations("signUp");
 	const router = useRouter();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);

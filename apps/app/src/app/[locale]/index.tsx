@@ -7,7 +7,7 @@ import { ArrowRight, BarChart3, Dumbbell, Share2, Timer, Users } from "lucide-re
 import { View } from "react-native";
 import { useTranslations } from "use-intl";
 
-export default function Onboarding() {
+export default function OnboardingScreen() {
 	const t = useTranslations("onboarding");
 
 	return (

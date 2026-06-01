@@ -1,14 +1,15 @@
+import "@/polyfills";
 import { Providers } from "@/components/providers";
 import { SplashScreenController } from "@/components/splash";
 import { useSession } from "@/features/auth/context";
 import "@/globals.css";
 import { useToasterParams } from "@/hooks/use-toast-params";
 import { NAV_THEME } from "@/lib/theme";
-import { ThemeProvider } from "expo-router/react-navigation";
 import { PortalHost } from "@rn-primitives/portal";
 import { QueryClient } from "@tanstack/react-query";
 import { getLocales } from "expo-localization";
-import { Stack } from "expo-router";
+import { Stack, useTheme } from "expo-router";
+import { ThemeProvider } from "expo-router/react-navigation";
 import { StatusBar } from "expo-status-bar";
 import { Platform, useColorScheme } from "react-native";
 import { Toaster } from "sonner-native";
@@ -57,8 +58,16 @@ export default function RootLayout() {
 // Create a new component that can access the SessionProvider context later.
 function RootNavigator() {
 	const { isAuthenticated } = useSession();
+	const theme = useTheme();
 	return (
-		<Stack screenOptions={{ headerShown: false }}>
+		<Stack
+			screenOptions={{
+				headerShown: false,
+				contentStyle: {
+					backgroundColor: theme.colors.background,
+				},
+			}}
+		>
 			<Stack.Protected guard={isAuthenticated}>
 				<Stack.Screen name="[locale]/(app)" />
 			</Stack.Protected>

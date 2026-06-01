@@ -27,7 +27,7 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function Signin() {
+export default function SigninScreen() {
 	const t = useTranslations("signIn");
 	const { signIn } = useAuthActions();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null); // global error message state
