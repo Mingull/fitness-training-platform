@@ -26,7 +26,7 @@ export const useUpdateProfile = () => {
 		},
 		// Invalidate the profile query to refetch the updated profile data after a successful update
 		onSuccess: async (data, variables, onMutateResult, context) => {
-			await context.client.invalidateQueries({ queryKey: ["profile", userId] });
+			await context.client.invalidateQueries({ queryKey: ["profile", userId, withRefresh] });
 		},
 	});
 };
