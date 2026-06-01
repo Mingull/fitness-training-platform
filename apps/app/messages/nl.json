@@ -245,6 +245,14 @@
 				"updated": "Bijgewerkt"
 			}
 		},
+		"item": {
+			"duration": "{minutes} min",
+			"you": "Jij",
+			"visibility": {
+				"public": "Openbaar",
+				"private": "Privé"
+			}
+		},
 		"states": {
 			"empty": {
 				"title": "Geen trainingsprogramma's",

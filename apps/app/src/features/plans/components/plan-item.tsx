@@ -6,10 +6,11 @@ import { TrainingPlanItemData } from "@fitness/contracts/training-plans";
 import { Link } from "expo-router";
 import { ChevronRight, Clock3, Globe2, UserRound } from "lucide-react-native";
 import { Pressable, View } from "react-native";
-import { useLocale } from "use-intl";
+import { useLocale, useTranslations } from "use-intl";
 
 export const PlanItem = ({ item, authorId }: { item: TrainingPlanItemData; authorId?: string | null }) => {
 	const locale = useLocale();
+	const t = useTranslations("trainingPrograms.item");
 
 	return (
 		<Link href={{ pathname: "/[locale]/plans/[id]", params: { locale, id: item.id } }} asChild>
@@ -33,17 +34,17 @@ export const PlanItem = ({ item, authorId }: { item: TrainingPlanItemData; autho
 					<CardContent className="flex-row flex-wrap gap-2">
 						<Badge variant="muted">
 							<Icon as={Clock3} size={12} />
-							<Text>{item.estimatedDuration} min</Text>
+							<Text>{t("duration", { minutes: item.estimatedDuration })}</Text>
 						</Badge>
 
 						<Badge variant="muted">
 							<Icon as={UserRound} size={12} />
-							<Text>{item.creator.id === authorId ? "You" : item.creator.username}</Text>
+							<Text>{item.creator.id === authorId ? t("you") : item.creator.username}</Text>
 						</Badge>
 
 						<Badge>
 							<Icon as={Globe2} size={12} />
-							<Text>{item.isPublic ? "Public" : "Private"}</Text>
+							<Text>{item.isPublic ? t("visibility.public") : t("visibility.private")}</Text>
 						</Badge>
 					</CardContent>
 				</Card>
