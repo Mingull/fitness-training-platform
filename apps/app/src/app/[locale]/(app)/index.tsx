@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { View } from "react-native";
 import { useLocale } from "use-intl";
 
-export default function Index() {
+export default function HomeScreen() {
 	const locale = useLocale();
 	const router = useRouter();
 

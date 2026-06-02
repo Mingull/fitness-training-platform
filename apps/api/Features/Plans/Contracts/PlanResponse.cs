@@ -1,4 +1,3 @@
-
 namespace Fitness.API.Features.Plans.Contracts;
 
 public record PlanResponse

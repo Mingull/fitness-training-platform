@@ -25,12 +25,12 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
             planResponses.Add(new PlanResponse
             {
                 Id = plan.Id,
-                    Creator = new PlanCreator
-                    {
-                        Id = creatorProfile?.Id ?? Guid.Empty,
-                        Username = plan.CreatedBy?.UserName ?? creatorProfile?.User?.UserName ?? "Unknown",
-                        PictureUrl = creatorProfile?.PictureUrl
-                    },
+                Creator = new PlanCreator
+                {
+                    Id = plan.CreatedBy?.Id ?? Guid.Empty,
+                    Username = plan.CreatedBy?.UserName ?? "Unknown",
+                    PictureUrl = creatorProfile?.PictureUrl
+                },
                 Name = plan.Name,
                 Description = plan.Description,
                 EstimatedDuration = plan.EstimatedDuration,

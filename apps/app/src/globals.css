@@ -115,6 +115,7 @@
 			--chart-3: oklch(0.6 0.1 200);
 			--chart-4: oklch(0.52 0.09 205);
 			--chart-5: oklch(0.45 0.08 210);
+			--radius: 0.45rem;
 		}
 	}
 }

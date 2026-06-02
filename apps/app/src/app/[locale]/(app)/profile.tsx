@@ -17,7 +17,7 @@ import { View } from "react-native";
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { useLocale, useTranslations } from "use-intl";
 
-export default function Profile() {
+export default function ProfileScreen() {
 	const router = useRouter();
 	const locale = useLocale();
 	const t = useTranslations("profile");

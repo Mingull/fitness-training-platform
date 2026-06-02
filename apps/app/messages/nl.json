@@ -8,9 +8,18 @@
 				"title": "Vind jouw trainer",
 				"description": "Kom in contact met gecertificeerde personal trainers die aansluiten bij uw fitnessdoelen."
 			},
-			"personalWorkouts": { "title": "Krijg snel trainingen", "description": "Ontvang aangepaste trainingsschema's rechtstreeks van uw trainer." },
-			"shareProgress": { "title": "Deel je voortgang", "description": "Deel je voortgang in realtime met je trainer en ontvang direct feedback." },
-			"track": { "title": "Volg je voortgang", "description": "Bekijk je geschiedenis en statistieken om je voortgang in de tijd bij te houden." }
+			"personalWorkouts": {
+				"title": "Krijg snel trainingen",
+				"description": "Ontvang aangepaste trainingsschema's rechtstreeks van uw trainer."
+			},
+			"shareProgress": {
+				"title": "Deel je voortgang",
+				"description": "Deel je voortgang in realtime met je trainer en ontvang direct feedback."
+			},
+			"track": {
+				"title": "Volg je voortgang",
+				"description": "Bekijk je geschiedenis en statistieken om je voortgang in de tijd bij te houden."
+			}
 		},
 		"continue": "Doorgaan",
 		"footer": "Maak een account aan om trainers te vinden, gepersonaliseerde trainingen te ontvangen en uw fitnesstraject bij te houden."
@@ -48,18 +57,36 @@
 				"title": "Accountgegevens",
 				"subtitle": "Start met je inloggegevens.",
 				"inputs": {
-					"email": { "label": "E-mailadres", "placeholder": "Voer je e-mailadres in" },
-					"password": { "label": "Wachtwoord", "placeholder": "Voer je wachtwoord in" },
-					"confirmPassword": { "label": "Bevestig wachtwoord", "placeholder": "Bevestig je wachtwoord" }
+					"email": {
+						"label": "E-mailadres",
+						"placeholder": "Voer je e-mailadres in"
+					},
+					"password": {
+						"label": "Wachtwoord",
+						"placeholder": "Voer je wachtwoord in"
+					},
+					"confirmPassword": {
+						"label": "Bevestig wachtwoord",
+						"placeholder": "Bevestig je wachtwoord"
+					}
 				}
 			},
 			"stepTwo": {
 				"title": "Persoonlijke gegevens",
 				"subtitle": "Vertel ons wie je bent.",
 				"inputs": {
-					"firstname": { "label": "Voornaam", "placeholder": "Voer je voornaam in" },
-					"lastname": { "label": "Achternaam", "placeholder": "Voer je achternaam in" },
-					"username": { "label": "Gebruikersnaam", "placeholder": "Kies een gebruikersnaam" }
+					"firstname": {
+						"label": "Voornaam",
+						"placeholder": "Voer je voornaam in"
+					},
+					"lastname": {
+						"label": "Achternaam",
+						"placeholder": "Voer je achternaam in"
+					},
+					"username": {
+						"label": "Gebruikersnaam",
+						"placeholder": "Kies een gebruikersnaam"
+					}
 				}
 			},
 			"stepThree": {
@@ -70,10 +97,22 @@
 						"label": "Ervaringsniveau",
 						"description": "We stemmen aanbevolen trainingen en intensiteit af op dit niveau.",
 						"options": {
-							"beginner": { "label": "Beginner", "description": "Nieuw in fitness of net begonnen." },
-							"intermediate": { "label": "Gemiddeld", "description": "Redelijk ervaren, op zoek naar verbetering." },
-							"advanced": { "label": "Geavanceerd", "description": "Ervaren, gericht op piekprestaties." },
-							"professional": { "label": "Professioneel", "description": "Zeer ervaren, trainend op een concurrentie niveau." }
+							"beginner": {
+								"label": "Beginner",
+								"description": "Nieuw in fitness of net begonnen."
+							},
+							"intermediate": {
+								"label": "Gemiddeld",
+								"description": "Redelijk ervaren, op zoek naar verbetering."
+							},
+							"advanced": {
+								"label": "Geavanceerd",
+								"description": "Ervaren, gericht op piekprestaties."
+							},
+							"professional": {
+								"label": "Professioneel",
+								"description": "Zeer ervaren, trainend op een concurrentie niveau."
+							}
 						}
 					}
 				}
@@ -87,22 +126,47 @@
 						"description": "Een korte bio helpt bij gepersonaliseerde aanbevelingen.",
 						"placeholder": "Vertel ons iets over jezelf"
 					},
-					"goals": { "label": "Doelen", "description": "Vertel je belangrijkste fitnessdoelen.", "placeholder": "Wat zijn je fitnessdoelen?" }
+					"goals": {
+						"label": "Doelen",
+						"description": "Vertel je belangrijkste fitnessdoelen.",
+						"placeholder": "Wat zijn je fitnessdoelen?"
+					}
 				}
 			}
-		}
+		},
+		"confirmPassword": "Bevestig wachtwoord",
+		"password": "Wachtwoord"
 	},
 	"profile": {
-		"title": { "label": "Profiel", "loading": "Bezig met laden...", "failed": "Profiel laden mislukt" },
+		"title": {
+			"label": "Profiel",
+			"loading": "Bezig met laden...",
+			"failed": "Profiel laden mislukt"
+		},
 		"rows": {
-			"email": { "label": "E-mail" },
-			"role": { "label": "Rol" },
+			"email": {
+				"label": "E-mail"
+			},
+			"role": {
+				"label": "Rol"
+			},
 			"experience": {
 				"label": "Ervaring",
-				"options": { "beginner": "Beginner", "intermediate": "Gemiddeld", "advanced": "Geavanceerd", "professional": "Professioneel" }
+				"options": {
+					"beginner": "Beginner",
+					"intermediate": "Gemiddeld",
+					"advanced": "Geavanceerd",
+					"professional": "Professioneel"
+				}
 			},
-			"goals": { "label": "Doelen", "empty": "Nog geen doelen ingesteld" },
-			"bio": { "label": "Bio", "empty": "Nog geen bio ingesteld" }
+			"goals": {
+				"label": "Doelen",
+				"empty": "Nog geen doelen ingesteld"
+			},
+			"bio": {
+				"label": "Bio",
+				"empty": "Nog geen bio ingesteld"
+			}
 		},
 		"tryAgain": "Probeer het later opnieuw.",
 		"actions": {
@@ -113,27 +177,93 @@
 		"editModal": {
 			"title": "Profiel bewerken",
 			"inputs": {
-			"firstName": { "label": "Voornaam", "placeholder": "Voer je voornaam in" },
-			"lastName": { "label": "Achternaam", "placeholder": "Voer je achternaam in" },
+				"firstName": {
+					"label": "Voornaam",
+					"placeholder": "Voer je voornaam in"
+				},
+				"lastName": {
+					"label": "Achternaam",
+					"placeholder": "Voer je achternaam in"
+				},
 				"bio": {
 					"label": "Bio",
 					"description": "Een korte bio helpt bij gepersonaliseerde aanbevelingen.",
 					"placeholder": "Vertel ons iets over jezelf"
 				},
-				"goals": { "label": "Doelen", "description": "Vertel je belangrijkste fitnessdoelen.", "placeholder": "Wat zijn je fitnessdoelen?" },
+				"goals": {
+					"label": "Doelen",
+					"description": "Vertel je belangrijkste fitnessdoelen.",
+					"placeholder": "Wat zijn je fitnessdoelen?"
+				},
 				"experienceLevel": {
 					"label": "Ervaringsniveau",
 					"description": "We stemmen aanbevolen trainingen en intensiteit af op dit niveau.",
 					"options": {
-						"beginner": { "label": "Beginner", "description": "Nieuw in fitness of net begonnen." },
-						"intermediate": { "label": "Gemiddeld", "description": "Redelijk ervaren, op zoek naar verbetering." },
-						"advanced": { "label": "Geavanceerd", "description": "Ervaren, gericht op piekprestaties." },
-						"professional": { "label": "Professioneel", "description": "Zeer ervaren, trainend op een concurrentie niveau." }
+						"beginner": {
+							"label": "Beginner",
+							"description": "Nieuw in fitness of net begonnen."
+						},
+						"intermediate": {
+							"label": "Gemiddeld",
+							"description": "Redelijk ervaren, op zoek naar verbetering."
+						},
+						"advanced": {
+							"label": "Geavanceerd",
+							"description": "Ervaren, gericht op piekprestaties."
+						},
+						"professional": {
+							"label": "Professioneel",
+							"description": "Zeer ervaren, trainend op een concurrentie niveau."
+						}
 					}
 				}
 			},
-			"buttons": { "save": "Wijzigingen opslaan", "saving": "Bezig met opslaan...", "cancel": "Annuleren" },
-			"messages": { "success": "Profiel succesvol bijgewerkt!", "error": "Fout bij het bijwerken van het profiel." }
+			"buttons": {
+				"save": "Wijzigingen opslaan",
+				"saving": "Bezig met opslaan...",
+				"cancel": "Annuleren"
+			},
+			"messages": {
+				"success": "Profiel succesvol bijgewerkt!",
+				"error": "Fout bij het bijwerken van het profiel."
+			}
+		}
+	},
+	"trainingPrograms": {
+		"header": {
+			"eyebrow": "Trainingsprogramma's",
+			"title": "Trainingsprogramma's",
+			"available": "{count, plural, =0 {Geen programma's} =1 {Een programma} other {# programma's}} beschikbaar",
+			"indicators": {
+				"loading": "Programma's laden",
+				"refreshing": "Programma's verversen",
+				"none": "Geen programma's beschikbaar"
+			},
+			"badge": {
+				"loading": "Laden",
+				"refreshing": "Verversen",
+				"updated": "Bijgewerkt"
+			}
+		},
+		"item": {
+			"duration": "{minutes, number} min",
+			"you": "Jij",
+			"visibility": {
+				"public": "Openbaar",
+				"private": "Privé"
+			}
+		},
+		"states": {
+			"empty": {
+				"title": "Geen trainingsprogramma's",
+				"description": "Je hebt nog geen trainingsprogramma's. \nAls een trainer een programma heeft toegewezen, verschijnt dit hier; \nmaak anders uw eerste programma om aan de slag te gaan.",
+				"refresh": "Ververs"
+			},
+			"error": {
+				"title": "Trainingsprogramma's niet beschikbaar",
+				"description": "Kan trainingsprogramma's niet laden. \nControleer uw verbinding en probeer het opnieuw.",
+				"tryAgain": "Opnieuw proberen"
+			}
 		}
 	}
 }

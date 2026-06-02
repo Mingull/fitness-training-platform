@@ -11,7 +11,7 @@ public class AuthRepository(FitnessContext context) : IAuthRepository
     {
         var refreshToken = new RefreshToken
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.CreateVersion7(),
             UserId = userId,
             TokenHash = token,
             ExpiresAt = expiresAt ?? DateTime.UtcNow.AddDays(7)
