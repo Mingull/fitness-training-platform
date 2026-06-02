@@ -234,6 +234,7 @@ declare const messages: {
 	};
 	trainingPrograms: {
 		header: {
+			eyebrow: "Trainingsprogramma's";
 			title: "Trainingsprogramma's";
 			available: "{count, plural, =0 {Geen programma's} =1 {Een programma} other {# programma's}} beschikbaar";
 			indicators: {
@@ -245,6 +246,14 @@ declare const messages: {
 				loading: "Laden";
 				refreshing: "Verversen";
 				updated: "Bijgewerkt";
+			};
+		};
+		item: {
+			duration: "{minutes, number} min";
+			you: "Jij";
+			visibility: {
+				public: "Openbaar";
+				private: "Privé";
 			};
 		};
 		states: {

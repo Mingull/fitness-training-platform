@@ -1,6 +1,7 @@
 // This is a standalone script to extract CSS variables from the global stylesheet and output them as a TypeScript file for use in the app's theme system.
 // It handles both light and dark mode tokens defined in the CSS.
 import { formatHsl, parse } from "culori";
+// @ts-ignore - This is a Node.js script, so we can use the built-in fs module to read and write files.
 import * as fs from "node:fs";
 const CSS_FILE = "src/globals.css";
 const OUTPUT_FILE = "src/lib/theme/tokens.ts";

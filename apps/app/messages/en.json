@@ -245,7 +245,7 @@
 			}
 		},
 		"item": {
-			"duration": "{minutes} min",
+			"duration": "{minutes, number} min",
 			"you": "You",
 			"visibility": {
 				"public": "Public",

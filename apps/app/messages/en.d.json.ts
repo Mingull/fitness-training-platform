@@ -247,6 +247,14 @@ declare const messages: {
 				updated: "Updated";
 			};
 		};
+		item: {
+			duration: "{minutes, number} min";
+			you: "You";
+			visibility: {
+				public: "Public";
+				private: "Private";
+			};
+		};
 		states: {
 			empty: {
 				title: "No training programs";

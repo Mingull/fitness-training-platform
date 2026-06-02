@@ -246,7 +246,7 @@
 			}
 		},
 		"item": {
-			"duration": "{minutes} min",
+			"duration": "{minutes, number} min",
 			"you": "Jij",
 			"visibility": {
 				"public": "Openbaar",
