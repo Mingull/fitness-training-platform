@@ -60,13 +60,9 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
         }
         return Result.Success();
     }
-    public async Task<Result> DeactivatePlanForUserAsync(Guid userId)
-    {
-        var result = await planRepository.DeactivatePlanForUserAsync(userId);
-        if (!result)
-        {
-            return PlanErrors.PlanDeactivationFailed;
-        }
-        return Result.Success();
-    }
+public async Task<Result> DeactivatePlanForUserAsync(Guid userId)
+{
+    await planRepository.DeactivatePlanForUserAsync(userId);
+    return Result.Success();
+}
 }
