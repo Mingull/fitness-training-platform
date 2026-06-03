@@ -15,10 +15,9 @@ namespace Fitness.API.Features.Plans;
 public class PlanController(IPlanService planService) : ControllerBase
 {
     [HttpGet]
-    [AllowAnonymous]
-    [ProducesResponseType(typeof(ApiResponse<IEnumerable<PlanResponse>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+[AllowAnonymous]
+[ProducesResponseType(typeof(ApiResponse<IEnumerable<PlanResponse>>), StatusCodes.Status200OK)]
+[ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllPlansAsync(
         // The query parameters below are not currently used but are needed in the future when implementing pagination, filtering and sorting.
         [FromQuery] int? limit = 20,
