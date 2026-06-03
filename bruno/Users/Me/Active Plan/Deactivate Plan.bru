@@ -1,0 +1,21 @@
+meta {
+  name: Deactivate Plan
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{host}}/users/me/active-plan
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "planId": ""
+  }
+}

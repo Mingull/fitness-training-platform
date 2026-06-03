@@ -12,6 +12,7 @@ public sealed class FitnessContext(DbContextOptions<FitnessContext> options) : I
     public DbSet<Profile> Profiles => Set<Profile>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
     public DbSet<Plan> Plans => Set<Plan>();
+    public DbSet<ActiveUserPlan> ActiveUserPlans => Set<ActiveUserPlan>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -24,31 +25,64 @@ public sealed class FitnessContext(DbContextOptions<FitnessContext> options) : I
         builder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens");
         builder.Entity<IdentityRoleClaim<Guid>>().ToTable("role_claims");
 
-        builder.Entity<Profile>()
-            .HasOne(p => p.User)
-            .WithOne(u => u.Profile)
-            .HasForeignKey<Profile>(p => p.UserId);
+        builder.Entity<Profile>(entity =>
+        {
+            entity.HasOne(p => p.User)
+                .WithOne(u => u.Profile)
+                .HasForeignKey<Profile>(p => p.UserId);
 
-        builder.Entity<Profile>()
-            .Property(p => p.ExperienceLevel)
-            .HasConversion(v => v.Value, v => ExperienceLevel.From(v))
-            .HasColumnType("varchar(50)")
-            .HasMaxLength(50)
-            .HasDefaultValue(ExperienceLevel.Beginner);
+            entity.Property(p => p.ExperienceLevel)
+                .HasConversion(v => v.Value, v => ExperienceLevel.From(v))
+                .HasColumnType("varchar(50)")
+                .HasMaxLength(50)
+                .HasDefaultValue(ExperienceLevel.Beginner);
+
+            entity.Property(p => p.CreatedAt)
+                .HasColumnType("datetime")
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.Property(p => p.UpdatedAt)
+                .HasColumnType("datetime")
+                .ValueGeneratedOnUpdate()
+                .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
+        });
 
         builder.Entity<RefreshToken>()
             .HasOne(rt => rt.User)
             .WithMany()
             .HasForeignKey(rt => rt.UserId);
 
-        builder.Entity<Plan>()
-            .Property(p => p.CreatedAt)
-            .ValueGeneratedOnAdd()
-            .HasDefaultValueSql("CURRENT_TIMESTAMP");
+        builder.Entity<Plan>(entity =>
+        {
+            entity.Property(p => p.CreatedAt)
+                .HasColumnType("datetime")
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-        builder.Entity<Plan>()
-            .Property(p => p.UpdatedAt)
-            .ValueGeneratedOnUpdate()
-            .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
+            entity.Property(p => p.UpdatedAt)
+                .HasColumnType("datetime")
+                .ValueGeneratedOnUpdate()
+                .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
+        });
+
+        builder.Entity<ActiveUserPlan>(entity =>
+        {
+            entity.HasIndex(x => x.UserId)
+                 .IsUnique();
+
+            entity.HasOne(x => x.User)
+                .WithOne()
+                .HasForeignKey<ActiveUserPlan>(x => x.UserId);
+
+            entity.HasOne(x => x.Plan)
+                .WithMany()
+                .HasForeignKey(x => x.PlanId);
+
+            entity.Property(x => x.ActivatedAt)
+                .HasColumnType("datetime")
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+        });
     }
 }

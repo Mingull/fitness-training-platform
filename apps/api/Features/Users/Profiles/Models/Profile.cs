@@ -19,4 +19,6 @@ public sealed class Profile
     public string? Bio { get; set; }
     public string? Goals { get; set; }
     public string? PictureUrl { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
 }

@@ -6,15 +6,14 @@ using Fitness.API.Core.Contracts;
 using Fitness.API.Features.Profiles.Contracts;
 using Fitness.API.Core.Extensions;
 
-namespace Fitness.API.Features.Profiles;
+namespace Fitness.API.Features.Users.Profiles;
 
 [ApiController]
-[Route("profiles")]
 [Produces("application/json")]
 [Tags("Profiles")]
 public class ProfileController(IProfileService profileService) : ControllerBase
 {
-    [HttpGet("me")]
+    [HttpGet("users/me/profile")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<ProfileResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
@@ -46,7 +45,7 @@ public class ProfileController(IProfileService profileService) : ControllerBase
         });
     }
 
-    [HttpPatch("me")]
+    [HttpPatch("users/me/profile")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<ProfileResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
