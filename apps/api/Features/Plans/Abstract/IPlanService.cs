@@ -30,7 +30,6 @@ public interface IPlanService
     /// <summary>
     /// Activates a plan for the user.
     /// </summary>
-    /// </summary>
     /// <param name="userId"></param>
     /// <param name="planId"></param>
     /// <returns></returns>
