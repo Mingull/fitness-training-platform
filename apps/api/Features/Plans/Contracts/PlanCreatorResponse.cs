@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Fitness.API.Features.Plans.Contracts;
 
-public record PlanCreator
+public record PlanCreatorResponse
 {
     public Guid Id { get; set; }
     public string Username { get; set; } = null!;

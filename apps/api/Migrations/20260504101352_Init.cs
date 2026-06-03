@@ -95,8 +95,7 @@ namespace Fitness.API.Migrations
                 name: "profiles",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     user_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     first_name = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -106,10 +105,12 @@ namespace Fitness.API.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     goals = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    experience_level = table.Column<string>(type: "longtext", nullable: true)
+                    experience_level = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true, defaultValue: "beginner")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     picture_url = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    created_at = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    updated_at = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "NULL ON UPDATE CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {

@@ -141,6 +141,35 @@ namespace Fitness.API.Migrations
                     b.ToTable("refresh_tokens", (string)null);
                 });
 
+            modelBuilder.Entity("Fitness.API.Features.Plans.Models.ActiveUserPlan", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("user_id");
+
+                    b.Property<DateTime>("ActivatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("activated_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("PlanId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("plan_id");
+
+                    b.HasKey("UserId")
+                        .HasName("pk_active_user_plans");
+
+                    b.HasIndex("PlanId")
+                        .HasDatabaseName("ix_active_user_plans_plan_id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_active_user_plans_user_id");
+
+                    b.ToTable("active_user_plans", (string)null);
+                });
+
             modelBuilder.Entity("Fitness.API.Features.Plans.Models.Plan", b =>
                 {
                     b.Property<Guid>("Id")
@@ -150,7 +179,7 @@ namespace Fitness.API.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime")
                         .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
@@ -162,6 +191,11 @@ namespace Fitness.API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("description");
+
+                    b.Property<string>("Difficulty")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("difficulty");
 
                     b.Property<int>("EstimatedDuration")
                         .HasColumnType("int")
@@ -179,7 +213,7 @@ namespace Fitness.API.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime")
                         .HasColumnName("updated_at")
                         .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
 
@@ -202,6 +236,12 @@ namespace Fitness.API.Migrations
                     b.Property<string>("Bio")
                         .HasColumnType("longtext")
                         .HasColumnName("bio");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("ExperienceLevel")
                         .IsRequired()
@@ -226,6 +266,12 @@ namespace Fitness.API.Migrations
                     b.Property<string>("PictureUrl")
                         .HasColumnType("longtext")
                         .HasColumnName("picture_url");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)")
@@ -411,6 +457,27 @@ namespace Fitness.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_refresh_tokens_users_user_id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.Plans.Models.ActiveUserPlan", b =>
+                {
+                    b.HasOne("Fitness.API.Features.Plans.Models.Plan", "Plan")
+                        .WithMany()
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_active_user_plans_plans_plan_id");
+
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "User")
+                        .WithOne()
+                        .HasForeignKey("Fitness.API.Features.Plans.Models.ActiveUserPlan", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_active_user_plans_users_user_id");
+
+                    b.Navigation("Plan");
 
                     b.Navigation("User");
                 });

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fitness.API.Migrations
 {
     [DbContext(typeof(FitnessContext))]
-    [Migration("20260512152821_ProfileId")]
-    partial class ProfileId
+    [Migration("20260603110844_ActiveUserPlan")]
+    partial class ActiveUserPlan
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -144,6 +144,86 @@ namespace Fitness.API.Migrations
                     b.ToTable("refresh_tokens", (string)null);
                 });
 
+            modelBuilder.Entity("Fitness.API.Features.Plans.Models.ActiveUserPlan", b =>
+                {
+                    b.Property<DateTime>("ActivatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("activated_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("PlanId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("plan_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("UserId")
+                        .HasName("pk_active_user_plans");
+
+                    b.HasIndex("PlanId")
+                        .HasDatabaseName("ix_active_user_plans_plan_id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_active_user_plans_user_id");
+
+                    b.ToTable("active_user_plans", (string)null);
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.Plans.Models.Plan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("created_by_id");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("description");
+
+                    b.Property<int>("EstimatedDuration")
+                        .HasColumnType("int")
+                        .HasColumnName("estimated_duration");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_public");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id")
+                        .HasName("pk_plans");
+
+                    b.HasIndex("CreatedById")
+                        .HasDatabaseName("ix_plans_created_by_id");
+
+                    b.ToTable("plans", (string)null);
+                });
+
             modelBuilder.Entity("Fitness.API.Features.Profiles.Models.Profile", b =>
                 {
                     b.Property<Guid>("Id")
@@ -156,7 +236,11 @@ namespace Fitness.API.Migrations
                         .HasColumnName("bio");
 
                     b.Property<string>("ExperienceLevel")
-                        .HasColumnType("longtext")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasDefaultValue("beginner")
                         .HasColumnName("experience_level");
 
                     b.Property<string>("FirstName")
@@ -174,6 +258,18 @@ namespace Fitness.API.Migrations
                     b.Property<string>("PictureUrl")
                         .HasColumnType("longtext")
                         .HasColumnName("picture_url");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)")
@@ -361,6 +457,39 @@ namespace Fitness.API.Migrations
                         .HasConstraintName("fk_refresh_tokens_users_user_id");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.Plans.Models.ActiveUserPlan", b =>
+                {
+                    b.HasOne("Fitness.API.Features.Plans.Models.Plan", "Plan")
+                        .WithMany()
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_active_user_plans_plans_plan_id");
+
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "User")
+                        .WithOne()
+                        .HasForeignKey("Fitness.API.Features.Plans.Models.ActiveUserPlan", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_active_user_plans_users_user_id");
+
+                    b.Navigation("Plan");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.Plans.Models.Plan", b =>
+                {
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_plans_users_created_by_id");
+
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("Fitness.API.Features.Profiles.Models.Profile", b =>

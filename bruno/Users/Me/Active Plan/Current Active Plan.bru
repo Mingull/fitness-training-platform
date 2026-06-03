@@ -1,0 +1,15 @@
+meta {
+  name: Current Active Plan
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/users/me/active-plan
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

@@ -1,44 +1,68 @@
 using Fitness.API.Core.Utilities;
 using Fitness.API.Features.Plans.Abstract;
 using Fitness.API.Features.Plans.Contracts;
-using Fitness.API.Features.Profiles.Abstract;
+using Fitness.API.Features.Plans.Utilities;
+using Fitness.API.Features.Users;
+using Fitness.API.Features.Users.Contracts;
 
 namespace Fitness.API.Features.Plans;
 
 public class PlanService(IPlanRepository planRepository) : IPlanService
 {
-    /// <summary>
-    /// Gets all available plans, it does not matter if the user does not own a public plan.
-    /// If any of the plans found is private and does not belong to the authenticated user, it will be filtered out from the results.
-    /// </summary>
-    public async Task<Result<IEnumerable<PlanResponse>>> GetAllPlansAsync(Guid userId)
+    public async Task<Result<IEnumerable<PlanResponse>>> GetAllPlansAsync(Guid? userId)
     {
         // Get all plans from the repository
         var plans = await planRepository.GetAllPlansAsync(userId);
-        // Plans now include the CreatedBy -> AppUser -> Profile navigation
 
+        // Plans now include the CreatedBy -> AppUser -> Profile navigation
         var planResponses = new List<PlanResponse>();
 
         foreach (var plan in plans)
         {
-            var creatorProfile = plan.CreatedBy?.Profile;
-            planResponses.Add(new PlanResponse
-            {
-                Id = plan.Id,
-                Creator = new PlanCreator
-                {
-                    Id = plan.CreatedBy?.Id ?? Guid.Empty,
-                    Username = plan.CreatedBy?.UserName ?? "Unknown",
-                    PictureUrl = creatorProfile?.PictureUrl
-                },
-                Name = plan.Name,
-                Description = plan.Description,
-                EstimatedDuration = plan.EstimatedDuration,
-                IsPublic = plan.IsPublic
-            });
+            planResponses.Add(plan.ToResponse());
             continue;
         }
 
         return Result<IEnumerable<PlanResponse>>.Success(planResponses);
     }
+
+    public async Task<Result<PlanResponse>> GetPlanByIdAsync(Guid planId, Guid? userId = null)
+    {
+        var plan = await planRepository.GetPlanByIdAsync(planId);
+
+        if (plan == null)
+        {
+            return PlanErrors.NotFound;
+        }
+
+        // If the plan is private and the user is not the owner, return an error
+        if (!plan.IsPublic && plan.CreatedById != userId)
+        {
+            return PlanErrors.NotFound; // Return not found to avoid exposing the existence of the plan
+        }
+
+        return Result<PlanResponse>.Success(plan.ToResponse());
+    }
+
+    public async Task<Result<ActiveUserPlanResponse?>> GetActivePlanForUserAsync(Guid userId)
+    {
+        var activePlan = await planRepository.GetActivePlanForUserAsync(userId);
+
+        return Result<ActiveUserPlanResponse?>.Success(activePlan?.ToResponse());
+    }
+
+    public async Task<Result> ActivatePlanForUserAsync(Guid userId, Guid planId)
+    {
+        var result = await planRepository.ActivatePlanForUserAsync(userId, planId);
+        if (!result)
+        {
+            return PlanErrors.PlanActivationFailed;
+        }
+        return Result.Success();
+    }
+public async Task<Result> DeactivatePlanForUserAsync(Guid userId)
+{
+    await planRepository.DeactivatePlanForUserAsync(userId);
+    return Result.Success();
+}
 }

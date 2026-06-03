@@ -15,10 +15,9 @@ namespace Fitness.API.Features.Plans;
 public class PlanController(IPlanService planService) : ControllerBase
 {
     [HttpGet]
-    [Authorize]
-    [ProducesResponseType(typeof(ApiResponse<IEnumerable<PlanResponse>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+[AllowAnonymous]
+[ProducesResponseType(typeof(ApiResponse<IEnumerable<PlanResponse>>), StatusCodes.Status200OK)]
+[ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllPlansAsync(
         // The query parameters below are not currently used but are needed in the future when implementing pagination, filtering and sorting.
         [FromQuery] int? limit = 20,
@@ -30,12 +29,8 @@ public class PlanController(IPlanService planService) : ControllerBase
     {
         // Read the authenticated user's ID from the claims principal and return that user's training plans.
         var userId = this.UserIdFromJwt();
-        if (!userId.HasValue)
-        {
-            return Unauthorized(new ApiError("InvalidToken", ErrorType.Unauthorized, "Invalid token", "The provided token is invalid."));
-        }
 
-        var result = await planService.GetAllPlansAsync(userId.Value);
+        var result = await planService.GetAllPlansAsync(userId);
 
         if (!result.IsSuccess)
         {
@@ -48,6 +43,28 @@ public class PlanController(IPlanService planService) : ControllerBase
             Status = StatusCodes.Status200OK,
             StatusCode = "Ok",
             Message = "Training plans retrieved successfully",
+            Data = result.Value
+        });
+    }
+
+    [HttpGet("{id:guid}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetPlanByIdAsync([FromRoute] Guid id)
+    {
+        var userId = this.UserIdFromJwt();
+
+        var result = await planService.GetPlanByIdAsync(id, userId);
+        if (!result.IsSuccess)
+        {
+            var error = result.Error!;
+            return StatusCode(error.Status ?? StatusCodes.Status500InternalServerError, error);
+        }
+
+        return Ok(new ApiResponse<PlanResponse>
+        {
+            Status = StatusCodes.Status200OK,
+            StatusCode = "Ok",
+            Message = "Training plan retrieved successfully",
             Data = result.Value
         });
     }

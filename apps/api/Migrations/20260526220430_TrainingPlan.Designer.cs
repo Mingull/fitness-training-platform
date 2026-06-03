@@ -166,6 +166,11 @@ namespace Fitness.API.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("description");
 
+                    b.Property<string>("Difficulty")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("difficulty");
+
                     b.Property<int>("EstimatedDuration")
                         .HasColumnType("int")
                         .HasColumnName("estimated_duration");
@@ -181,7 +186,7 @@ namespace Fitness.API.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime")
                         .HasColumnName("updated_at")
                         .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
@@ -229,6 +234,18 @@ namespace Fitness.API.Migrations
                     b.Property<string>("PictureUrl")
                         .HasColumnType("longtext")
                         .HasColumnName("picture_url");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)")
