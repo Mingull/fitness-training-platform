@@ -11,8 +11,7 @@ namespace Fitness.API.Features.Users;
 [ApiController]
 [Produces("application/json")]
 [Tags("Users")]
-public class ProfileController(IPlanService planService, ILogger<ProfileController> logger) : ControllerBase
-{
+public class UserController(IPlanService planService, ILogger<UserController> logger) : ControllerBase
     [HttpGet("users/me/active-plan")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<ActiveUserPlanResponse>), StatusCodes.Status200OK)]
