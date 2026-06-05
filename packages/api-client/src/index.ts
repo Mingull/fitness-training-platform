@@ -1,12 +1,25 @@
 import { z } from "zod";
 import { ArgsOf, Client, ClientError, ClientResult, FetchFn, InputOf, OutputOf, RequestOptions, Route, RouteNamespace } from "./types";
 
+/**
+ * Check if the given value is a Route config object by verifying that it has the required properties (method, path, out).
+ * This is used to differentiate between Route configs and nested RouteNamespaces when building the client object.
+ */
 const isRouteConfig = (value: RouteNamespace | Route): value is Route => {
 	return typeof value === "object" && value !== null && "method" in value && "path" in value && "out" in value;
 };
-
+/**
+ * Check if the given error is an AbortError, which indicates that a fetch request was aborted, either due to a timeout or an explicit abort signal.
+ * This is used to differentiate between different types of errors for more accurate error handling in the API client.
+ */
 const isAbortError = (error: unknown): error is Error => {
 	return error instanceof Error && error.name === "AbortError";
+};
+/**
+ * Check if the given path string contains parameter placeholders, for example "/plans/{id}" or "/plans/{id:number}" would return true, while "/plans" would return false.
+ */
+const isParameterizedPath = (path: string): boolean => {
+	return /\{[^}]+\}/.test(path);
 };
 
 export type ApiClientOptions<R extends RouteNamespace> = {
@@ -16,7 +29,10 @@ export type ApiClientOptions<R extends RouteNamespace> = {
 	$fetch?: FetchFn;
 	defaultTimeout?: number;
 };
-
+/**
+ * Create an API client based on the provided route definitions and configuration. 
+ * The generated client will have methods corresponding to each route, which handle making HTTP requests, validating input and output, and error handling according to the route definitions.
+ */
 export const createApiClient = <const R extends RouteNamespace>({
 	baseUrl,
 	routes,
@@ -40,20 +56,60 @@ export const createApiClient = <const R extends RouteNamespace>({
 		};
 	};
 
+
+	/**
+	 * Build the URL path by replacing parameter placeholders with actual values from the params object.
+	 * @example buildPath("/plans/{id}", { id: 123 }) => "/plans/123"
+	 */
+	const buildPath = (path: string, params?: Record<string, unknown> | undefined): string => {
+		if (!params) throw new Error("Missing path params");
+		const entries = Object.entries(params);
+
+		return path.replace(/\{([^}]+)\}/g, (_match, paramExpr: string) => {
+			const key = paramExpr.split(":")[0];
+			const found = entries.find(([k]) => k === key);
+			const val = found ? found[1] : undefined;
+			if (val === undefined || val === null) {
+				throw new Error(`Missing path param: ${key}`);
+			}
+			return encodeURIComponent(String(val));
+		});
+	};
+
+	/**
+	 * Execute the HTTP request for a given route config, input data, and request options. 
+	 * This function is responsible for constructing the URL, setting headers (including auth), validating input, making the fetch call, handling timeouts and aborts, and validating output according to the route definition.
+	 */
 	const executeRequest = async <T extends Route>(
 		config: T,
 		data: InputOf<T> | undefined,
 		options?: RequestOptions<T>,
 		accessToken?: string,
 	): Promise<ClientResult<OutputOf<T>>> => {
-		const url = new URL(config.path, baseUrl);
+		let resolvedPath = config.path;
+		if (isParameterizedPath(config.path)) {
+			try {
+				resolvedPath = buildPath(config.path, (options as any)?.params);
+			} catch (err) {
+				return {
+					data: null,
+					error: {
+						code: "input_validation",
+						message: err instanceof Error ? err.message : "Missing or invalid path params",
+						details: err,
+					},
+				};
+			}
+		}
+
+		const url = new URL(resolvedPath, baseUrl);
 
 		const headers: Record<string, string> = {
 			"Content-Type": "application/json",
 			...options?.headers,
 		};
 
-		if (config.requiresAuth === true && accessToken) {
+		if ((config.auth === "required" || config.auth === "optional") && accessToken) {
 			headers.Authorization = `Bearer ${accessToken}`;
 		}
 
@@ -182,9 +238,12 @@ export const createApiClient = <const R extends RouteNamespace>({
 			}
 		}
 	};
-
+	/**
+	 * Make an API request based on the route config, input data, and request options.
+	 * This function handles authentication, input validation, making the HTTP request, and output validation according to the route definition.
+	 */
 	const request = async <T extends Route>(config: T, data: InputOf<T> | undefined, options?: RequestOptions<T>): Promise<ClientResult<OutputOf<T>>> => {
-		if (config.requiresAuth === true && !options?.accessToken) {
+		if ((config.auth === "required" || config.auth === "optional") && !options?.accessToken) {
 			return {
 				data: null,
 				error: {
@@ -198,6 +257,10 @@ export const createApiClient = <const R extends RouteNamespace>({
 		return executeRequest(config, data, options, options?.accessToken);
 	};
 
+	/**
+	 * Create a route handler function for a given route config.
+	 * The handler will take care of validating input, making the HTTP request, and validating output according to the route definition.
+	 */
 	const createRouteHandler = <C extends Route>(route: C) => {
 		type RouteArgs = ArgsOf<C>;
 		type RouteOutput = ClientResult<OutputOf<C>>;
@@ -217,6 +280,9 @@ export const createApiClient = <const R extends RouteNamespace>({
 		return fn;
 	};
 
+	/**
+	 * Recursively build the client object by traversing the route namespace tree and creating handler functions for each route config.
+	 */
 	const builder = (branch: RouteNamespace): any => {
 		const result: Record<string, unknown> = {};
 

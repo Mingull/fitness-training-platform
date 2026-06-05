@@ -3,8 +3,8 @@ import { RouteNamespace } from "@fitness/api-client/types";
 import { apiErrorContract } from "@fitness/contracts/api-error";
 import { apiResponseBaseContract } from "@fitness/contracts/api-response";
 import { authTokensContract, signinContract, signupContract } from "@fitness/contracts/auth";
-import { profileContract, updateProfileContract } from "@fitness/contracts/profiles";
-import { trainingPlanListContract } from "@fitness/contracts/training-plans";
+import { trainingPlanContract, trainingPlanListContract } from "@fitness/contracts/training-plans";
+import { activatePlanContract, activeUserPlanContract, profileContract, updateProfileContract } from "@fitness/contracts/user";
 import { fetch, FetchRequestInit } from "expo/fetch";
 import { z } from "zod";
 
@@ -29,26 +29,53 @@ const routes = {
 			out: authTokensContract,
 		},
 	},
-	profiles: {
+	users: {
 		me: {
-			method: "GET",
-			path: "/profiles/me",
-			requiresAuth: true,
-			out: profileContract,
-		},
-		update: {
-			method: "PATCH",
-			path: "/profiles/me",
-			requiresAuth: true,
-			in: updateProfileContract,
-			out: profileContract,
+			profile: {
+				method: "GET",
+				path: "/users/me/profile",
+				auth: "required",
+				out: profileContract,
+			},
+			update: {
+				method: "PATCH",
+				path: "/users/me/profile",
+				auth: "required",
+				in: updateProfileContract,
+				out: profileContract,
+			},
+			currentActivePlan: {
+				method: "GET",
+				path: "/users/me/active-plan",
+				auth: "required",
+				out: activeUserPlanContract,
+			},
+			activatePlan: {
+				method: "PUT",
+				path: "/users/me/active-plan",
+				auth: "required",
+				in: activatePlanContract,
+				out: apiResponseBaseContract,
+			},
+			deactivatePlan: {
+				method: "DELETE",
+				path: "/users/me/active-plan",
+				auth: "required",
+				out: apiResponseBaseContract,
+			},
 		},
 	},
 	plans: {
+		getOne: {
+			method: "GET",
+			path: "/plans/{id:string}",
+			auth: "optional",
+			out: trainingPlanContract,
+		},
 		list: {
 			method: "GET",
 			path: "/plans",
-			requiresAuth: true,
+			auth: "optional",
 			out: trainingPlanListContract,
 		},
 	},

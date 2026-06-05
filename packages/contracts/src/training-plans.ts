@@ -16,7 +16,7 @@ export const trainingPlanItemContract = z.object({
 	estimatedDuration: z.number().int().min(0),
 	isPublic: z.boolean(),
 });
-export type TrainingPlanItemData = z.infer<typeof trainingPlanItemContract>;
+export type TrainingPlanItem = z.infer<typeof trainingPlanItemContract>;
 
 /**
  * This is the contract for a single training plan that will be returned from the API.
@@ -28,7 +28,7 @@ export const trainingPlanContract = apiResponseBaseContract.extend({
 /**
  * This is the TypeScript type for a training plan item that will be returned from the API.
  */
-export type TrainingPlanData = z.infer<typeof trainingPlanContract>;
+export type TrainingPlan = z.infer<typeof trainingPlanContract>;
 
 /**
  * This is the contract for a list of training plans that will be returned from the API.
@@ -40,4 +40,4 @@ export const trainingPlanListContract = apiResponseBaseContract.extend({
 /**
  * This is the TypeScript type for a list of training plans that will be returned from the API.
  */
-export type TrainingPlanListData = z.infer<typeof trainingPlanListContract>;
+export type TrainingPlanList = z.infer<typeof trainingPlanListContract>;

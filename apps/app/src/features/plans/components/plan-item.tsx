@@ -2,20 +2,20 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
-import { TrainingPlanItemData } from "@fitness/contracts/training-plans";
+import { TrainingPlanItem } from "@fitness/contracts/training-plans";
 import { Link } from "expo-router";
 import { ChevronRight, Clock3, Globe2, UserRound } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 import { useLocale, useTranslations } from "use-intl";
 
-export const PlanItem = ({ item, authorId }: { item: TrainingPlanItemData; authorId?: string | null }) => {
+export const PlanItem = ({ item, authorId }: { item: TrainingPlanItem; authorId?: string | null }) => {
 	const locale = useLocale();
 	const t = useTranslations("trainingPrograms.item");
 
 	return (
 		<Link href={{ pathname: "/[locale]/plans/[id]", params: { locale, id: item.id } }} asChild>
-			<Pressable className="active:opacity-90">
-				<Card className="shadow-sm">
+			<Pressable accessibilityRole="link" className="cursor-pointer active:opacity-90">
+				<Card pointerEvents="none" className="shadow-sm">
 					<CardHeader className="flex-row items-start gap-3">
 						<View className="bg-primary/10 mt-0.5 size-11 items-center justify-center rounded-full">
 							<Text className="text-primary text-base font-bold">{item.name.trim().charAt(0).toUpperCase()}</Text>

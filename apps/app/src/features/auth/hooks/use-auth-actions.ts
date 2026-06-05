@@ -20,7 +20,7 @@ type AuthActions = {
 	 * @param fn The function to execute with the current access token, and again with a refreshed token if needed.
 	 * @returns The result of the provided function, or an auth error if the token refresh fails.
 	 */
-	withRefresh: <R>(fn: (accessToken?: string | null) => Promise<ClientResult<R>> | ClientResult<R>) => Promise<ClientResult<R>>;
+	withRefresh: <R>(fn: (accessToken?: string) => Promise<ClientResult<R>> | ClientResult<R>) => Promise<ClientResult<R>>;
 };
 
 export const useAuthActions = (): AuthActions => {
@@ -116,8 +116,8 @@ export const useAuthActions = (): AuthActions => {
 	}, [clearSession, hydrateSessionFromAccessToken, refreshTokenRef, updateAccessToken, updateRefreshToken]);
 
 	const withRefresh = useCallback(
-		async <R>(fn: (token?: string | null) => Promise<ClientResult<R>> | ClientResult<R>): Promise<ClientResult<R>> => {
-			const result = await fn(accessTokenRef.current);
+		async <R>(fn: (token?: string) => Promise<ClientResult<R>> | ClientResult<R>): Promise<ClientResult<R>> => {
+			const result = await fn(accessTokenRef.current ?? undefined);
 
 			if (result.error && (result.error.code === "missing_token" || (result.error.code === "http" && result.error.statusCode === 401))) {
 				// If the error indicates an auth issue, attempt to refresh the token and retry the original function once.
@@ -125,7 +125,7 @@ export const useAuthActions = (): AuthActions => {
 				if (refreshResult.error) {
 					return refreshResult as ClientResult<R>;
 				}
-				return await fn(accessTokenRef.current);
+				return await fn(accessTokenRef.current ?? undefined);
 			}
 			return result;
 		},

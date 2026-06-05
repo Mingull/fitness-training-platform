@@ -6,3 +6,5 @@ export const apiResponseBaseContract = z.object({
 	message: z.string(),
 	data: z.unknown().optional(),
 });
+
+export type ApiResponseBase = z.infer<typeof apiResponseBaseContract>;

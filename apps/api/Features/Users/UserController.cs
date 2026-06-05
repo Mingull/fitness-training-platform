@@ -45,6 +45,9 @@ public class UserController(IPlanService planService, ILogger<UserController> lo
 
     [HttpPut("users/me/active-plan")]
     [Authorize]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> ActivatePlan([FromBody] SetActivePlanRequest request)
     {
         // Read the authenticated user's ID from the claims principal and return that user's profile.
@@ -70,6 +73,9 @@ public class UserController(IPlanService planService, ILogger<UserController> lo
     }
     [HttpDelete("users/me/active-plan")]
     [Authorize]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeactivatePlan()
     {
         var userId = this.UserIdFromJwt();
