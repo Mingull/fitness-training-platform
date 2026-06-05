@@ -55,7 +55,6 @@ export default function SignupScreen() {
 			onChange: currentStepValidator as unknown as typeof formSchema,
 		},
 		onSubmit: async ({ value }) => {
-			console.log("Submitting form:", { value });
 			if (!(currentStepIndex >= steps.length - 1)) {
 				return next();
 			}

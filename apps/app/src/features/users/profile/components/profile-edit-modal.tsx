@@ -5,7 +5,7 @@ import { Icon } from "@/components/ui/icon";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Text } from "@/components/ui/text";
 import { useAppForm } from "@/hooks/forms";
-import { updateProfileContract } from "@fitness/contracts/profiles";
+import { updateProfileContract } from "@fitness/contracts/user";
 import { cn } from "@fitness/ui/lib/utils";
 import * as Haptics from "expo-haptics";
 import { XIcon } from "lucide-react-native";
@@ -102,7 +102,7 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 						</View>
 						{errorMessage ?
 							<Text className="text-destructive text-sm">{errorMessage}</Text>
-						:	null}
+							: null}
 						<FieldSet className="gap-4">
 							<FieldGroup className="flex-row gap-4">
 								<form.AppField name="firstName" validators={{ onBlur: updateProfileContract.shape.firstName }}>

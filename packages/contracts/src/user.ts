@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { apiResponseBaseContract } from "./api-response";
+import { trainingPlanItemContract } from "./training-plans";
 
 /**
  * This is the contract for the profile object that will be returned from the API.
@@ -21,7 +22,7 @@ export const profileContract = apiResponseBaseContract.extend({
 	}),
 });
 
-export type ProfileData = z.infer<typeof profileContract>;
+export type Profile = z.infer<typeof profileContract>;
 
 /**
  * This is the contract for updating the profile object.
@@ -35,3 +36,19 @@ export const updateProfileContract = z.object({
 	goals: z.string().optional(),
 	pictureUrl: z.string().optional(),
 });
+
+export const activeUserPlanContract = apiResponseBaseContract.extend({
+	data: z.object({
+		plan: trainingPlanItemContract,
+		activatedAt: z.iso.datetime(),
+	}).nullable(),
+});
+/**
+ * This is the TypeScript type for the active training plan of a user that will be returned from the API.
+ */
+export type ActiveUserPlan = z.infer<typeof activeUserPlanContract>;
+
+/**
+ * This is the contract for activating a training plan for the user.
+ */
+export const activatePlanContract = z.object({ planId: z.string() });

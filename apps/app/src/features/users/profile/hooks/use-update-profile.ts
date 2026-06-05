@@ -2,7 +2,7 @@ import { useSession } from "@/features/auth/context";
 import { useAuthActions } from "@/features/auth/hooks/use-auth-actions";
 import { apiClient } from "@/lib/api-client";
 import { ClientError } from "@fitness/api-client/types";
-import { ProfileData, updateProfileContract } from "@fitness/contracts/profiles";
+import { Profile, updateProfileContract } from "@fitness/contracts/user";
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 
@@ -14,9 +14,9 @@ import { z } from "zod";
 export const useUpdateProfile = () => {
 	const { userId } = useSession();
 	const { withRefresh } = useAuthActions();
-	return useMutation<ProfileData["data"], ClientError, z.infer<typeof updateProfileContract>>({
+	return useMutation<Profile["data"], ClientError, z.infer<typeof updateProfileContract>>({
 		mutationFn: async (data) => {
-			const result = await withRefresh((accessToken) => apiClient.profiles.update(data, { accessToken: accessToken ?? undefined }));
+			const result = await withRefresh((accessToken) => apiClient.users.me.update(data, { accessToken: accessToken ?? undefined }));
 
 			if (result.error) {
 				throw result.error;

@@ -31,7 +31,7 @@ const routes = {
 		me: {
 			method: "GET",
 			path: "/profiles/me",
-			requiresAuth: true,
+			auth: "required",
 			out: profileContract,
 		},
 	},
