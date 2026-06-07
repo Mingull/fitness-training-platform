@@ -64,7 +64,10 @@ public class PlanRepository(FitnessContext context) : IPlanRepository
         context.Plans.Add(plan);
         await context.SaveChangesAsync();
 
-        // Return the created plan
-        return plan;
+        // Reload with navigations used by ToResponse() so the API response contains creator details
+        return await context.Plans
+            .Include(p => p.CreatedBy)
+                .ThenInclude(u => u.Profile)
+            .FirstAsync(p => p.Id == plan.Id);
     }
 }

@@ -71,6 +71,10 @@ public class PlanController(IPlanService planService) : ControllerBase
 
     [HttpPost]
     [Authorize]
+    [ProducesResponseType(typeof(ApiResponse<PlanResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreatePlanAsync([FromBody] CreatePlanRequest request)
     {
         var userId = this.UserIdFromJwt();
