@@ -35,5 +35,10 @@ public interface IPlanRepository
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<bool> DeactivatePlanForUserAsync(Guid userId);
+    /// <summary>
+    /// Creates a new plan in the database.
+    /// </summary>
+    /// <param name="plan">The plan entity to create.</param>
+    /// <returns>The created plan.</returns>
     Task<Plan> CreatePlanAsync(Plan plan);
 }

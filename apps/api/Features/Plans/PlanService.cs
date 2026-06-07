@@ -67,17 +67,17 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
         return Result.Success();
     }
 
-    public async Task<Result<PlanResponse>> CreatePlanAsync(CreatePlanRequest plan, Guid creatorId)
+    public async Task<Result<PlanResponse>> CreatePlanAsync(CreatePlanRequest request, Guid creatorId)
     {
         // Create a new Plan entity based on the request
         var createdPlan = await planRepository.CreatePlanAsync(new()
         {
             CreatedById = creatorId,
-            Name = plan.Name,
-            Description = plan.Description,
-            Difficulty = plan.Difficulty,
-            EstimatedDuration = plan.EstimatedDuration,
-            IsPublic = plan.IsPublic,
+            Name = request.Name,
+            Description = request.Description,
+            Difficulty = request.Difficulty,
+            EstimatedDuration = request.EstimatedDuration,
+            IsPublic = request.IsPublic,
         });
 
         // Return the created plan as a response
