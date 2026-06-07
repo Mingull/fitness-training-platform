@@ -40,5 +40,11 @@ public interface IPlanService
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<Result> DeactivatePlanForUserAsync(Guid userId);
-    Task<Result<PlanResponse>> CreatePlanAsync(CreatePlanRequest plan, Guid creatorId);
+    /// <summary>
+    /// Creates a new training plan owned by the specified creator.
+    /// </summary>
+    /// <param name="request">The plan details to create.</param>
+    /// <param name="creatorId">The authenticated user ID that will be set as the creator of the plan.</param>
+    /// <returns></returns>
+    Task<Result<PlanResponse>> CreatePlanAsync(CreatePlanRequest request, Guid creatorId);
 }
