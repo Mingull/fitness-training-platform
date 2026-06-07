@@ -40,4 +40,5 @@ public interface IPlanService
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<Result> DeactivatePlanForUserAsync(Guid userId);
+    Task<Result<PlanResponse>> CreatePlanAsync(CreatePlanRequest plan, Guid creatorId);
 }

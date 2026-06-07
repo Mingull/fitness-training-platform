@@ -1,6 +1,7 @@
 using Fitness.API.Core.Utilities;
 using Fitness.API.Features.Plans.Abstract;
 using Fitness.API.Features.Plans.Contracts;
+using Fitness.API.Features.Plans.Models;
 using Fitness.API.Features.Plans.Utilities;
 using Fitness.API.Features.Users;
 using Fitness.API.Features.Users.Contracts;
@@ -60,9 +61,26 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
         }
         return Result.Success();
     }
-public async Task<Result> DeactivatePlanForUserAsync(Guid userId)
-{
-    await planRepository.DeactivatePlanForUserAsync(userId);
-    return Result.Success();
-}
+    public async Task<Result> DeactivatePlanForUserAsync(Guid userId)
+    {
+        await planRepository.DeactivatePlanForUserAsync(userId);
+        return Result.Success();
+    }
+
+    public async Task<Result<PlanResponse>> CreatePlanAsync(CreatePlanRequest plan, Guid creatorId)
+    {
+        // Create a new Plan entity based on the request
+        var createdPlan = await planRepository.CreatePlanAsync(new()
+        {
+            CreatedById = creatorId,
+            Name = plan.Name,
+            Description = plan.Description,
+            Difficulty = plan.Difficulty,
+            EstimatedDuration = plan.EstimatedDuration,
+            IsPublic = plan.IsPublic,
+        });
+
+        // Return the created plan as a response
+        return Result<PlanResponse>.Success(createdPlan.ToResponse());
+    }
 }
