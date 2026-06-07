@@ -55,4 +55,16 @@ public class PlanRepository(FitnessContext context) : IPlanRepository
         return await context.ActiveUserPlans.Where(ap => ap.UserId == userId).ExecuteDeleteAsync() > 0;
     }
 
+    public async Task<Plan> CreatePlanAsync(Plan plan)
+    {
+        // Generate a new ID for the plan
+        plan.Id = Guid.CreateVersion7();
+
+        // Add the plan to the context and save changes
+        context.Plans.Add(plan);
+        await context.SaveChangesAsync();
+
+        // Reload the plan with the CreatedBy navigation property included to ensure the response is complete
+        return await GetPlanByIdAsync(plan.Id) ?? plan;
+    }
 }
