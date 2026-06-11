@@ -58,12 +58,7 @@ function Switch({ className, size, checked, disabled, ...props }: React.Componen
 		<SwitchPrimitives.Root className={cn(switchVariants({ size, checked, disabled }), className)} checked={checked} disabled={disabled} {...props}>
 			<SwitchPrimitives.Thumb
 				className={cn(
-					// "bg-background size-4 rounded-full transition-transform",
-					// Platform.select({
-					// 	web: "pointer-events-none block ring-0",
-					// }),
 					switchThumbVariants({ size, checked }),
-					checked ? "dark:bg-primary-foreground translate-x-3.5" : "dark:bg-foreground translate-x-0",
 				)}
 			/>
 		</SwitchPrimitives.Root>

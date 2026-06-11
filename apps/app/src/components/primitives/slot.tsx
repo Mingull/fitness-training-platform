@@ -17,12 +17,10 @@ function Slot<T extends React.ElementType>(props: React.ComponentPropsWithRef<T>
 	const { children, ref: forwardedRef, ...restOfProps } = props;
 
 	if (!React.isValidElement(children)) {
-		console.log("Slot - Invalid asChild element", children);
 		return null;
 	}
 
 	if (isTextChildren(children)) {
-		console.log("Slot - Text children are not supported", children);
 		return null;
 	}
 

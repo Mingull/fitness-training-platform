@@ -50,10 +50,10 @@ export type TrainingPlanList = z.infer<typeof trainingPlanListContract>;
  * This is the contract for the data required to create a new training plan. This will be sent to the API when creating a new training plan.
  */
 export const createTrainingPlanContract = z.object({
-	name: z.string("name.validations.required").min(2, "name.validations.minLength").max(150, "name.validations.maxLength"),
+	name: z.string("name.validations.required").min(2, "name.validations.minLength").max(100, "name.validations.maxLength"),
 	description: z.string("description.validations.required").min(2, "description.validations.minLength").max(1000, "description.validations.maxLength"),
 	difficulty: z.number().min(0, "difficulty.validations.min").max(100, "difficulty.validations.max"),
-	estimatedDuration: z.number().int().min(0, "estimatedDuration.validations.min"),
+	estimatedDuration: z.number().int().min(1, "estimatedDuration.validations.min"),
 	isPublic: z.boolean(),
 });
 

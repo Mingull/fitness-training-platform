@@ -289,7 +289,7 @@ declare const messages: {
 					validations: {
 						required: "Name is required";
 						minLength: "Name must be at least 2 characters";
-						maxLength: "Name can be at most 150 characters";
+						maxLength: "Name can be at most 100 characters";
 					};
 				};
 				description: {

@@ -1,7 +1,6 @@
 import { Field, FieldContent, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
 import { useFieldContext } from "@/hooks/forms";
 import { ReactNode } from "react";
-import { useTranslations } from "use-intl";
 
 export type FormControlProps = {
 	label: string;
@@ -19,7 +18,6 @@ type FormBaseProps = FormControlProps & {
 	controlFirst?: boolean;
 };
 
-const parseErrorTranslations = (t: ReturnType<typeof useTranslations>, errors: ({ message?: string } | undefined)[]) => {};
 
 export function FormBase({
 	children,

@@ -290,7 +290,7 @@ declare const messages: {
 					validations: {
 						required: "Naam is verplicht";
 						minLength: "Naam moet ten minste 2 tekens bevatten";
-						maxLength: "Naam mag maximaal 150 tekens bevatten";
+						maxLength: "Naam mag maximaal 100 tekens bevatten";
 					};
 				};
 				description: {
@@ -317,7 +317,7 @@ declare const messages: {
 					placeholder: "Voer de geschatte duur van het trainingsplan in minuten in";
 					description: "Geef een schatting van hoe lang het duurt om het volledige trainingsplan te voltooien, bijvoorbeeld 60 minuten. Dit helpt gebruikers te bepalen of het plan past binnen hun beschikbare tijd.";
 					validations: {
-						min: "Estimated duration must be at least 1 minute";
+						min: "Geschatte duur moet minimaal 1 minuut zijn";
 					};
 				};
 				isPublic: {

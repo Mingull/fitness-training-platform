@@ -76,7 +76,6 @@ function FAB({
 	const extendTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	const extendFAB = React.useCallback(() => {
-		console.log("extendFAB called");
 		if (!extendTitleOnLongPress) {
 			return;
 		}

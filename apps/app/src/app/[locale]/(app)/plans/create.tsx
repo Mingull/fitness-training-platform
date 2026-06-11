@@ -31,7 +31,6 @@ export default function TrainingPlanListScreen() {
 			onSubmit: createTrainingPlanContract,
 		},
 		onSubmit: async ({ value }) => {
-			console.log({ value });
 			setErrorMessage(null);
 
 			await mutator.mutateAsync({
@@ -170,7 +169,14 @@ export default function TrainingPlanListScreen() {
 											returnKeyType="next"
 											ref={(input) => registerRef(field.name, input)}
 											submitBehavior="submit"
-											onChangeText={(text) => field.handleChange(text === "" ? 0 : Number(text))}
+						onChangeText={(text) => {
+							if (text === "") {
+								field.handleChange(0);
+								return;
+							}
+							const parsed = Number.parseInt(text, 10);
+							field.handleChange(Number.isFinite(parsed) ? parsed : 0);
+						}}
 											onSubmitEditing={() => focusNext("isPublic")}
 											errorComponent={<FieldError errors={translateValidationErrors(field.name, field.state.meta.errors)} />}
 										/>
