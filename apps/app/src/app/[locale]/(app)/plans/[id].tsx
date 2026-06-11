@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyContent, EmptyHeader } from "@/components/ui/empty";
+import { Scaffold, ScaffoldAddon, ScaffoldBackButton, ScaffoldContent, ScaffoldDescription, ScaffoldHeader, ScaffoldTitle } from "@/components/ui/scaffold";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Text } from "@/components/ui/text";
 import { useTrainingPlan } from "@/features/plans/hooks/use-training-plan";
@@ -50,19 +51,24 @@ export default function TrainingPlanDetailScreen() {
 	}
 
 	return (
-		<View className="bg-background flex-1 gap-4">
+		<Scaffold>
 			<ScrollView refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}>
-				<View className="bg-card pt-safe-offset-2 flex-row items-end justify-between gap-3 px-4 pb-4 shadow-sm">
+				<ScaffoldHeader>
+					<ScaffoldBackButton />
 					<View className="items-start justify-between">
-						<Text className="text-foreground text-xl font-semibold tracking-tight">{plan?.name}</Text>
-						<Text className="text-muted-foreground text-sm">{plan?.description}</Text>
+						<ScaffoldTitle className="text-foreground text-xl font-semibold tracking-tight">{plan?.name}</ScaffoldTitle>
+						<ScaffoldDescription className="text-muted-foreground text-sm">{plan?.description}</ScaffoldDescription>
 					</View>
-					<Button variant={activePlan?.plan.id === plan?.id ? "default" : "outline"} disabled={!plan} onPress={handlePlanAction}>
-						<Text>{activePlan?.plan.id === plan?.id ? "Active Plan" : "Activate Plan"}</Text>
-					</Button>
-				</View>
-				<Text>This is the screen for a specific training plan</Text>
+					<ScaffoldAddon>
+						<Button variant={activePlan?.plan.id === plan?.id ? "default" : "outline"} disabled={!plan} onPress={handlePlanAction}>
+							<Text>{activePlan?.plan.id === plan?.id ? "Active Plan" : "Activate Plan"}</Text>
+						</Button>
+					</ScaffoldAddon>
+				</ScaffoldHeader>
+				<ScaffoldContent>
+					<Text>This is the screen for a specific training plan</Text>
+				</ScaffoldContent>
 			</ScrollView>
-		</View>
+		</Scaffold>
 	);
 }

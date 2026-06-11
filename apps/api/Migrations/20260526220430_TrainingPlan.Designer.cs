@@ -166,10 +166,11 @@ namespace Fitness.API.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("description");
 
-                    b.Property<string>("Difficulty")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("difficulty");
+                    b.Property<int>("DifficultyLevel")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("difficulty_level");
 
                     b.Property<int>("EstimatedDuration")
                         .HasColumnType("int")

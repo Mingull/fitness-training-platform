@@ -250,6 +250,13 @@
 			"visibility": {
 				"public": "Public",
 				"private": "Private"
+			},
+			"difficulty": {
+				"beginner": "Beginner",
+				"novice": "Novice",
+				"intermediate": "Intermediate",
+				"advanced": "Advanced",
+				"expert": "Expert"
 			}
 		},
 		"states": {
@@ -262,6 +269,53 @@
 				"title": "Training programs unavailable",
 				"description": "Could not load training programs. Check your connection and try again.",
 				"tryAgain": "Try again"
+			}
+		},
+		"create": {
+			"title": "Create a new Training Plan.",
+			"description": "Add the details below to create your training plan.",
+			"fields": {
+				"name": {
+					"label": "Name",
+					"placeholder": "Enter a name for your training plan",
+					"description": "Use a short, recognizable name that summarizes the content or purpose of the plan.",
+					"validations": {
+						"required": "Name is required",
+						"minLength": "Name must be at least 2 characters",
+						"maxLength": "Name can be at most 150 characters"
+					}
+				},
+				"description": {
+					"label": "Description",
+					"placeholder": "Describe your training plan",
+					"description": "Summarize the plan, for example, which types of exercises it includes, the focus (strength, cardio, flexibility), and the intended goal (weight loss, muscle building, fitness improvement).",
+					"validations": {
+						"required": "Description is required",
+						"minLength": "Description must be at least 2 characters",
+						"maxLength": "Description can be at most 1000 characters"
+					}
+				},
+				"difficulty": {
+					"label": "Difficulty",
+					"description": "Set how intense this plan is, from 1 for easy to 100 for very hard.",
+					"selected": "Selected difficulty: {label, select, beginner {Beginner} novice {Novice} intermediate {Intermediate} advanced {Advanced} expert {Expert} other {Other}} ({level, number})",
+					"validations": {
+						"min": "Difficulty must be at least 0",
+						"max": "Difficulty can be at most 100"
+					}
+				},
+				"estimatedDuration": {
+					"label": "Estimated Duration",
+					"placeholder": "Enter the estimated duration of the training plan in minutes",
+					"description": "Provide an estimate of how long it will take to complete the entire training plan, for example 60 minutes. This helps users determine if the plan fits within their available time.",
+					"validations": {
+						"min": "Estimated duration must be at least 1 minute"
+					}
+				},
+				"isPublic": {
+					"label": "Public",
+					"description": "Turn this on if you want other users to be able to see and use this training plan."
+				}
 			}
 		}
 	}

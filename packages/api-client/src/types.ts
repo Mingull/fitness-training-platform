@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 /**
- * This type defines the shape of fetch function that can be used in the API client. 
- * It takes a URL and an optional RequestInit object, and returns a Promise that resolves to a Response. 
+ * This type defines the shape of fetch function that can be used in the API client.
+ * It takes a URL and an optional RequestInit object, and returns a Promise that resolves to a Response.
  * This allows for flexibility in using different fetch implementations, such as the built-in fetch in browsers or custom implementations in other environments.
  */
 export type FetchFn = (url: string, init?: RequestInit | undefined) => Promise<Response>;
@@ -19,7 +19,7 @@ export type Route = {
 };
 
 /**
- * This type defines the structure of a RouteNamespace, which is a recursive type that can contain either Route objects or nested RouteNamespaces. 
+ * This type defines the structure of a RouteNamespace, which is a recursive type that can contain either Route objects or nested RouteNamespaces.
  * This allows for organizing routes in a hierarchical manner, for example grouping all user-related routes under a "users" namespace.
  */
 export type RouteNamespace = {
@@ -36,13 +36,13 @@ export type RequestOptions<R extends Route> = {
 	signal?: AbortSignal;
 	$fetch?: FetchFn;
 } & (R["auth"] extends "required" ? { accessToken: string | undefined }
-	: R["auth"] extends "optional" ? { accessToken?: string | undefined }
-	: { accessToken?: never }) &
+: R["auth"] extends "optional" ? { accessToken?: string | undefined }
+: { accessToken?: never }) &
 	(IsParamPath<R["path"]> extends true ? { params: InferPath<R["path"]> } : { params?: never });
 
 /**
  * This is a TypeScript type that uses conditional types and template literal types to determine if a given path string contains parameter placeholders.
- * It checks if the path matches the pattern of having curly braces with some content inside, which indicates that it is a parameterized path. 
+ * It checks if the path matches the pattern of having curly braces with some content inside, which indicates that it is a parameterized path.
  * If the path contains parameters, it returns true; otherwise, it returns false.
  */
 type IsParamPath<Path extends string> = Path extends `${string}{${string}}${string}` ? true : false;
@@ -55,22 +55,22 @@ type IsParamPath<Path extends string> = Path extends `${string}{${string}}${stri
  */
 type InferPath<Path extends string, Acc extends string = never, Obj extends Record<string, unknown> = {}> =
 	Path extends `${infer _Start}{${infer Param}}${infer Rest}` ?
-	InferPath<
-		Rest,
-		Acc | Param,
-		Obj & (Param extends `${infer Key}:${infer Type}` ? { [K in Key]: Type extends "number" ? number : string } : { [K in Param]: string })
-	>
-	: Obj;
+		InferPath<
+			Rest,
+			Acc | Param,
+			Obj & (Param extends `${infer Key}:${infer Type}` ? { [K in Key]: Type extends "number" ? number : string } : { [K in Param]: string })
+		>
+	:	Obj;
 
 /**
- * This type defines the structure of an error object that can be returned by the API client. 
+ * This type defines the structure of an error object that can be returned by the API client.
  * It includes a code that categorizes the type of error, a message describing the error, an optional HTTP status code, and optional additional details about the error.
  * This standardized error format allows for consistent error handling across different API routes and operations.
  */
 export type ClientErrorCode = "missing_token" | "input_validation" | "network" | "http" | "output_validation" | "unknown";
 
 /**
- * This type defines the structure of an error object that can be returned by the API client. 
+ * This type defines the structure of an error object that can be returned by the API client.
  * It includes a code that categorizes the type of error, a message describing the error, an optional HTTP status code, and optional additional details about the error.
  * This standardized error format allows for consistent error handling across different API routes and operations.
  */

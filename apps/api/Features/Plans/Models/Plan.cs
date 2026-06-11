@@ -15,7 +15,7 @@ public sealed class Plan
     [Required]
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
-    public string Difficulty { get; set; } = null!;
+    public int DifficultyLevel { get; set; } = 0;
     public int EstimatedDuration { get; set; }
     public bool IsPublic { get; set; }
     public DateTime CreatedAt { get; set; }

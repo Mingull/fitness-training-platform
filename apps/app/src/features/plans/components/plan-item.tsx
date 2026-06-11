@@ -4,7 +4,7 @@ import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 import { TrainingPlanItem } from "@fitness/contracts/training-plans";
 import { Link } from "expo-router";
-import { ChevronRight, Clock3, Globe2, UserRound } from "lucide-react-native";
+import { ChevronRight, Clock3, FlameIcon, Globe2, UserRound } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 import { useLocale, useTranslations } from "use-intl";
 
@@ -33,13 +33,19 @@ export const PlanItem = ({ item, authorId }: { item: TrainingPlanItem; authorId?
 
 					<CardContent className="flex-row flex-wrap gap-2">
 						<Badge variant="muted">
+							<Icon as={UserRound} size={12} />
+							<Text>{item.creator.id === authorId ? t("you") : item.creator.username}</Text>
+						</Badge>
+
+						<Badge variant="muted">
 							<Icon as={Clock3} size={12} />
 							<Text>{t("duration", { minutes: item.estimatedDuration })}</Text>
 						</Badge>
 
 						<Badge variant="muted">
-							<Icon as={UserRound} size={12} />
-							<Text>{item.creator.id === authorId ? t("you") : item.creator.username}</Text>
+							<Icon as={FlameIcon} size={12} />
+							<Text>{item.difficulty.level}</Text>
+							<Text>{t(`difficulty.${item.difficulty.label}`)}</Text>
 						</Badge>
 
 						<Badge>

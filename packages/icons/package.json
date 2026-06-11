@@ -19,8 +19,8 @@
 		"@fitness/typescript-config": "workspace:*",
 		"@tailwindcss/postcss": "^4.3.0",
 		"@turbo/gen": "^2.9.16",
-		"@types/node": "^25.9.1",
-		"@types/react": "^19.2.16",
+		"@types/node": "^25.9.2",
+		"@types/react": "^19.2.17",
 		"@types/react-dom": "^19.2.3",
 		"eslint": "^10.4.1",
 		"tsdown": "^0.22.2"

@@ -3,7 +3,7 @@ import { RouteNamespace } from "@fitness/api-client/types";
 import { apiErrorContract } from "@fitness/contracts/api-error";
 import { apiResponseBaseContract } from "@fitness/contracts/api-response";
 import { authTokensContract, signinContract, signupContract } from "@fitness/contracts/auth";
-import { trainingPlanContract, trainingPlanListContract } from "@fitness/contracts/training-plans";
+import { createTrainingPlanContract, trainingPlanContract, trainingPlanListContract } from "@fitness/contracts/training-plans";
 import { activatePlanContract, activeUserPlanContract, profileContract, updateProfileContract } from "@fitness/contracts/user";
 import { fetch, FetchRequestInit } from "expo/fetch";
 import { z } from "zod";
@@ -77,6 +77,13 @@ const routes = {
 			path: "/plans",
 			auth: "optional",
 			out: trainingPlanListContract,
+		},
+		create: {
+			method: "POST",
+			path: "/plans",
+			auth: "required",
+			in: createTrainingPlanContract,
+			out: trainingPlanContract,
 		},
 	},
 } as const satisfies RouteNamespace;

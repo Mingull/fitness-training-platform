@@ -8,24 +8,21 @@ const DEFAULT_HIT_SLOP = 24;
 
 function Checkbox({
 	className,
-	checkedClassName,
 	indicatorClassName,
 	iconClassName,
 	...props
 }: React.ComponentProps<typeof CheckboxPrimitive.Root> & {
-	checkedClassName?: string;
 	indicatorClassName?: string;
 	iconClassName?: string;
 }) {
 	return (
 		<CheckboxPrimitive.Root
 			className={cn(
-				"bg-input/90 dark:bg-input/20 data-checked:border-primary data-checked:bg-primary dark:data-checked:bg-primary relative flex size-4 shrink-0 items-center justify-center rounded-[5px] border border-transparent transition-shadow group-has-disabled/field:opacity-50 disabled:opacity-50",
+				"peer bg-input relative flex size-4 shrink-0 items-center justify-center rounded-[5px] border border-transparent transition-shadow outline-none group-has-disabled/field:opacity-50",
 				Platform.select({
-					web: "focus-visible:border-ring aria-invalid:ring-destructive/20 focus-visible:ring-ring/30 aria-invalid:border-destructive aria-invalid:aria-checked:border-primary dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 peer cursor-default transition-shadow outline-none after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:ring-3 disabled:cursor-not-allowed aria-invalid:ring-3",
-					native: "overflow-hidden",
+					web: "focus-visible:border-ring focus-visible:ring-ring/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:ring-3 disabled:cursor-not-allowed aria-invalid:ring-3",
 				}),
-				props.checked && cn("border-primary", checkedClassName),
+				props.checked && "bg-primary text-primary-foreground border-primary",
 				props.disabled && "opacity-50",
 				className,
 			)}
@@ -35,9 +32,9 @@ function Checkbox({
 			<CheckboxPrimitive.Indicator className={cn("bg-primary h-full w-full items-center justify-center", indicatorClassName)}>
 				<Icon
 					as={Check}
-					size={12}
+					size={14}
 					strokeWidth={Platform.OS === "web" ? 2.5 : 3.5}
-					className={cn("text-primary-foreground data-checked:text-primary-foreground", iconClassName)}
+					className={cn("text-primary", iconClassName)}
 				/>
 			</CheckboxPrimitive.Indicator>
 		</CheckboxPrimitive.Root>

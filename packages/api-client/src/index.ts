@@ -30,7 +30,7 @@ export type ApiClientOptions<R extends RouteNamespace> = {
 	defaultTimeout?: number;
 };
 /**
- * Create an API client based on the provided route definitions and configuration. 
+ * Create an API client based on the provided route definitions and configuration.
  * The generated client will have methods corresponding to each route, which handle making HTTP requests, validating input and output, and error handling according to the route definitions.
  */
 export const createApiClient = <const R extends RouteNamespace>({
@@ -56,7 +56,6 @@ export const createApiClient = <const R extends RouteNamespace>({
 		};
 	};
 
-
 	/**
 	 * Build the URL path by replacing parameter placeholders with actual values from the params object.
 	 * @example buildPath("/plans/{id}", { id: 123 }) => "/plans/123"
@@ -77,7 +76,7 @@ export const createApiClient = <const R extends RouteNamespace>({
 	};
 
 	/**
-	 * Execute the HTTP request for a given route config, input data, and request options. 
+	 * Execute the HTTP request for a given route config, input data, and request options.
 	 * This function is responsible for constructing the URL, setting headers (including auth), validating input, making the fetch call, handling timeouts and aborts, and validating output according to the route definition.
 	 */
 	const executeRequest = async <T extends Route>(

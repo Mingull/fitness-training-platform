@@ -75,7 +75,7 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
             CreatedById = creatorId,
             Name = request.Name,
             Description = request.Description,
-            Difficulty = request.Difficulty,
+            DifficultyLevel = request.Difficulty,
             EstimatedDuration = request.EstimatedDuration,
             IsPublic = request.IsPublic,
         });
