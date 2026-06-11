@@ -1,0 +1,27 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Fitness.API.Features.Auth.Models;
+using Fitness.API.Features.Plans.Workouts.Models;
+
+namespace Fitness.API.Features.Plans.Models;
+
+[Table("plans")]
+public sealed class Plan
+{
+    [Key]
+    public Guid Id { get; set; }
+    public AppUser CreatedBy { get; set; } = null!;
+    [ForeignKey("CreatedById")]
+    public Guid CreatedById { get; init; }
+    [MaxLength(100)]
+    [Required]
+    public required string Name { get; init; }
+    public required string Description { get; init; }
+    public required int DifficultyLevel { get; init; }
+    public required int EstimatedDuration { get; init; }
+    public required bool IsPublic { get; init; }
+    public DateTime CreatedAt { get; init; }
+    public DateTime? UpdatedAt { get; init; }
+
+    public ICollection<Workout> Workouts { get; init; } = [];
+}
