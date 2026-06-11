@@ -56,7 +56,7 @@ export default function TrainingPlanListScreen() {
 							router.push({ pathname: "/[locale]/plans/create", params: { locale } });
 						}}
 					>
-						<FABLabel>Create Plan</FABLabel>
+						<FABLabel>{t("fab.label")}</FABLabel>
 						<FABAction>
 							<Icon as={PlusIcon} size={24} />
 						</FABAction>

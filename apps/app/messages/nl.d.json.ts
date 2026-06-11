@@ -248,6 +248,9 @@ declare const messages: {
 				updated: "Bijgewerkt";
 			};
 		};
+		fab: {
+			label: "Plan aanmaken";
+		};
 		item: {
 			duration: "{minutes, number} min";
 			you: "Jij";

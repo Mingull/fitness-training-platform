@@ -247,6 +247,9 @@ declare const messages: {
 				updated: "Updated";
 			};
 		};
+		fab: {
+			label: "Create Plan";
+		};
 		item: {
 			duration: "{minutes, number} min";
 			you: "You";

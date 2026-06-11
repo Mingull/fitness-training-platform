@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { FieldError, FieldGroup, FieldSet } from "@/components/ui/field";
-import { Scaffold, ScaffoldContent, ScaffoldDescription, ScaffoldHeader, ScaffoldTitle } from "@/components/ui/scaffold";
+import { Scaffold, ScaffoldBackButton, ScaffoldContent, ScaffoldDescription, ScaffoldHeader, ScaffoldTitle } from "@/components/ui/scaffold";
 import { Text } from "@/components/ui/text";
 import { useCreatePlan } from "@/features/plans/hooks/use-create-plan";
 import { useAppForm } from "@/hooks/forms";
@@ -86,6 +86,7 @@ export default function TrainingPlanListScreen() {
 		<Scaffold>
 			<ScaffoldHeader>
 				<View className="items-start justify-between">
+					<ScaffoldBackButton />
 					<ScaffoldTitle className="text-foreground text-xl font-semibold tracking-tight">{t("title")}</ScaffoldTitle>
 					<ScaffoldDescription className="text-muted-foreground text-sm">{t("description")}</ScaffoldDescription>
 				</View>
@@ -169,14 +170,14 @@ export default function TrainingPlanListScreen() {
 											returnKeyType="next"
 											ref={(input) => registerRef(field.name, input)}
 											submitBehavior="submit"
-						onChangeText={(text) => {
-							if (text === "") {
-								field.handleChange(0);
-								return;
-							}
-							const parsed = Number.parseInt(text, 10);
-							field.handleChange(Number.isFinite(parsed) ? parsed : 0);
-						}}
+											onChangeText={(text) => {
+												if (text === "") {
+													field.handleChange(0);
+													return;
+												}
+												const parsed = Number.parseInt(text, 10);
+												field.handleChange(Number.isFinite(parsed) ? parsed : 0);
+											}}
 											onSubmitEditing={() => focusNext("isPublic")}
 											errorComponent={<FieldError errors={translateValidationErrors(field.name, field.state.meta.errors)} />}
 										/>
