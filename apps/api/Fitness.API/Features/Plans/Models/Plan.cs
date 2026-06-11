@@ -11,7 +11,6 @@ public sealed class Plan
     [Key]
     public Guid Id { get; set; }
     public AppUser CreatedBy { get; set; } = null!;
-    [ForeignKey("CreatedById")]
     public Guid CreatedById { get; init; }
     [MaxLength(100)]
     [Required]
@@ -20,8 +19,8 @@ public sealed class Plan
     public required int DifficultyLevel { get; init; }
     public required int EstimatedDuration { get; init; }
     public required bool IsPublic { get; init; }
-    public DateTime CreatedAt { get; init; }
-    public DateTime? UpdatedAt { get; init; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
     public ICollection<Workout> Workouts { get; init; } = [];
 }
