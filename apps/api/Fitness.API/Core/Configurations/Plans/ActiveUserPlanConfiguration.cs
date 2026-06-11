@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Fitness.API.Core.Configurations.Plans;
 
-public class ActivePlanConfiguration : IEntityTypeConfiguration<ActiveUserPlan>
+public class ActiveUserPlanConfiguration : IEntityTypeConfiguration<ActiveUserPlan>
 {
     public void Configure(EntityTypeBuilder<ActiveUserPlan> entity)
     {
