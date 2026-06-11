@@ -277,6 +277,10 @@ declare const messages: {
 		create: {
 			title: "Create a new Training Plan.";
 			description: "Add the details below to create your training plan.";
+			toasts: {
+				success: "Training plan created successfully!";
+				error: "Failed to create training plan. Please try again.";
+			};
 			fields: {
 				name: {
 					label: "Name";

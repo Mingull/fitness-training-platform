@@ -278,6 +278,10 @@ declare const messages: {
 		create: {
 			title: "Nieuw trainingsplan aanmaken.";
 			description: "Voeg hieronder de gegevens toe voor je trainingsplan.";
+			toasts: {
+				success: "Trainingsplan succesvol gemaakt!";
+				error: "Kan trainingsplan niet maken. Probeer het opnieuw.";
+			};
 			fields: {
 				name: {
 					label: "Naam";

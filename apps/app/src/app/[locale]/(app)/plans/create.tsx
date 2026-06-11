@@ -43,13 +43,13 @@ export default function TrainingPlanListScreen() {
 			});
 
 			if (mutator.isError) {
-				setErrorMessage(mutator.error.message || "Failed to create training plan.");
-				toast.error(mutator.error.message || "Failed to create training plan.", { position: "top-center" });
+				setErrorMessage(mutator.error.message || t("toasts.error"));
+				toast.error(mutator.error.message || t("toasts.error"), { position: "top-center" });
 				return;
 			}
 
 			form.reset();
-			toast.success("Training plan created successfully!", { position: "top-center" });
+			toast.success(t("toasts.success"), { position: "top-center" });
 			router.push({ pathname: "/[locale]/(app)/plans", params: { locale } });
 		},
 	});
