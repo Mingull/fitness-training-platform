@@ -19,7 +19,7 @@ public static class PlanMappings
             },
             Name = plan.Name,
             Description = plan.Description,
-            Difficulty = plan.Difficulty,
+            Difficulty = PlanDifficultyResponse.FromLevel(plan.DifficultyLevel),
             EstimatedDuration = plan.EstimatedDuration,
             IsPublic = plan.IsPublic,
             CreatedAt = plan.CreatedAt,

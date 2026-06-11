@@ -43,20 +43,20 @@ export function PlansEmptyState({ isLoading, error, onRetry }: PlansEmptyStatePr
 
 	if (error) {
 		return (
-			<Card className="shadow-sm">
-				<CardHeader className="items-start pb-4">
-					<View className="bg-destructive/10 mb-2 size-11 items-center justify-center rounded-full">
+			<Empty className="border-destructive/40 border border-dashed">
+				<EmptyHeader>
+					<EmptyMedia variant="icon">
 						<Icon as={Dumbbell} size={18} className="text-destructive" />
-					</View>
-					<CardTitle className="text-xl">{t("error.title")}</CardTitle>
-					<CardDescription className="leading-5">{error.message || t("error.description")}</CardDescription>
-				</CardHeader>
-				<CardContent className="gap-3">
+					</EmptyMedia>
+					<EmptyTitle className="text-xl">{t("error.title")}</EmptyTitle>
+					<EmptyDescription className="leading-5">{error.message || t("error.description")}</EmptyDescription>
+				</EmptyHeader>
+				<EmptyContent className="gap-3">
 					<Button onPress={onRetry} className="w-full">
 						<Text>{t("error.tryAgain")}</Text>
 					</Button>
-				</CardContent>
-			</Card>
+				</EmptyContent>
+			</Empty>
 		);
 	}
 

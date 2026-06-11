@@ -38,10 +38,12 @@ export const updateProfileContract = z.object({
 });
 
 export const activeUserPlanContract = apiResponseBaseContract.extend({
-	data: z.object({
-		plan: trainingPlanItemContract,
-		activatedAt: z.iso.datetime(),
-	}).nullable(),
+	data: z
+		.object({
+			plan: trainingPlanItemContract,
+			activatedAt: z.iso.datetime(),
+		})
+		.nullable(),
 });
 /**
  * This is the TypeScript type for the active training plan of a user that will be returned from the API.

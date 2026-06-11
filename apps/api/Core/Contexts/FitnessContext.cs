@@ -55,6 +55,10 @@ public sealed class FitnessContext(DbContextOptions<FitnessContext> options) : I
 
         builder.Entity<Plan>(entity =>
         {
+            entity.Property(p => p.DifficultyLevel)
+                .HasColumnType("int")
+                .HasDefaultValue(0);
+                
             entity.Property(p => p.CreatedAt)
                 .HasColumnType("datetime")
                 .ValueGeneratedOnAdd()

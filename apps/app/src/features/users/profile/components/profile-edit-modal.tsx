@@ -102,7 +102,7 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 						</View>
 						{errorMessage ?
 							<Text className="text-destructive text-sm">{errorMessage}</Text>
-							: null}
+						:	null}
 						<FieldSet className="gap-4">
 							<FieldGroup className="flex-row gap-4">
 								<form.AppField name="firstName" validators={{ onBlur: updateProfileContract.shape.firstName }}>

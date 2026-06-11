@@ -1,6 +1,8 @@
 import { FormCheckbox } from "@/components/forms/checkbox";
 import { FormInput } from "@/components/forms/input";
 import { FormSelect } from "@/components/forms/select";
+import { FormSlider } from "@/components/forms/slider";
+import { FormSwitch } from "@/components/forms/switch";
 import { FormTextarea } from "@/components/forms/textarea";
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
 
@@ -13,6 +15,8 @@ const { useAppForm, withForm, withFieldGroup, useTypedAppFormContext } = createF
 		Textarea: FormTextarea,
 		Select: FormSelect,
 		Checkbox: FormCheckbox,
+		Switch: FormSwitch,
+		Slider: FormSlider,
 	},
 	formContext,
 	formComponents: {},

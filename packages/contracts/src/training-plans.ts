@@ -13,6 +13,10 @@ export const trainingPlanItemContract = z.object({
 	}),
 	name: z.string().max(200),
 	description: z.string().max(1000),
+	difficulty: z.object({
+		level: z.int().min(0).max(100),
+		label: z.enum(["beginner", "novice", "intermediate", "advanced", "expert"]),
+	}),
 	estimatedDuration: z.number().int().min(0),
 	isPublic: z.boolean(),
 });
@@ -41,3 +45,19 @@ export const trainingPlanListContract = apiResponseBaseContract.extend({
  * This is the TypeScript type for a list of training plans that will be returned from the API.
  */
 export type TrainingPlanList = z.infer<typeof trainingPlanListContract>;
+
+/**
+ * This is the contract for the data required to create a new training plan. This will be sent to the API when creating a new training plan.
+ */
+export const createTrainingPlanContract = z.object({
+	name: z.string("name.validations.required").min(2, "name.validations.minLength").max(100, "name.validations.maxLength"),
+	description: z.string("description.validations.required").min(2, "description.validations.minLength").max(1000, "description.validations.maxLength"),
+	difficulty: z.number().min(0, "difficulty.validations.min").max(100, "difficulty.validations.max"),
+	estimatedDuration: z.number().int().min(1, "estimatedDuration.validations.min"),
+	isPublic: z.boolean(),
+});
+
+/**
+ * This is the TypeScript type for the data required to create a new training plan.
+ */
+export type CreateTrainingPlan = z.infer<typeof createTrainingPlanContract>;

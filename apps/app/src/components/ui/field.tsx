@@ -6,9 +6,8 @@ import React, { useMemo } from "react";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@fitness/ui/lib/utils";
-import { View, ViewProps } from "react-native";
+import { Text as RNText, View, ViewProps } from "react-native";
 import { Text, TextClassContext } from "./text";
-
 type SlotElementType = React.ElementType & { slot?: string };
 type SlotReactElement = React.ReactElement<{ children?: React.ReactNode; [key: string]: unknown }>;
 
@@ -54,12 +53,13 @@ function FieldSet({ className, children, ...props }: ViewProps) {
 
 FieldSet.slot = "field-set";
 
-function FieldLegend({ className, variant = "legend", ...props }: ViewProps & { variant?: "legend" | "label" }) {
+function FieldLegend({ className, variant, ...props }: Omit<React.ComponentProps<typeof RNText>, "variant"> & { variant?: "label" | "legend" }) {
 	return (
-		<View
+		<Text
 			data-slot="field-legend"
 			data-variant={variant}
-			className={cn("mb-3 font-medium", variant === "label" ? "text-sm" : "text-base", className)}
+			className={cn("mb-3 font-medium", className)}
+			variant={variant === "label" ? "small" : "default"}
 			{...props}
 		/>
 	);

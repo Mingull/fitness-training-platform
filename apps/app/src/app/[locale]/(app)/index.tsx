@@ -1,13 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { useRouter } from "expo-router";
 import { View } from "react-native";
-import { useLocale } from "use-intl";
+import { toast } from "sonner-native";
 
 export default function HomeScreen() {
-	const locale = useLocale();
-	const router = useRouter();
-
 	return (
 		<View className="bg-background flex-1 items-center justify-center gap-2">
 			<Text className="text-primary text-xl font-bold">Welcome to Nativewind!</Text>
@@ -16,7 +12,7 @@ export default function HomeScreen() {
 				<Button
 					variant={"default"}
 					onPress={() => {
-						router.push({ pathname: "/[locale]/(app)/profile", params: { locale } });
+						toast.success("Navigating to profile...");
 					}}
 				>
 					<Text>Profile</Text>

@@ -248,12 +248,22 @@ declare const messages: {
 				updated: "Bijgewerkt";
 			};
 		};
+		fab: {
+			label: "Plan aanmaken";
+		};
 		item: {
 			duration: "{minutes, number} min";
 			you: "Jij";
 			visibility: {
 				public: "Openbaar";
 				private: "Privé";
+			};
+			difficulty: {
+				beginner: "Beginner";
+				novice: "Novice";
+				intermediate: "Gemiddeld";
+				advanced: "Geavanceerd";
+				expert: "Expert";
 			};
 		};
 		states: {
@@ -266,6 +276,57 @@ declare const messages: {
 				title: "Trainingsprogramma's niet beschikbaar";
 				description: "Kan trainingsprogramma's niet laden. \nControleer uw verbinding en probeer het opnieuw.";
 				tryAgain: "Opnieuw proberen";
+			};
+		};
+		create: {
+			title: "Nieuw trainingsplan aanmaken.";
+			description: "Voeg hieronder de gegevens toe voor je trainingsplan.";
+			toasts: {
+				success: "Trainingsplan succesvol gemaakt!";
+				error: "Kan trainingsplan niet maken. Probeer het opnieuw.";
+			};
+			fields: {
+				name: {
+					label: "Naam";
+					placeholder: "Voer een naam in voor je trainingsplan";
+					description: "Gebruik een korte herkenbare naam die de inhoud of het doel van het plan samenvat.";
+					validations: {
+						required: "Naam is verplicht";
+						minLength: "Naam moet ten minste 2 tekens bevatten";
+						maxLength: "Naam mag maximaal 100 tekens bevatten";
+					};
+				};
+				description: {
+					label: "Beschrijving";
+					placeholder: "Beschrijf je trainingsplan";
+					description: "Vat het plan samen, beschrijf bijvoorbeeld welke soorten oefeningen het bevat, de focus (kracht, cardio, flexibiliteit) en het beoogde doel (afvallen, spieropbouw, conditieverbetering).";
+					validations: {
+						required: "Beschrijving is verplicht";
+						minLength: "Beschrijving moet ten minste 2 tekens bevatten";
+						maxLength: "Beschrijving mag maximaal 1000 tekens bevatten";
+					};
+				};
+				difficulty: {
+					label: "Moeilijkheid";
+					description: "Stel in hoe zwaar dit plan is, van 1 voor makkelijk tot 100 voor erg zwaar.";
+					selected: "Geselecteerde moeilijkheid: {label, select, beginner {Beginner} novice {Novice} intermediate {Gemiddeld} advanced {Gevorderd} expert {Expert} other {Overig}} ({level, number})";
+					validations: {
+						min: "Moeilijkheid moet ten minste 0 zijn";
+						max: "Moeilijkheid kan maximaal 100 zijn";
+					};
+				};
+				estimatedDuration: {
+					label: "Geschatte duur";
+					placeholder: "Voer de geschatte duur van het trainingsplan in minuten in";
+					description: "Geef een schatting van hoe lang het duurt om het volledige trainingsplan te voltooien, bijvoorbeeld 60 minuten. Dit helpt gebruikers te bepalen of het plan past binnen hun beschikbare tijd.";
+					validations: {
+						min: "Geschatte duur moet minimaal 1 minuut zijn";
+					};
+				};
+				isPublic: {
+					label: "Openbaar";
+					description: "Schakel deze optie in als je wilt dat dit trainingsplan zichtbaar is voor andere gebruikers.";
+				};
 			};
 		};
 	};

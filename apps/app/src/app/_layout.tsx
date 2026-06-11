@@ -1,18 +1,17 @@
-import "@/polyfills";
 import { Providers } from "@/components/providers";
 import { SplashScreenController } from "@/components/splash";
+import { Toaster } from "@/components/ui/sonner";
 import { useSession } from "@/features/auth/context";
 import "@/globals.css";
-import { useToasterParams } from "@/hooks/use-toast-params";
 import { NAV_THEME } from "@/lib/theme";
+import "@/polyfills";
 import { PortalHost } from "@rn-primitives/portal";
 import { QueryClient } from "@tanstack/react-query";
 import { getLocales } from "expo-localization";
 import { Stack, useTheme } from "expo-router";
 import { ThemeProvider } from "expo-router/react-navigation";
 import { StatusBar } from "expo-status-bar";
-import { Platform, useColorScheme } from "react-native";
-import { Toaster } from "sonner-native";
+import { useColorScheme } from "react-native";
 import enMessages from "../../messages/en.json";
 import nlMessages from "../../messages/nl.json";
 
@@ -23,7 +22,6 @@ const queryClient = new QueryClient();
 
 export default function RootLayout() {
 	const colorScheme = useColorScheme();
-	const { position, stackingEnabled, theme, swipeDirection, closeButton, visibleToasts, autoWiggle, richColors, invert, gap } = useToasterParams();
 	return (
 		<Providers queryClient={queryClient} locale={locale} messages={messages}>
 			<ThemeProvider value={NAV_THEME[colorScheme === "unspecified" ? "dark" : colorScheme]}>
@@ -31,25 +29,7 @@ export default function RootLayout() {
 				<StatusBar style={colorScheme === "dark" ? "light" : "dark"} animated />
 				<RootNavigator />
 				<PortalHost />
-				<Toaster
-					positionerStyle={Platform.OS === "android" ? { elevation: 999 } : undefined}
-					position={position}
-					swipeToDismissDirection={swipeDirection}
-					visibleToasts={visibleToasts}
-					closeButton={closeButton}
-					autoWiggleOnUpdate={autoWiggle}
-					theme={theme}
-					richColors={richColors}
-					invert={invert}
-					enableStacking={stackingEnabled}
-					gap={gap}
-					toastOptions={{
-						actionButtonStyle: {
-							paddingHorizontal: 20,
-						},
-					}}
-					pauseWhenPageIsHidden
-				/>
+				<Toaster position="top-center" theme={colorScheme === "dark" ? "dark" : "light"} />
 			</ThemeProvider>
 		</Providers>
 	);
