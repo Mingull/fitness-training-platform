@@ -1,5 +1,6 @@
 using Fitness.API.Core.Utilities;
 using Fitness.API.Features.Plans.Contracts;
+using Fitness.API.Features.Workouts.Contracts;
 using Fitness.API.Features.Users.Contracts;
 
 namespace Fitness.API.Features.Plans.Abstract;
@@ -20,7 +21,7 @@ public interface IPlanService
     /// </summary>
     /// <param name="planId"></param>
     /// <returns></returns>
-    Task<Result<PlanResponse>> GetPlanByIdAsync(Guid planId, Guid? userId = null);
+    Task<Result<PlanDetailResponse>> GetPlanByIdAsync(Guid planId, Guid? userId = null);
     /// <summary>
     /// Gets the active plan for the user.
     /// </summary>
@@ -47,4 +48,5 @@ public interface IPlanService
     /// <param name="creatorId">The authenticated user ID that will be set as the creator of the plan.</param>
     /// <returns></returns>
     Task<Result<PlanResponse>> CreatePlanAsync(CreatePlanRequest request, Guid creatorId);
+    Task<Result<PlanDetailResponse>> AddWorkoutToPlanAsync(Guid planId, AddWorkoutRequest request, Guid userId);
 }

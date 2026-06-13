@@ -15,6 +15,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Fitness.API.Features.Plans;
 using Fitness.API.Features.Plans.Abstract;
+using Fitness.API.Features.Exercises.Abstract;
+using Fitness.API.Features.Exercises;
+using Fitness.API.Features.Workouts.Abstract;
+using Fitness.API.Features.Workouts;
+using Fitness.API.Features.WorkoutExercises.Abstract;
+using Fitness.API.Features.WorkoutExercises;
 
 namespace Fitness.API;
 
@@ -97,7 +103,10 @@ public class Startup(IConfiguration configuration)
     {
         services.AddScoped<IAuthRepository, AuthRepository>() // for repositories that should be created per request
             .AddScoped<IProfileRepository, ProfileRepository>()
-            .AddScoped<IPlanRepository, PlanRepository>();
+            .AddScoped<IPlanRepository, PlanRepository>()
+            .AddScoped<IExerciseRepository, ExerciseRepository>()
+            .AddScoped<IWorkoutRepository, WorkoutRepository>()
+            .AddScoped<IWorkoutExerciseRepository, WorkoutExerciseRepository>();
         // services.AddSingleton<IRepository, Repository>() for repositories that should be created once and shared across the application
     }
     private void InitializeServices(IServiceCollection services)
@@ -105,6 +114,9 @@ public class Startup(IConfiguration configuration)
         services.AddScoped<IAuthService, AuthService>() // for services that should be created per request
             .AddScoped<IProfileService, ProfileService>()
             .AddScoped<IPlanService, PlanService>()
+            .AddScoped<IWorkoutService, WorkoutService>()
+            .AddScoped<IExerciseService, ExerciseService>()
+            .AddScoped<IWorkoutExerciseService, WorkoutExerciseService>()
             .AddSingleton<TokenProvider>(); // for services that should be created once and shared across the application
     }
 }

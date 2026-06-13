@@ -1,10 +1,12 @@
 using Fitness.API.Core.Utilities;
+using Fitness.API.Features.Auth.Utilities;
 using Fitness.API.Features.Plans.Abstract;
 using Fitness.API.Features.Plans.Contracts;
-using Fitness.API.Features.Plans.Models;
+using Fitness.API.Features.Plans;
 using Fitness.API.Features.Plans.Utilities;
 using Fitness.API.Features.Users;
 using Fitness.API.Features.Users.Contracts;
+using Fitness.API.Features.Workouts.Contracts;
 
 namespace Fitness.API.Features.Plans;
 
@@ -13,7 +15,7 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
     public async Task<Result<IEnumerable<PlanResponse>>> GetAllPlansAsync(Guid? userId)
     {
         // Get all plans from the repository
-        var plans = await planRepository.GetAllPlansAsync(userId);
+        var plans = await planRepository.GetAllAsync(userId);
 
         // Plans now include the CreatedBy -> AppUser -> Profile navigation
         var planResponses = new List<PlanResponse>();
@@ -27,9 +29,9 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
         return Result<IEnumerable<PlanResponse>>.Success(planResponses);
     }
 
-    public async Task<Result<PlanResponse>> GetPlanByIdAsync(Guid planId, Guid? userId = null)
+    public async Task<Result<PlanDetailResponse>> GetPlanByIdAsync(Guid planId, Guid? userId = null)
     {
-        var plan = await planRepository.GetPlanByIdAsync(planId);
+        var plan = await planRepository.GetByIdAsync(planId, withWorkouts: true);
 
         if (plan == null)
         {
@@ -42,7 +44,7 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
             return PlanErrors.NotFound; // Return not found to avoid exposing the existence of the plan
         }
 
-        return Result<PlanResponse>.Success(plan.ToResponse());
+        return Result<PlanDetailResponse>.Success(plan.ToDetailResponse());
     }
 
     public async Task<Result<ActiveUserPlanResponse?>> GetActivePlanForUserAsync(Guid userId)
@@ -82,5 +84,32 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
 
         // Return the created plan as a response
         return Result<PlanResponse>.Success(createdPlan.ToResponse());
+    }
+
+    public async Task<Result<PlanDetailResponse>> AddWorkoutToPlanAsync(Guid planId, AddWorkoutRequest request, Guid userId)
+    {
+        var plan = await planRepository.GetByIdAsync(planId, withWorkouts: true);
+
+        if (plan == null)
+            return PlanErrors.NotFound;
+
+        // Check if the user has permission to modify the plan
+        if (plan.CreatedById != userId)
+            return AuthErrors.UnauthorizedWithResource("plan");
+
+        // Add the workout to the plan
+        var nextOrder = plan.Workouts.Count == 0
+                ? 1
+                : plan.Workouts.Max(workout => workout.Order) + 1;
+
+        await planRepository.AddWorkoutAsync(plan.Id, new()
+        {
+            Name = request.Name,
+            Order = nextOrder
+        });
+
+        // Reload the plan with workouts to return the updated details
+        plan = await planRepository.GetByIdAsync(planId, withWorkouts: true);
+        return Result<PlanDetailResponse>.Success(plan!.ToDetailResponse());
     }
 }

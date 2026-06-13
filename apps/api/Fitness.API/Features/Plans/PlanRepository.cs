@@ -1,13 +1,14 @@
 using Fitness.API.Core.Contexts;
 using Fitness.API.Features.Plans.Abstract;
 using Fitness.API.Features.Plans.Models;
+using Fitness.API.Features.Workouts.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.API.Features.Plans;
 
 public class PlanRepository(FitnessContext context) : IPlanRepository
 {
-    public async Task<IEnumerable<Plan>> GetAllPlansAsync(Guid? userId)
+    public async Task<IEnumerable<Plan>> GetAllAsync(Guid? userId)
     {
         // Filter out private plans that do not belong to the authenticated user
         return await context.Plans
@@ -17,12 +18,18 @@ public class PlanRepository(FitnessContext context) : IPlanRepository
             .ToListAsync();
     }
 
-    public async Task<Plan?> GetPlanByIdAsync(Guid planId)
+    public async Task<Plan?> GetByIdAsync(Guid planId, bool withWorkouts = false)
     {
-        return await context.Plans
+        IQueryable<Plan> query = context.Plans
             .Include(plan => plan.CreatedBy)
-                .ThenInclude(user => user.Profile)
-            .FirstOrDefaultAsync(plan => plan.Id == planId);
+            .ThenInclude(user => user.Profile);
+
+        if (withWorkouts)
+        {
+            query = query.Include(plan => plan.Workouts);
+        }
+
+        return await query.FirstOrDefaultAsync(plan => plan.Id == planId);
     }
     public Task<ActiveUserPlan?> GetActivePlanForUserAsync(Guid userId)
     {
@@ -65,6 +72,15 @@ public class PlanRepository(FitnessContext context) : IPlanRepository
         await context.SaveChangesAsync();
 
         // Reload the plan with the CreatedBy navigation property included to ensure the response is complete
-        return await GetPlanByIdAsync(plan.Id) ?? plan;
+        return await GetByIdAsync(plan.Id) ?? plan;
+    }
+
+    public async Task AddWorkoutAsync(Guid planId, Workout workout)
+    {
+        workout.Id = Guid.CreateVersion7();
+        workout.PlanId = planId;
+
+        context.Workouts.Add(workout);
+        await context.SaveChangesAsync();
     }
 }

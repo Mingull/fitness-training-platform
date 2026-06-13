@@ -1,0 +1,28 @@
+meta {
+  name: Add exercise
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/workouts/:workoutId/exercises
+  body: json
+  auth: bearer
+}
+
+params:path {
+  workoutId: 019ec287-488f-7911-a479-677fdfe0d32c
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "exerciseId": "019ebd0e-1eb3-751d-a7dc-e9154c9afdf8",
+    "sets": 3,
+    "reps": 8,
+    "weight": 1.0
+  }
+}

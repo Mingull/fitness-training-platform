@@ -1,6 +1,9 @@
 using Fitness.API.Features.Auth.Models;
 using Fitness.API.Features.Plans.Models;
+using Fitness.API.Features.Exercises.Models;
+using Fitness.API.Features.Workouts.Models;
 using Fitness.API.Features.Profiles.Models;
+using Fitness.API.Features.WorkoutExercises.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +16,9 @@ public sealed class FitnessContext(DbContextOptions<FitnessContext> options) : I
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
     public DbSet<Plan> Plans => Set<Plan>();
     public DbSet<ActiveUserPlan> ActiveUserPlans => Set<ActiveUserPlan>();
-
+    public DbSet<Workout> Workouts => Set<Workout>();
+    public DbSet<WorkoutExercise> WorkoutExercises => Set<WorkoutExercise>();
+    public DbSet<Exercise> Exercises => Set<Exercise>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

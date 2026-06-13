@@ -2,10 +2,11 @@ namespace Fitness.API.Core.Utilities;
 
 public enum ErrorType
 {
-    NotFound,
-    Validation,
-    Unauthorized,
-    Forbidden,
+    BadRequest,
     Conflict,
-    InternalError
+    Forbidden,
+    InternalError,
+    NotFound,
+    Unauthorized,
+    Validation,
 }

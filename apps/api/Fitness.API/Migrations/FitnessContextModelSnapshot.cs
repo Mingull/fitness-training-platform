@@ -141,6 +141,60 @@ namespace Mingull.Fitness.API.Migrations
                     b.ToTable("refresh_tokens", (string)null);
                 });
 
+            modelBuilder.Entity("Fitness.API.Features.Exercises.Models.Exercise", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("created_by_id");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("deleted_at")
+                        .HasDefaultValueSql("NULL");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)")
+                        .HasColumnName("description");
+
+                    b.Property<string>("MediaUrl")
+                        .HasColumnType("longtext")
+                        .HasColumnName("media_url");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id")
+                        .HasName("pk_exercises");
+
+                    b.HasIndex("CreatedById")
+                        .HasDatabaseName("ix_exercises_created_by_id");
+
+                    b.ToTable("exercises", (string)null);
+                });
+
             modelBuilder.Entity("Fitness.API.Features.Plans.Models.ActiveUserPlan", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -187,6 +241,12 @@ namespace Mingull.Fitness.API.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("created_by_id");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("deleted_at")
+                        .HasDefaultValueSql("NULL");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext")
@@ -225,115 +285,6 @@ namespace Mingull.Fitness.API.Migrations
                         .HasDatabaseName("ix_plans_created_by_id");
 
                     b.ToTable("plans", (string)null);
-                });
-
-            modelBuilder.Entity("Fitness.API.Features.Plans.Workouts.Exercises.Models.Exercise", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("CreatedById")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("created_by_id");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("varchar(1000)")
-                        .HasColumnName("description");
-
-                    b.Property<string>("MediaUrl")
-                        .HasColumnType("longtext")
-                        .HasColumnName("media_url");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_exercises");
-
-                    b.HasIndex("CreatedById")
-                        .HasDatabaseName("ix_exercises_created_by_id");
-
-                    b.ToTable("exercises", (string)null);
-                });
-
-            modelBuilder.Entity("Fitness.API.Features.Plans.Workouts.Models.Workout", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("name");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int")
-                        .HasColumnName("order");
-
-                    b.Property<Guid>("PlanId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("plan_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_workouts");
-
-                    b.HasIndex("PlanId")
-                        .HasDatabaseName("ix_workouts_plan_id");
-
-                    b.ToTable("workouts", (string)null);
-                });
-
-            modelBuilder.Entity("Fitness.API.Features.Plans.Workouts.Models.WorkoutExercise", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("ExerciseId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("exercise_id");
-
-                    b.Property<int>("ExerciseOrder")
-                        .HasColumnType("int")
-                        .HasColumnName("exercise_order");
-
-                    b.Property<int>("Reps")
-                        .HasColumnType("int")
-                        .HasColumnName("reps");
-
-                    b.Property<int>("Sets")
-                        .HasColumnType("int")
-                        .HasColumnName("sets");
-
-                    b.Property<decimal>("Weight")
-                        .HasColumnType("decimal(10, 2)")
-                        .HasColumnName("weight");
-
-                    b.Property<Guid>("WorkoutId")
-                        .HasColumnType("char(36)")
-                        .HasColumnName("workout_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_workout_exercises");
-
-                    b.HasIndex("ExerciseId")
-                        .HasDatabaseName("ix_workout_exercises_exercise_id");
-
-                    b.HasIndex("WorkoutId")
-                        .HasDatabaseName("ix_workout_exercises_workout_id");
-
-                    b.ToTable("workout_exercises", (string)null);
                 });
 
             modelBuilder.Entity("Fitness.API.Features.Profiles.Models.Profile", b =>
@@ -395,6 +346,98 @@ namespace Mingull.Fitness.API.Migrations
                         .HasDatabaseName("ix_profiles_user_id");
 
                     b.ToTable("profiles", (string)null);
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.WorkoutExercises.Models.WorkoutExercise", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("ExerciseId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("exercise_id");
+
+                    b.Property<int>("ExerciseOrder")
+                        .HasColumnType("int")
+                        .HasColumnName("exercise_order");
+
+                    b.Property<int>("Reps")
+                        .HasColumnType("int")
+                        .HasColumnName("reps");
+
+                    b.Property<int>("Sets")
+                        .HasColumnType("int")
+                        .HasColumnName("sets");
+
+                    b.Property<decimal>("Weight")
+                        .HasColumnType("decimal(10, 2)")
+                        .HasColumnName("weight");
+
+                    b.Property<Guid>("WorkoutId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("workout_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_workout_exercises");
+
+                    b.HasIndex("ExerciseId")
+                        .HasDatabaseName("ix_workout_exercises_exercise_id");
+
+                    b.HasIndex("WorkoutId", "ExerciseId", "ExerciseOrder")
+                        .IsUnique()
+                        .HasDatabaseName("ix_workout_exercises_workout_id_exercise_id_exercise_order");
+
+                    b.ToTable("workout_exercises", (string)null);
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.Workouts.Models.Workout", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("deleted_at")
+                        .HasDefaultValueSql("NULL");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int")
+                        .HasColumnName("order");
+
+                    b.Property<Guid>("PlanId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("plan_id");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id")
+                        .HasName("pk_workouts");
+
+                    b.HasIndex("PlanId")
+                        .HasDatabaseName("ix_workouts_plan_id");
+
+                    b.ToTable("workouts", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -571,6 +614,18 @@ namespace Mingull.Fitness.API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Fitness.API.Features.Exercises.Models.Exercise", b =>
+                {
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_exercises_users_created_by_id");
+
+                    b.Navigation("CreatedBy");
+                });
+
             modelBuilder.Entity("Fitness.API.Features.Plans.Models.ActiveUserPlan", b =>
                 {
                     b.HasOne("Fitness.API.Features.Plans.Models.Plan", "Plan")
@@ -604,51 +659,6 @@ namespace Mingull.Fitness.API.Migrations
                     b.Navigation("CreatedBy");
                 });
 
-            modelBuilder.Entity("Fitness.API.Features.Plans.Workouts.Exercises.Models.Exercise", b =>
-                {
-                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_exercises_users_created_by_id");
-
-                    b.Navigation("CreatedBy");
-                });
-
-            modelBuilder.Entity("Fitness.API.Features.Plans.Workouts.Models.Workout", b =>
-                {
-                    b.HasOne("Fitness.API.Features.Plans.Models.Plan", "Plan")
-                        .WithMany()
-                        .HasForeignKey("PlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_workouts_plans_plan_id");
-
-                    b.Navigation("Plan");
-                });
-
-            modelBuilder.Entity("Fitness.API.Features.Plans.Workouts.Models.WorkoutExercise", b =>
-                {
-                    b.HasOne("Fitness.API.Features.Plans.Workouts.Exercises.Models.Exercise", "Exercise")
-                        .WithMany()
-                        .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_workout_exercises_exercises_exercise_id");
-
-                    b.HasOne("Fitness.API.Features.Plans.Workouts.Models.Workout", "Workout")
-                        .WithMany()
-                        .HasForeignKey("WorkoutId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_workout_exercises_workouts_workout_id");
-
-                    b.Navigation("Exercise");
-
-                    b.Navigation("Workout");
-                });
-
             modelBuilder.Entity("Fitness.API.Features.Profiles.Models.Profile", b =>
                 {
                     b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "User")
@@ -659,6 +669,39 @@ namespace Mingull.Fitness.API.Migrations
                         .HasConstraintName("fk_profiles_users_user_id");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.WorkoutExercises.Models.WorkoutExercise", b =>
+                {
+                    b.HasOne("Fitness.API.Features.Exercises.Models.Exercise", "Exercise")
+                        .WithMany("WorkoutExercises")
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_workout_exercises_exercises_exercise_id");
+
+                    b.HasOne("Fitness.API.Features.Workouts.Models.Workout", "Workout")
+                        .WithMany("WorkoutExercises")
+                        .HasForeignKey("WorkoutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_workout_exercises_workouts_workout_id");
+
+                    b.Navigation("Exercise");
+
+                    b.Navigation("Workout");
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.Workouts.Models.Workout", b =>
+                {
+                    b.HasOne("Fitness.API.Features.Plans.Models.Plan", "Plan")
+                        .WithMany("Workouts")
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_workouts_plans_plan_id");
+
+                    b.Navigation("Plan");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -721,6 +764,21 @@ namespace Mingull.Fitness.API.Migrations
             modelBuilder.Entity("Fitness.API.Features.Auth.Models.AppUser", b =>
                 {
                     b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.Exercises.Models.Exercise", b =>
+                {
+                    b.Navigation("WorkoutExercises");
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.Plans.Models.Plan", b =>
+                {
+                    b.Navigation("Workouts");
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.Workouts.Models.Workout", b =>
+                {
+                    b.Navigation("WorkoutExercises");
                 });
 #pragma warning restore 612, 618
         }
