@@ -1,5 +1,5 @@
 using Fitness.API.Features.WorkoutExercises.Abstract;
-using Fitness.API.Features.Workouts.Contracts;
+using Fitness.API.Features.WorkoutExercises.Contracts;
 
 namespace Fitness.API.Features.WorkoutExercises;
 

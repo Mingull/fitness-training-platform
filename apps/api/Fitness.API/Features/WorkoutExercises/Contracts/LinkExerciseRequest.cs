@@ -1,4 +1,4 @@
-namespace Fitness.API.Features.Workouts.Contracts;
+namespace Fitness.API.Features.WorkoutExercises.Contracts;
 
 public record LinkExerciseRequest
 {
