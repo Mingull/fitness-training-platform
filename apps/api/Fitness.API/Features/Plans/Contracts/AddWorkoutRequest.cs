@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Fitness.API.Features.Workouts.Contracts;
+namespace Fitness.API.Features.Plans.Contracts;
 
 public record AddWorkoutRequest
 {
