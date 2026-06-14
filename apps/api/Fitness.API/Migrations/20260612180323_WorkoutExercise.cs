@@ -112,9 +112,9 @@ namespace Mingull.Fitness.API.Migrations
                 column: "exercise_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_workout_exercises_workout_id_exercise_id_exercise_order",
+                name: "ix_workout_exercises_workout_id_exercise_order",
                 table: "workout_exercises",
-                columns: new[] { "workout_id", "exercise_id", "exercise_order" },
+                columns: new[] { "workout_id", "exercise_order" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
