@@ -140,5 +140,6 @@ namespace Mingull.Fitness.API.Migrations
                 table: "plans");
 
             // difficulty_level is created in an earlier migration; do not drop it when rolling back this migration.
+        }
     }
 }
