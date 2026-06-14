@@ -32,6 +32,7 @@ public class ExerciseService(IExerciseRepository exerciseRepository) : IExercise
         {
             Name = request.Name,
             Description = request.Description,
+            MediaUrl = request.MediaUrl,
             CreatedById = userId
         });
 

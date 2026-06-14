@@ -26,7 +26,7 @@ public class WorkoutService(IWorkoutRepository workoutRepository, IExerciseServi
 
     public async Task<Result<WorkoutResponse>> AddExerciseAsync(Guid workoutId, AddExerciseRequest request, Guid userId)
     {
-        // check wheter exerciseId has been provided in the request or is an exercise object has been provided
+        // Check whether an ExerciseId was provided, or an Exercise object was provided.
         if (request.ExerciseId is null && request.Exercise is null)
             return WorkoutErrors.NoExerciseProvided; // we need either an exercise id or an exercise object to add an exercise to the workout
 

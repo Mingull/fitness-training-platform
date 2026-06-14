@@ -1,8 +1,5 @@
 using Fitness.API.Core.Contexts;
-using Fitness.API.Core.Utilities;
-using Fitness.API.Features.Exercises.Models;
 using Fitness.API.Features.Workouts.Abstract;
-using Fitness.API.Features.Workouts.Contracts;
 using Fitness.API.Features.Workouts.Models;
 using Microsoft.EntityFrameworkCore;
 

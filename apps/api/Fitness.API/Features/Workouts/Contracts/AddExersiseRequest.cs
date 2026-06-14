@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Fitness.API.Features.Exercises.Contracts;
 
 namespace Fitness.API.Features.Workouts.Contracts;

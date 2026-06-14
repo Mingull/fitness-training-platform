@@ -18,7 +18,7 @@ public class WorkoutExerciseConfiguration : IEntityTypeConfiguration<WorkoutExer
             .HasForeignKey(we => we.ExerciseId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        entity.HasIndex(we => new { we.WorkoutId, we.ExerciseId, we.ExerciseOrder })
+        entity.HasIndex(we => new { we.WorkoutId, we.ExerciseOrder })
             .IsUnique();
     }
 }
