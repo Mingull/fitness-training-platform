@@ -139,9 +139,6 @@ namespace Mingull.Fitness.API.Migrations
                 name: "deleted_at",
                 table: "plans");
 
-            migrationBuilder.DropColumn(
-                name: "difficulty_level",
-                table: "plans");
-        }
+            // difficulty_level is created in an earlier migration; do not drop it when rolling back this migration.
     }
 }
