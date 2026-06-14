@@ -22,8 +22,17 @@ public class PlanConfiguration : IEntityTypeConfiguration<Plan>
             .ValueGeneratedOnUpdate()
             .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
 
+        entity.Property(p => p.DeletedAt)
+            .HasColumnType("datetime")
+            .HasDefaultValueSql("NULL");
+
         entity.HasOne(p => p.CreatedBy)
             .WithMany()
             .HasForeignKey(p => p.CreatedById);
+
+        entity.HasMany(p => p.Workouts)
+            .WithOne(w => w.Plan)
+            .HasForeignKey(w => w.PlanId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

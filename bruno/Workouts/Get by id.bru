@@ -1,0 +1,19 @@
+meta {
+  name: Get by id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/workouts/:workoutId
+  body: none
+  auth: bearer
+}
+
+params:path {
+  workoutId: 019ec287-488f-7911-a479-677fdfe0d32c
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

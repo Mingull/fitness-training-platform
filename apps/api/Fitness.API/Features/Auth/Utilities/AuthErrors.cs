@@ -21,8 +21,18 @@ public static class AuthErrors
         new("InvalidCredentials", ErrorType.Unauthorized, "Unauthorized", "Invalid credentials.");
     public static ApiError InvalidRefreshToken { get; } =
         new("InvalidRefreshToken", ErrorType.Unauthorized, "Unauthorized", "The refresh token is invalid or has expired.");
+    /// <summary>
+    /// Represents an unauthorized error when the user tries to access a resource or perform an action they are not authorized for.
+    /// </summary>
     public static ApiError Unauthorized { get; } =
         new("Unauthorized", ErrorType.Unauthorized, "Unauthorized", "You are not authorized to perform this action.");
+    /// <summary>
+    /// Represents an unauthorized error when the user tries to access a resource they are not authorized for, with a specific resource name in the message.
+    /// </summary>
+    /// <param name="resource"></param>
+    /// <returns></returns>
+    public static ApiError UnauthorizedWithResource(string resource) =>
+        new("Unauthorized", ErrorType.Unauthorized, "Unauthorized", $"You are not authorized to access the {resource}.");
 
     public static ApiError MapUserCreationFailure(IEnumerable<IdentityError> errors)
     {

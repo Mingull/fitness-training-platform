@@ -1,4 +1,5 @@
 using Fitness.API.Features.Plans.Models;
+using Fitness.API.Features.Workouts.Models;
 
 namespace Fitness.API.Features.Plans.Abstract;
 
@@ -9,13 +10,13 @@ public interface IPlanRepository
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
-    Task<IEnumerable<Plan>> GetAllPlansAsync(Guid? userId);
+    Task<IEnumerable<Plan>> GetAllAsync(Guid? userId);
     /// <summary>
     /// Gets an plan by its id.
     /// </summary>
     /// <param name="planId"></param>
     /// <returns></returns>
-    Task<Plan?> GetPlanByIdAsync(Guid planId);
+    Task<Plan?> GetByIdAsync(Guid planId, bool withWorkouts = false);
     /// <summary>
     /// Gets the active plan for the user. If the user does not have an active plan, it will return null.
     /// </summary>
@@ -41,4 +42,5 @@ public interface IPlanRepository
     /// <param name="plan">The plan entity to create.</param>
     /// <returns>The created plan.</returns>
     Task<Plan> CreatePlanAsync(Plan plan);
+    Task AddWorkoutAsync(Guid planId, Workout workout);
 }

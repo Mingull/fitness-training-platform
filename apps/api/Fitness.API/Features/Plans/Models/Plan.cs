@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Fitness.API.Features.Auth.Models;
-using Fitness.API.Features.Plans.Workouts.Models;
+using Fitness.API.Features.Workouts.Models;
 
 namespace Fitness.API.Features.Plans.Models;
 
@@ -21,6 +21,7 @@ public sealed class Plan
     public required bool IsPublic { get; init; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
+    public DateTime? DeletedAt { get; private set; }
 
     public ICollection<Workout> Workouts { get; init; } = [];
 }

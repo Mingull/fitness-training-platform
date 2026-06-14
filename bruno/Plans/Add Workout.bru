@@ -1,0 +1,25 @@
+meta {
+  name: Add Workout
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/plans/:planId/workouts
+  body: json
+  auth: bearer
+}
+
+params:path {
+  planId: 019ea254-df10-7828-bb83-da1b8ffbf21e
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "name":"This is a test workout"
+  }
+}

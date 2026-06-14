@@ -193,6 +193,12 @@ namespace Mingull.Fitness.API.Migrations
                         .HasColumnType("int")
                         .HasColumnName("estimated_duration");
 
+                    b.Property<int>("DifficultyLevel")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("difficulty_level");
+
                     b.Property<bool>("IsPublic")
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("is_public");

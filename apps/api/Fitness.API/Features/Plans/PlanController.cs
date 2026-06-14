@@ -3,6 +3,7 @@ using Fitness.API.Core.Extensions;
 using Fitness.API.Core.Utilities;
 using Fitness.API.Features.Plans.Abstract;
 using Fitness.API.Features.Plans.Contracts;
+using Fitness.API.Features.Workouts.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,6 +50,9 @@ public class PlanController(IPlanService planService) : ControllerBase
 
     [HttpGet("{id:guid}")]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(ApiResponse<PlanDetailResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetPlanByIdAsync([FromRoute] Guid id)
     {
         var userId = this.UserIdFromJwt();
@@ -60,7 +64,7 @@ public class PlanController(IPlanService planService) : ControllerBase
             return StatusCode(error.Status ?? StatusCodes.Status500InternalServerError, error);
         }
 
-        return Ok(new ApiResponse<PlanResponse>
+        return Ok(new ApiResponse<PlanDetailResponse>
         {
             Status = StatusCodes.Status200OK,
             StatusCode = "Ok",
@@ -79,9 +83,7 @@ public class PlanController(IPlanService planService) : ControllerBase
     {
         var userId = this.UserIdFromJwt();
         if (!userId.HasValue)
-        {
             return Unauthorized(new ApiError("InvalidToken", ErrorType.Unauthorized, "Invalid token", "The provided token is invalid."));
-        }
 
         var result = await planService.CreatePlanAsync(request, userId.Value);
         if (!result.IsSuccess)
@@ -95,6 +97,32 @@ public class PlanController(IPlanService planService) : ControllerBase
             Status = StatusCodes.Status200OK,
             StatusCode = "Ok",
             Message = "Training plan created successfully",
+            Data = result.Value
+        });
+    }
+
+    [HttpPost("{planId:guid}/workouts")]
+    [Authorize]
+    public async Task<IActionResult> AddWorkoutAsync([FromRoute] Guid planId, [FromBody] AddWorkoutRequest request)
+    {
+        var userId = this.UserIdFromJwt();
+        if (!userId.HasValue)
+        {
+            return Unauthorized(new ApiError("InvalidToken", ErrorType.Unauthorized, "Invalid token", "The provided token is invalid."));
+        }
+
+        var result = await planService.AddWorkoutToPlanAsync(planId, request, userId.Value);
+        if (!result.IsSuccess)
+        {
+            var error = result.Error!;
+            return StatusCode(error.Status ?? StatusCodes.Status500InternalServerError, error);
+        }
+
+        return Ok(new ApiResponse<PlanDetailResponse>
+        {
+            Status = StatusCodes.Status200OK,
+            StatusCode = "Ok",
+            Message = "Workout added to training plan successfully",
             Data = result.Value
         });
     }
