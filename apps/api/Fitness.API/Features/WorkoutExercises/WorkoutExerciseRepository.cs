@@ -25,4 +25,10 @@ public class WorkoutExerciseRepository(FitnessContext context) : IWorkoutExercis
 
         return workoutExercise;
     }
+
+    public Task UpdateExerciseOrdersAsync(IEnumerable<WorkoutExercise> workoutExercises)
+    {
+        context.WorkoutExercises.UpdateRange(workoutExercises);
+        return context.SaveChangesAsync();
+    }
 }

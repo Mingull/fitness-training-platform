@@ -3,11 +3,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useFieldContext } from "@/hooks/forms";
 import { ComponentProps } from "react";
 
-export function FormTextarea({ label, description, ...props }: FormControlProps & ComponentProps<typeof Textarea>) {
+export function FormTextarea({ label, description, errorComponent, ...props }: FormControlProps & ComponentProps<typeof Textarea>) {
 	const field = useFieldContext<string>();
 
 	return (
-		<FormBase label={label} description={description} horizontal>
+		<FormBase label={label} description={description} horizontal errorComponent={errorComponent} {...props}>
 			{(isInvalid) => (
 				<Textarea
 					id={field.name}

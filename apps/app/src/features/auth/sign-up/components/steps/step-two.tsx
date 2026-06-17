@@ -11,7 +11,7 @@ export const StepTwo = withForm({
 	...sharedForm,
 	asyncAlways: true,
 	render: function Render({ form, className }) {
-		const t = useTranslations("signUp.steps.stepTwo");
+		const t = useTranslations("auth.signUp.steps.personal");
 		const fields = useRef(new Map<FlattenRefName<FormSchema>, TextInput>());
 
 		const registerRef = (name: FlattenRefName<FormSchema>, input: TextInput | null) => {
@@ -32,8 +32,8 @@ export const StepTwo = withForm({
 				<form.AppField name="stepTwo.firstname">
 					{(field) => (
 						<field.Input
-							label={t("inputs.firstname.label")}
-							placeholder={t("inputs.firstname.placeholder")}
+							label={t("form.fields.firstname.label")}
+							placeholder={t("form.fields.firstname.placeholder")}
 							returnKeyType="next"
 							ref={(input) => registerRef(field.name, input)}
 							submitBehavior="submit"
@@ -45,8 +45,8 @@ export const StepTwo = withForm({
 				<form.AppField name="stepTwo.lastname">
 					{(field) => (
 						<field.Input
-							label={t("inputs.lastname.label")}
-							placeholder={t("inputs.lastname.placeholder")}
+							label={t("form.fields.lastname.label")}
+							placeholder={t("form.fields.lastname.placeholder")}
 							returnKeyType="next"
 							ref={(input) => registerRef(field.name, input)}
 							submitBehavior="submit"
@@ -58,8 +58,8 @@ export const StepTwo = withForm({
 				<form.AppField name="stepTwo.username">
 					{(field) => (
 						<field.Input
-							label={t("inputs.username.label")}
-							placeholder={t("inputs.username.placeholder")}
+							label={t("form.fields.username.label")}
+							placeholder={t("form.fields.username.placeholder")}
 							returnKeyType="next"
 							ref={(input) => registerRef(field.name, input)}
 							submitBehavior="submit"

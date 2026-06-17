@@ -20,7 +20,7 @@ import { useLocale, useTranslations } from "use-intl";
 export default function ProfileScreen() {
 	const router = useRouter();
 	const locale = useLocale();
-	const t = useTranslations("profile");
+	const t = useTranslations("user.profile");
 	const { data, isLoading, error, isRefetching, refetch } = useProfile();
 	const { signOut } = useAuthActions();
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -32,7 +32,7 @@ export default function ProfileScreen() {
 					<Button variant="ghost" size="icon" onPress={() => router.back()}>
 						<Icon as={ChevronLeft} size={14 * 1.5} strokeWidth={3} className="text-primary-foreground" />
 					</Button>
-					<Text className="text-primary-foreground text-center text-lg font-medium">{isLoading ? t("title.loading") : t("title.label")}</Text>
+					<Text className="text-primary-foreground text-center text-lg font-medium">{isLoading ? t("status.loading") : t("header.title")}</Text>
 					<Button
 						onPress={() => setIsEditModalOpen(true)}
 						variant="accent"
@@ -76,8 +76,8 @@ export default function ProfileScreen() {
 									<Icon as={XIcon} size={14 * 2} strokeWidth={3} className="text-primary-foreground text-2xl font-bold" />
 								</View>
 
-								<Text className="text-destructive mt-3 text-xl font-semibold">{error.message || t("title.failed")}</Text>
-								<Text className="text-sm text-white/80">{t("tryAgain")}</Text>
+								<Text className="text-destructive mt-3 text-xl font-semibold">{error.message || t("status.failed")}</Text>
+								<Text className="text-sm text-white/80">{t("status.tryAgainLater")}</Text>
 							</View>
 
 							<View className="bg-card flex-1 gap-2 rounded-4xl p-6 shadow-sm">
@@ -107,11 +107,11 @@ export default function ProfileScreen() {
 							</View>
 
 							<View className="bg-card flex-1 gap-2 rounded-4xl p-6 shadow-sm">
-								<ProfileRow label={t("rows.email.label")} value={data.email} />
-								<ProfileRow label={t("rows.role.label")} value={data.roles[0]} />
-								<ProfileRow label={t("rows.experience.label")} value={t(`rows.experience.options.${data.experienceLevel}`)} />
-								<ProfileRow label={t("rows.goals.label")} value={data.goals ?? t("rows.goals.empty")} vertical />
-								<ProfileRow label={t("rows.bio.label")} value={data.bio ?? t("rows.bio.empty")} vertical />
+								<ProfileRow label={t("fields.email.label")} value={data.email} />
+								<ProfileRow label={t("fields.role.label")} value={data.roles[0]} />
+								<ProfileRow label={t("fields.experience.label")} value={t(`fields.experience.options.${data.experienceLevel}`)} />
+								<ProfileRow label={t("fields.goals.label")} value={data.goals ?? t("fields.goals.empty")} vertical />
+								<ProfileRow label={t("fields.bio.label")} value={data.bio ?? t("fields.bio.empty")} vertical />
 								<Separator />
 
 								<View className="">

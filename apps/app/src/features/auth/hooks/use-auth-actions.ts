@@ -25,6 +25,20 @@ type AuthActions = {
 
 export const useAuthActions = (): AuthActions => {
 	const { accessTokenRef, refreshTokenRef, updateAccessToken, updateRefreshToken, setUserId, setUserRole } = useSession();
+	const isAccessTokenExpired = useCallback(async (token: string): Promise<boolean> => {
+		try {
+			const payload = await decryptJWT(token);
+
+			if (typeof payload.exp !== "number") {
+				return false;
+			}
+
+			return payload.exp * 1000 <= Date.now();
+		} catch {
+			return true;
+		}
+	}, []);
+
 	const clearSession = useCallback(() => {
 		updateAccessToken(null);
 		updateRefreshToken(null);
@@ -117,19 +131,43 @@ export const useAuthActions = (): AuthActions => {
 
 	const withRefresh = useCallback(
 		async <R>(fn: (token?: string) => Promise<ClientResult<R>> | ClientResult<R>): Promise<ClientResult<R>> => {
-			const result = await fn(accessTokenRef.current ?? undefined);
+			let accessToken = accessTokenRef.current ?? undefined;
+
+			if (accessToken && (await isAccessTokenExpired(accessToken))) {
+				const refreshResult = await refresh();
+
+				if (refreshResult.error) {
+					const fallbackResult = await fn(undefined);
+
+					if (!fallbackResult.error) {
+						return fallbackResult;
+					}
+
+					return refreshResult as ClientResult<R>;
+				}
+
+				accessToken = accessTokenRef.current ?? undefined;
+			}
+
+			const result = await fn(accessToken);
 
 			if (result.error && (result.error.code === "missing_token" || (result.error.code === "http" && result.error.statusCode === 401))) {
 				// If the error indicates an auth issue, attempt to refresh the token and retry the original function once.
 				const refreshResult = await refresh();
 				if (refreshResult.error) {
+					const fallbackResult = await fn(undefined);
+
+					if (!fallbackResult.error) {
+						return fallbackResult;
+					}
+
 					return refreshResult as ClientResult<R>;
 				}
 				return await fn(accessTokenRef.current ?? undefined);
 			}
 			return result;
 		},
-		[refresh, accessTokenRef],
+		[refresh, accessTokenRef, isAccessTokenExpired],
 	);
 
 	return { signIn, signOut, refresh, withRefresh };

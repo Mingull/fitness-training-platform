@@ -9,7 +9,7 @@ export const useTrainingPlans = () => {
 	const { userId } = useSession();
 	const { withRefresh } = useAuthActions();
 	return useQuery<TrainingPlanList["data"], ClientError>({
-		queryKey: ["training-plans", withRefresh],
+		queryKey: ["training-plans"],
 		enabled: !!userId,
 		retry: false,
 		// Keep training plans fresh for 5 minutes and cache for 30 minutes

@@ -49,4 +49,5 @@ public interface IPlanService
     /// <returns></returns>
     Task<Result<PlanResponse>> CreatePlanAsync(CreatePlanRequest request, Guid creatorId);
     Task<Result<PlanDetailResponse>> AddWorkoutToPlanAsync(Guid planId, AddWorkoutRequest request, Guid userId);
+    Task<Result<PlanDetailResponse>> ReorderWorkoutsInPlanAsync(Guid planId, IEnumerable<ReorderWorkoutRequest> request, Guid userId);
 }

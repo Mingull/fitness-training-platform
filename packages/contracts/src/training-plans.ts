@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { apiResponseBaseContract } from "./api-response";
+import { workoutItemContract } from "./workouts";
 
 /**
  * This is the base contract for a training plan item that will be returned from the API.
@@ -19,6 +20,9 @@ export const trainingPlanItemContract = z.object({
 	}),
 	estimatedDuration: z.number().int().min(0),
 	isPublic: z.boolean(),
+	createdAt: z.iso.datetime({ offset: true }),
+	updatedAt: z.iso.datetime({ offset: true }).optional().nullable(),
+	deletedAt: z.iso.datetime({ offset: true }).optional().nullable(),
 });
 export type TrainingPlanItem = z.infer<typeof trainingPlanItemContract>;
 
@@ -26,7 +30,9 @@ export type TrainingPlanItem = z.infer<typeof trainingPlanItemContract>;
  * This is the contract for a single training plan that will be returned from the API.
  */
 export const trainingPlanContract = apiResponseBaseContract.extend({
-	data: trainingPlanItemContract,
+	data: trainingPlanItemContract.extend({
+		workouts: z.array(workoutItemContract),
+	}),
 });
 
 /**
@@ -61,3 +67,18 @@ export const createTrainingPlanContract = z.object({
  * This is the TypeScript type for the data required to create a new training plan.
  */
 export type CreateTrainingPlan = z.infer<typeof createTrainingPlanContract>;
+
+export const addWorkoutToPlanContract = z.object({
+	name: z.string("name.validations.required").min(2, "name.validations.minLength").max(100, "name.validations.maxLength"),
+});
+
+export type AddWorkoutToPlan = z.infer<typeof addWorkoutToPlanContract>;
+
+export const reorderWorkoutsContract = z.array(
+	z.object({
+		workoutId: z.uuidv7(),
+		newOrderIndex: z.number(),
+	}),
+);
+
+export type ReorderWorkoutsRequest = z.infer<typeof reorderWorkoutsContract>;

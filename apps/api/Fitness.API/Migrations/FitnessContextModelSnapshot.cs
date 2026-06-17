@@ -385,9 +385,9 @@ namespace Mingull.Fitness.API.Migrations
                     b.HasIndex("ExerciseId")
                         .HasDatabaseName("ix_workout_exercises_exercise_id");
 
-                    b.HasIndex("WorkoutId", "ExerciseId", "ExerciseOrder")
+                    b.HasIndex("WorkoutId", "ExerciseOrder")
                         .IsUnique()
-                        .HasDatabaseName("ix_workout_exercises_workout_id_exercise_id_exercise_order");
+                        .HasDatabaseName("ix_workout_exercises_workout_id_exercise_order");
 
                     b.ToTable("workout_exercises", (string)null);
                 });

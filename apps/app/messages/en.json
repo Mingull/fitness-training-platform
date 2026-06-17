@@ -1,327 +1,566 @@
 {
-	"onboarding": {
-		"eyebrow": "Fitness Training Platform",
-		"title": "Connect with trainers and train smarter",
-		"subtitle": "Find certified trainers, receive personalized workout schemas, and track your progress together.",
-		"features": {
-			"findTrainer": {
-				"title": "Find your trainer",
-				"description": "Connect with certified personal trainers who match your fitness goals."
+	"auth": {
+		"onboarding": {
+			"hero": {
+				"eyebrow": "Fitness Training Platform",
+				"title": "Connect with trainers and train smarter",
+				"subtitle": "Find certified trainers, receive personalized workout schemas, and track your progress together.",
+				"footer": "Create an account to find trainers, receive personalized workouts, and track your fitness journey."
 			},
-			"personalWorkouts": {
-				"title": "Get workouts fast",
-				"description": "Receive customized workout schemas directly from your trainer."
+			"features": {
+				"findTrainer": {
+					"title": "Find your trainer",
+					"description": "Connect with certified personal trainers who match your fitness goals."
+				},
+				"personalWorkouts": {
+					"title": "Get workouts fast",
+					"description": "Receive customized workout schemas directly from your trainer."
+				},
+				"shareProgress": {
+					"title": "Share progress",
+					"description": "Share your progress with your trainer in real-time and get instant feedback."
+				},
+				"track": {
+					"title": "Track progress",
+					"description": "View history and stats to monitor improvements over time."
+				}
 			},
-			"shareProgress": {
-				"title": "Share progress",
-				"description": "Share your progress with your trainer in real-time and get instant feedback."
-			},
-			"track": {
-				"title": "Track progress",
-				"description": "View history and stats to monitor improvements over time."
+			"actions": {
+				"continue": "Continue"
 			}
 		},
-		"continue": "Continue",
-		"footer": "Create an account to find trainers, receive personalized workouts, and track your fitness journey."
-	},
-	"signIn": {
-		"title": "Sign In to {title}",
-		"subtitle": "Sign in to your account to continue to {title}",
-		"divider": "or",
-		"email": "Email",
-		"password": "Password",
-		"remember": "Remember me",
-		"forgot": "Forgot password?",
-		"button": "Sign In",
-		"continue": "Continue with {provider}",
-		"noAccount": "Don't have an account?",
-		"linkText": "Sign Up",
-		"tos": "By clicking sign in, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>."
-	},
-	"signUp": {
-		"title": "Sign Up for {title}",
-		"subtitle": "Create an account to continue to {title}",
-		"divider": "or",
-		"username": "Username",
-		"email": "Email",
-		"password": "Password",
-		"confirmPassword": "Confirm Password",
-		"button": "Sign Up",
-		"continue": "Continue",
-		"continueWith": "Continue with {provider}",
-		"back": "Back",
-		"haveAccount": "Already have an account?",
-		"linkText": "Sign In",
-		"tos": "By clicking sign up, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>.",
-		"steps": {
-			"currentStep": "Step {current, number} of {total, number}",
-			"stepOne": {
-				"title": "Account details",
-				"subtitle": "Start with your login details.",
-				"inputs": {
+		"signIn": {
+			"hero": {
+				"title": "Sign In to {title}",
+				"subtitle": "Sign in to your account to continue to {title}"
+			},
+			"form": {
+				"fields": {
 					"email": {
-						"label": "Email",
-						"placeholder": "Enter your email address"
+						"label": "Email"
 					},
 					"password": {
-						"label": "Password",
-						"placeholder": "Password"
-					},
-					"confirmPassword": {
-						"label": "Confirm Password",
-						"placeholder": "Password"
+						"label": "Password"
 					}
+				},
+				"options": {
+					"remember": "Remember me"
 				}
 			},
-			"stepTwo": {
-				"title": "Personal details",
-				"subtitle": "Tell us who you are.",
-				"inputs": {
-					"firstname": {
-						"label": "First Name",
-						"placeholder": "Enter your first name"
-					},
-					"lastname": {
-						"label": "Last Name",
-						"placeholder": "Enter your last name"
-					},
-					"username": {
-						"label": "Username",
-						"placeholder": "Choose a username"
-					}
-				}
+			"links": {
+				"forgotPassword": "Forgot password?",
+				"noAccount": "Don't have an account?",
+				"signUp": "Sign Up"
 			},
-			"stepThree": {
-				"title": "Training level",
-				"subtitle": "Tell us your experience so we can tailor your training.",
-				"inputs": {
-					"experienceLevel": {
-						"label": "Experience Level",
-						"description": "We will tailor recommended workouts and intensity to this level.",
-						"options": {
-							"beginner": {
-								"label": "Beginner",
-								"description": "New to fitness or just starting out."
+			"separators": {
+				"or": "or"
+			},
+			"actions": {
+				"submit": "Sign In",
+				"continueWithProvider": "Continue with {provider}"
+			},
+			"legal": {
+				"tos": "By clicking sign in, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>."
+			}
+		},
+		"signUp": {
+			"hero": {
+				"title": "Sign Up for {title}",
+				"subtitle": "Create an account to continue to {title}"
+			},
+			"separators": {
+				"or": "or"
+			},
+			"actions": {
+				"submit": "Sign Up",
+				"next": "Continue",
+				"back": "Back",
+				"continueWithProvider": "Continue with {provider}"
+			},
+			"links": {
+				"haveAccount": "Already have an account?",
+				"signIn": "Sign In"
+			},
+			"legal": {
+				"tos": "By clicking sign up, you agree to our <tos>Terms of Service</tos> and <privacy>Privacy Policy</privacy>."
+			},
+			"progress": {
+				"currentStep": "Step {current, number} of {total, number}"
+			},
+			"steps": {
+				"account": {
+					"title": "Account details",
+					"subtitle": "Start with your login details.",
+					"form": {
+						"fields": {
+							"email": {
+								"label": "Email",
+								"placeholder": "Enter your email address"
 							},
-							"intermediate": {
-								"label": "Intermediate",
-								"description": "Somewhat experienced, looking to improve."
+							"password": {
+								"label": "Password",
+								"placeholder": "Password"
 							},
-							"advanced": {
-								"label": "Advanced",
-								"description": "Experienced, aiming for peak performance."
+							"confirmPassword": {
+								"label": "Confirm Password",
+								"placeholder": "Password"
+							}
+						}
+					}
+				},
+				"personal": {
+					"title": "Personal details",
+					"subtitle": "Tell us who you are.",
+					"form": {
+						"fields": {
+							"firstname": {
+								"label": "First Name",
+								"placeholder": "Enter your first name"
 							},
-							"professional": {
-								"label": "Professional",
-								"description": "Highly experienced, training at a competitive level."
+							"lastname": {
+								"label": "Last Name",
+								"placeholder": "Enter your last name"
+							},
+							"username": {
+								"label": "Username",
+								"placeholder": "Choose a username"
+							}
+						}
+					}
+				},
+				"trainingLevel": {
+					"title": "Training level",
+					"subtitle": "Tell us your experience so we can tailor your training.",
+					"form": {
+						"fields": {
+							"experienceLevel": {
+								"label": "Experience Level",
+								"description": "We will tailor recommended workouts and intensity to this level.",
+								"options": {
+									"beginner": {
+										"label": "Beginner",
+										"description": "New to fitness or just starting out."
+									},
+									"intermediate": {
+										"label": "Intermediate",
+										"description": "Somewhat experienced, looking to improve."
+									},
+									"advanced": {
+										"label": "Advanced",
+										"description": "Experienced, aiming for peak performance."
+									},
+									"professional": {
+										"label": "Professional",
+										"description": "Highly experienced, training at a competitive level."
+									}
+								}
+							}
+						}
+					}
+				},
+				"about": {
+					"title": "About you",
+					"subtitle": "Add a short bio and your main fitness goals.",
+					"form": {
+						"fields": {
+							"bio": {
+								"label": "Bio",
+								"description": "A short bio helps personalize recommendations.",
+								"placeholder": "Tell us a little about yourself"
+							},
+							"goals": {
+								"label": "Goals",
+								"description": "Tell us your main fitness goals.",
+								"placeholder": "What are your fitness goals?"
 							}
 						}
 					}
 				}
+			}
+		}
+	},
+	"user": {
+		"profile": {
+			"header": {
+				"title": "Profile"
 			},
-			"stepFour": {
-				"title": "About you",
-				"subtitle": "Add a short bio and your main fitness goals.",
-				"inputs": {
-					"bio": {
-						"label": "Bio",
-						"description": "A short bio helps personalize recommendations.",
-						"placeholder": "Tell us a little about yourself"
-					},
-					"goals": {
-						"label": "Goals",
-						"description": "Tell us your main fitness goals.",
-						"placeholder": "What are your fitness goals?"
+			"status": {
+				"loading": "Loading...",
+				"failed": "Failed to load profile",
+				"tryAgainLater": "Please try again later."
+			},
+			"fields": {
+				"email": {
+					"label": "Email"
+				},
+				"role": {
+					"label": "Role"
+				},
+				"experience": {
+					"label": "Experience",
+					"options": {
+						"beginner": "Beginner",
+						"intermediate": "Intermediate",
+						"advanced": "Advanced",
+						"professional": "Professional"
 					}
+				},
+				"goals": {
+					"label": "Goals",
+					"empty": "No goals set"
+				},
+				"bio": {
+					"label": "Bio",
+					"empty": "No bio set"
+				}
+			},
+			"actions": {
+				"retry": "Retry",
+				"signOut": "Sign Out",
+				"editProfile": "Edit Profile"
+			},
+			"editModal": {
+				"header": {
+					"title": "Edit Profile"
+				},
+				"form": {
+					"fields": {
+						"firstName": {
+							"label": "First Name",
+							"placeholder": "Enter your first name"
+						},
+						"lastName": {
+							"label": "Last Name",
+							"placeholder": "Enter your last name"
+						},
+						"bio": {
+							"label": "Bio",
+							"description": "A short bio helps personalize recommendations.",
+							"placeholder": "Tell us a little about yourself"
+						},
+						"goals": {
+							"label": "Goals",
+							"description": "Tell us your main fitness goals.",
+							"placeholder": "What are your fitness goals?"
+						},
+						"experienceLevel": {
+							"label": "Experience Level",
+							"description": "We will tailor recommended workouts and intensity to this level.",
+							"options": {
+								"beginner": {
+									"label": "Beginner",
+									"description": "New to fitness or just starting out."
+								},
+								"intermediate": {
+									"label": "Intermediate",
+									"description": "Somewhat experienced, looking to improve."
+								},
+								"advanced": {
+									"label": "Advanced",
+									"description": "Experienced, aiming for peak performance."
+								},
+								"professional": {
+									"label": "Professional",
+									"description": "Highly experienced, training at a competitive level."
+								}
+							}
+						}
+					}
+				},
+				"actions": {
+					"save": "Save Changes",
+					"saving": "Saving...",
+					"cancel": "Cancel"
+				},
+				"feedback": {
+					"success": "Profile updated successfully!",
+					"error": "Failed to update profile."
 				}
 			}
 		}
 	},
-	"profile": {
-		"title": {
-			"label": "Profile",
-			"loading": "Loading...",
-			"failed": "Failed to load profile"
-		},
-		"rows": {
-			"email": {
-				"label": "Email"
-			},
-			"role": {
-				"label": "Role"
-			},
-			"experience": {
-				"label": "Experience",
-				"options": {
-					"beginner": "Beginner",
-					"intermediate": "Intermediate",
-					"advanced": "Advanced",
-					"professional": "Professional"
+	"plans": {
+		"list": {
+			"header": {
+				"title": "Training programs",
+				"available": "{count, plural, =0 {No programs} =1 {One program} other {# programs}} available.",
+				"indicators": {
+					"loading": "Loading programs",
+					"refreshing": "Refreshing programs",
+					"none": "No programs available"
+				},
+				"badge": {
+					"loading": "Loading",
+					"refreshing": "Refreshing",
+					"updated": "Updated"
 				}
 			},
-			"goals": {
-				"label": "Goals",
-				"empty": "No goals set"
+			"actions": {
+				"createPlanFab": "Create Plan"
 			},
-			"bio": {
-				"label": "Bio",
-				"empty": "No bio set"
+			"states": {
+				"empty": {
+					"title": "No training programs",
+					"description": "No training programs available. If a trainer assigned a program it will appear here; otherwise create your first program to get started.",
+					"create": "Create Plan",
+					"refresh": "Refresh"
+				},
+				"error": {
+					"title": "Training programs unavailable",
+					"description": "Could not load training programs. Check your connection and try again.",
+					"tryAgain": "Try again"
+				}
 			}
 		},
-		"tryAgain": "Please try again later.",
-		"actions": {
-			"retry": "Retry",
-			"signOut": "Sign Out",
-			"editProfile": "Edit Profile"
+		"item": {
+			"meta": {
+				"duration": "{minutes, number} min",
+				"you": "You",
+				"visibility": {
+					"public": "Public",
+					"private": "Private"
+				},
+				"difficulty": {
+					"beginner": "Beginner",
+					"novice": "Novice",
+					"intermediate": "Intermediate",
+					"advanced": "Advanced",
+					"expert": "Expert"
+				},
+				"created": "Created on {date, date, medium}",
+				"updated": "Updated on {date, date, medium}"
+			},
+			"actions": {
+				"activePlan": "Active Plan",
+				"activatePlan": "Activate Plan",
+				"addWorkoutFab": "Add Workout"
+			},
+			"modals": {
+				"addWorkout": {
+					"header": {
+						"title": "Add a workout",
+						"description": "You can add a new workout to this training plan."
+					},
+					"feedback": {
+						"success": "Adding workout to plan was successful!",
+						"error": "Failed to add workout to plan. Please try again."
+					},
+					"actions": {
+						"save": "Add Workout",
+						"saving": "Adding...",
+						"cancel": "Cancel"
+					},
+					"form": {
+						"fields": {
+							"name": {
+								"label": "Name",
+								"placeholder": "Enter a name for the workout",
+								"description": "Use a short, recognizable name that summarizes the content or purpose of the workout.",
+								"validations": {
+									"required": "Name is required",
+									"minLength": "Name must be at least 2 characters",
+									"maxLength": "Name can be at most 100 characters"
+								}
+							}
+						}
+					}
+				}
+			}
 		},
-		"editModal": {
-			"title": "Edit Profile",
-			"inputs": {
-				"firstName": {
-					"label": "First Name",
-					"placeholder": "Enter your first name"
-				},
-				"lastName": {
-					"label": "Last Name",
-					"placeholder": "Enter your last name"
-				},
-				"bio": {
-					"label": "Bio",
-					"description": "A short bio helps personalize recommendations.",
-					"placeholder": "Tell us a little about yourself"
-				},
-				"goals": {
-					"label": "Goals",
-					"description": "Tell us your main fitness goals.",
-					"placeholder": "What are your fitness goals?"
-				},
-				"experienceLevel": {
-					"label": "Experience Level",
-					"description": "We will tailor recommended workouts and intensity to this level.",
-					"options": {
-						"beginner": {
-							"label": "Beginner",
-							"description": "New to fitness or just starting out."
+		"createPlan": {
+			"header": {
+				"title": "Create a new Training Plan.",
+				"description": "Add the details below to create your training plan."
+			},
+			"feedback": {
+				"success": "Training plan created successfully!",
+				"error": "Failed to create training plan. Please try again."
+			},
+			"form": {
+				"fields": {
+					"name": {
+						"label": "Name",
+						"placeholder": "Enter a name for your training plan",
+						"description": "Use a short, recognizable name that summarizes the content or purpose of the plan.",
+						"validations": {
+							"required": "Name is required",
+							"minLength": "Name must be at least 2 characters",
+							"maxLength": "Name can be at most 100 characters"
+						}
+					},
+					"description": {
+						"label": "Description",
+						"placeholder": "Describe your training plan",
+						"description": "Summarize the plan, for example, which types of exercises it includes, the focus (strength, cardio, flexibility), and the intended goal (weight loss, muscle building, fitness improvement).",
+						"validations": {
+							"required": "Description is required",
+							"minLength": "Description must be at least 2 characters",
+							"maxLength": "Description can be at most 1000 characters"
+						}
+					},
+					"difficulty": {
+						"label": "Difficulty",
+						"description": "Set how intense this plan is, from 1 for easy to 100 for very hard.",
+						"selected": "Selected difficulty: {label, select, beginner {Beginner} novice {Novice} intermediate {Intermediate} advanced {Advanced} expert {Expert} other {Other}} ({level, number})",
+						"validations": {
+							"min": "Difficulty must be at least 0",
+							"max": "Difficulty can be at most 100"
+						}
+					},
+					"estimatedDuration": {
+						"label": "Estimated Duration",
+						"placeholder": "Enter the estimated duration of the training plan in minutes",
+						"description": "Provide an estimate of how long it will take to complete the entire training plan, for example 60 minutes. This helps users determine if the plan fits within their available time.",
+						"validations": {
+							"min": "Estimated duration must be at least 1 minute"
+						}
+					},
+					"isPublic": {
+						"label": "Public",
+						"description": "Turn this on if you want other users to be able to see and use this training plan."
+					}
+				}
+			}
+		},
+		"workouts": {
+			"list": {
+				"states": {
+					"empty": {
+						"title": "No workouts in this training plan",
+						"description": "No workouts available for this training plan. Add workouts to get started.",
+						"create": "Add Workout",
+						"refresh": "Refresh"
+					},
+					"error": {
+						"title": "Workouts unavailable",
+						"description": "Could not load workouts. Check your connection and try again.",
+						"tryAgain": "Try again"
+					}
+				}
+			},
+			"item": {
+				"actions": {
+					"addExerciseFab": "Add Exercise"
+				}
+			},
+			"exercises": {
+				"list": {
+					"states": {
+						"empty": {
+							"title": "No exercises for this workout",
+							"description": "No exercises available for this workout. Add exercises to get started.",
+							"create": "Add Exercise",
+							"refresh": "Refresh"
 						},
-						"intermediate": {
-							"label": "Intermediate",
-							"description": "Somewhat experienced, looking to improve."
-						},
-						"advanced": {
-							"label": "Advanced",
-							"description": "Experienced, aiming for peak performance."
-						},
-						"professional": {
-							"label": "Professional",
-							"description": "Highly experienced, training at a competitive level."
+						"error": {
+							"title": "Exercises unavailable",
+							"description": "Could not load exercises. Check your connection and try again.",
+							"tryAgain": "Try again"
 						}
 					}
 				}
 			},
-			"buttons": {
-				"save": "Save Changes",
-				"saving": "Saving...",
-				"cancel": "Cancel"
-			},
-			"messages": {
-				"success": "Profile updated successfully!",
-				"error": "Failed to update profile."
-			}
-		}
-	},
-	"trainingPrograms": {
-		"header": {
-			"title": "Training programs",
-			"available": "{count, plural, =0 {No programs} =1 {One program} other {# programs}} available.",
-			"indicators": {
-				"loading": "Loading programs",
-				"refreshing": "Refreshing programs",
-				"none": "No programs available"
-			},
-			"badge": {
-				"loading": "Loading",
-				"refreshing": "Refreshing",
-				"updated": "Updated"
-			}
-		},
-		"fab": {
-			"label": "Create Plan"
-		},
-		"item": {
-			"duration": "{minutes, number} min",
-			"you": "You",
-			"visibility": {
-				"public": "Public",
-				"private": "Private"
-			},
-			"difficulty": {
-				"beginner": "Beginner",
-				"novice": "Novice",
-				"intermediate": "Intermediate",
-				"advanced": "Advanced",
-				"expert": "Expert"
-			}
-		},
-		"states": {
-			"empty": {
-				"title": "No training programs",
-				"description": "You do not have any training programs yet. If a trainer assigned a program it will appear here; otherwise create your first program to get started.",
-				"refresh": "Refresh"
-			},
-			"error": {
-				"title": "Training programs unavailable",
-				"description": "Could not load training programs. Check your connection and try again.",
-				"tryAgain": "Try again"
-			}
-		},
-		"create": {
-			"title": "Create a new Training Plan.",
-			"description": "Add the details below to create your training plan.",
-			"toasts": {
-				"success": "Training plan created successfully!",
-				"error": "Failed to create training plan. Please try again."
-			},
-			"fields": {
-				"name": {
-					"label": "Name",
-					"placeholder": "Enter a name for your training plan",
-					"description": "Use a short, recognizable name that summarizes the content or purpose of the plan.",
-					"validations": {
-						"required": "Name is required",
-						"minLength": "Name must be at least 2 characters",
-						"maxLength": "Name can be at most 100 characters"
+			"modals": {
+				"addExercise": {
+					"header": {
+						"title": "Add an exercise",
+						"description": "You can add a new exercise to this workout."
+					},
+					"feedback": {
+						"success": "Adding exercise to workout was successful!",
+						"error": "Failed to add exercise to workout. Please try again."
+					},
+					"actions": {
+						"next": "Next",
+						"back": "Back",
+						"save": "Add Exercise",
+						"saving": "Adding...",
+						"cancel": "Cancel"
+					},
+					"form": {
+						"fields": {
+							"step1": {
+								"source": {
+									"label": "Exercise source",
+									"description": "Choose an existing exercise by ID or create a new one.",
+									"options": {
+										"existing": {
+											"label": "Use existing exercise",
+											"description": "Link an existing exercise using its unique ID."
+										},
+										"new": {
+											"label": "Create new exercise",
+											"description": "Create a new exercise and add it directly to this workout."
+										}
+									}
+								},
+								"exerciseId": {
+									"label": "Select an exercise",
+									"placeholder": "Exercise",
+									"description": "Select an existing exercise from the list.",
+									"validations": {
+										"required": "Exercise is required when using an existing exercise."
+									}
+								},
+								"exercise": {
+									"name": {
+										"label": "Name",
+										"placeholder": "Enter a name for the exercise",
+										"description": "Use a short, recognizable name that summarizes the content or purpose of the exercise.",
+										"validations": {
+											"required": "Name is required",
+											"minLength": "Name must be at least 2 characters",
+											"maxLength": "Name can be at most 100 characters"
+										}
+									},
+									"description": {
+										"label": "Description",
+										"placeholder": "Enter a short description for the exercise",
+										"description": "Describe what this exercise targets or how to perform it.",
+										"validations": {
+											"required": "Description is required",
+											"minLength": "Description must be at least 2 characters",
+											"maxLength": "Description can be at most 1000 characters"
+										}
+									},
+									"mediaUrl": {
+										"label": "Media URL",
+										"placeholder": "Enter a valid URL",
+										"description": "Provide a link to an image or video that demonstrates how to perform the exercise. This can help users understand the proper form and technique.",
+										"validations": {
+											"invalid": "Enter a valid URL"
+										}
+									}
+								}
+							},
+							"step2": {
+								"sets": {
+									"label": "Sets",
+									"placeholder": "3",
+									"description": "Number of sets to perform.",
+									"validations": {
+										"min": "Sets must be at least 1"
+									}
+								},
+								"reps": {
+									"label": "Reps",
+									"placeholder": "10",
+									"description": "Number of repetitions per set.",
+									"validations": {
+										"min": "Reps must be at least 1"
+									}
+								},
+								"weight": {
+									"label": "Weight (kg)",
+									"placeholder": "0",
+									"description": "Weight used for this exercise.",
+									"validations": {
+										"min": "Weight cannot be negative"
+									}
+								}
+							}
+						}
 					}
-				},
-				"description": {
-					"label": "Description",
-					"placeholder": "Describe your training plan",
-					"description": "Summarize the plan, for example, which types of exercises it includes, the focus (strength, cardio, flexibility), and the intended goal (weight loss, muscle building, fitness improvement).",
-					"validations": {
-						"required": "Description is required",
-						"minLength": "Description must be at least 2 characters",
-						"maxLength": "Description can be at most 1000 characters"
-					}
-				},
-				"difficulty": {
-					"label": "Difficulty",
-					"description": "Set how intense this plan is, from 1 for easy to 100 for very hard.",
-					"selected": "Selected difficulty: {label, select, beginner {Beginner} novice {Novice} intermediate {Intermediate} advanced {Advanced} expert {Expert} other {Other}} ({level, number})",
-					"validations": {
-						"min": "Difficulty must be at least 0",
-						"max": "Difficulty can be at most 100"
-					}
-				},
-				"estimatedDuration": {
-					"label": "Estimated Duration",
-					"placeholder": "Enter the estimated duration of the training plan in minutes",
-					"description": "Provide an estimate of how long it will take to complete the entire training plan, for example 60 minutes. This helps users determine if the plan fits within their available time.",
-					"validations": {
-						"min": "Estimated duration must be at least 1 minute"
-					}
-				},
-				"isPublic": {
-					"label": "Public",
-					"description": "Turn this on if you want other users to be able to see and use this training plan."
 				}
 			}
 		}

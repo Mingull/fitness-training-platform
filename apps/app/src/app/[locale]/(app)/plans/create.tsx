@@ -12,7 +12,7 @@ import { toast } from "sonner-native";
 import { useLocale, useTranslations } from "use-intl";
 
 export default function TrainingPlanListScreen() {
-	const t = useTranslations("trainingPrograms.create");
+	const t = useTranslations("plans.createPlan");
 	const router = useRouter();
 	const locale = useLocale();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null); // global error message state
@@ -42,13 +42,13 @@ export default function TrainingPlanListScreen() {
 			});
 
 			if (mutator.isError) {
-				setErrorMessage(mutator.error.message || t("toasts.error"));
-				toast.error(mutator.error.message || t("toasts.error"), { position: "top-center" });
+				setErrorMessage(mutator.error.message || t("feedback.error"));
+				toast.error(mutator.error.message || t("feedback.error"), { position: "top-center" });
 				return;
 			}
 
 			form.reset();
-			toast.success(t("toasts.success"), { position: "top-center" });
+			toast.success(t("feedback.success"), { position: "top-center" });
 			router.push({ pathname: "/[locale]/(app)/plans", params: { locale } });
 		},
 	});
@@ -69,7 +69,7 @@ export default function TrainingPlanListScreen() {
 		return errors.map((error) => ({
 			message:
 				error?.message && error.message.startsWith(`${fieldName}.validations.`) ?
-					(t as unknown as (key: string) => string)(`fields.${error.message}`)
+					(t as unknown as (key: string) => string)(`form.fields.${error.message}`)
 				:	error?.message,
 		}));
 	};
@@ -87,8 +87,8 @@ export default function TrainingPlanListScreen() {
 			<ScaffoldHeader>
 				<View className="items-start justify-between">
 					<ScaffoldBackButton />
-					<ScaffoldTitle className="text-foreground text-xl font-semibold tracking-tight">{t("title")}</ScaffoldTitle>
-					<ScaffoldDescription className="text-muted-foreground text-sm">{t("description")}</ScaffoldDescription>
+					<ScaffoldTitle className="text-foreground text-xl font-semibold tracking-tight">{t("header.title")}</ScaffoldTitle>
+					<ScaffoldDescription className="text-muted-foreground text-sm">{t("header.description")}</ScaffoldDescription>
 				</View>
 			</ScaffoldHeader>
 			<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -102,10 +102,10 @@ export default function TrainingPlanListScreen() {
 								{(field) => (
 									<>
 										<field.Input
-											label={t("fields.name.label")}
-											description={t("fields.name.description")}
+											label={t("form.fields.name.label")}
+											description={t("form.fields.name.description")}
 											keyboardType="default"
-											placeholder={t("fields.name.placeholder")}
+											placeholder={t("form.fields.name.placeholder")}
 											labelClassName="font-mono"
 											returnKeyType="next"
 											ref={(input) => registerRef(field.name, input)}
@@ -120,10 +120,10 @@ export default function TrainingPlanListScreen() {
 								{(field) => (
 									<>
 										<field.Textarea
-											label={t("fields.description.label")}
-											description={t("fields.description.description")}
+											label={t("form.fields.description.label")}
+											description={t("form.fields.description.description")}
 											keyboardType="default"
-											placeholder={t("fields.description.placeholder")}
+											placeholder={t("form.fields.description.placeholder")}
 											labelClassName="font-mono"
 											returnKeyType="next"
 											ref={(input) => registerRef(field.name, input)}
@@ -138,8 +138,8 @@ export default function TrainingPlanListScreen() {
 								{(field) => (
 									<>
 										<field.Slider
-											label={t("fields.difficulty.label")}
-											description={t("fields.difficulty.description")}
+											label={t("form.fields.difficulty.label")}
+											description={t("form.fields.difficulty.description")}
 											labelClassName="font-mono"
 											value={[field.state.value]}
 											onValueChange={(e) => field.handleChange(e[0])}
@@ -149,7 +149,7 @@ export default function TrainingPlanListScreen() {
 											errorComponent={<FieldError errors={translateValidationErrors(field.name, field.state.meta.errors)} />}
 										/>
 										<Text className="text-muted-foreground text-sm">
-											{t("fields.difficulty.selected", {
+											{t("form.fields.difficulty.selected", {
 												label: calculateDifficulty(field.state.value),
 												level: field.state.value,
 											})}
@@ -161,11 +161,11 @@ export default function TrainingPlanListScreen() {
 								{(field) => (
 									<>
 										<field.Input
-											label={t("fields.estimatedDuration.label")}
-											description={t("fields.estimatedDuration.description")}
+											label={t("form.fields.estimatedDuration.label")}
+											description={t("form.fields.estimatedDuration.description")}
 											value={String(field.state.value)}
 											keyboardType="numeric"
-											placeholder={t("fields.estimatedDuration.placeholder")}
+											placeholder={t("form.fields.estimatedDuration.placeholder")}
 											labelClassName="font-mono"
 											returnKeyType="next"
 											ref={(input) => registerRef(field.name, input)}
@@ -188,8 +188,8 @@ export default function TrainingPlanListScreen() {
 								{(field) => (
 									<>
 										<field.Switch
-											label={t("fields.isPublic.label")}
-											description={t("fields.isPublic.description")}
+											label={t("form.fields.isPublic.label")}
+											description={t("form.fields.isPublic.description")}
 											labelClassName="font-mono"
 										/>
 										<FieldError errors={translateValidationErrors(field.name, field.state.meta.errors)} />

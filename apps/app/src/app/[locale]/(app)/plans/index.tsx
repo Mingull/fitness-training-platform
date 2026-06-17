@@ -15,7 +15,7 @@ import { useLocale, useTranslations } from "use-intl";
 export default function TrainingPlanListScreen() {
 	const locale = useLocale();
 	const router = useRouter();
-	const t = useTranslations("trainingPrograms");
+	const t = useTranslations("plans");
 	const session = useSession();
 	const { data, error, isLoading, isRefetching, refetch } = useTrainingPlans();
 	const plans = data ?? [];
@@ -23,20 +23,23 @@ export default function TrainingPlanListScreen() {
 	return (
 		<Scaffold>
 			<ScaffoldHeader>
-				<View className="items-start justify-between">
-					<ScaffoldTitle className="text-foreground text-xl font-semibold tracking-tight">{t("header.title")}</ScaffoldTitle>
-					<ScaffoldDescription className="text-muted-foreground text-sm">{t("header.available", { count: plans.length })}</ScaffoldDescription>
+				<View className="items-start justify-between gap-1">
+					<ScaffoldTitle className="text-foreground text-xl font-semibold tracking-tight">{t("list.header.title")}</ScaffoldTitle>
+					<ScaffoldDescription className="text-muted-foreground text-sm">{t("list.header.available", { count: plans.length })}</ScaffoldDescription>
+					<Text className="text-muted-foreground text-xs">Browse a plan to open its workouts and exercise details.</Text>
 				</View>
 				<ScaffoldAddon>
-					<Badge variant={isRefetching || isLoading ? "default" : "muted"}>
-						<Text className={`${isRefetching || isLoading ? "text-primary" : "text-muted-foreground"} text-xs font-semibold`}>
-							{isRefetching ?
-								t("header.badge.refreshing")
-							: isLoading ?
-								t("header.badge.loading")
-							:	t("header.badge.updated")}
-						</Text>
-					</Badge>
+					<View className="flex-row items-center gap-2">
+						<Badge variant={isRefetching || isLoading ? "default" : "muted"}>
+							<Text className={`${isRefetching || isLoading ? "text-primary" : "text-muted-foreground"} text-xs font-semibold`}>
+								{isRefetching ?
+									t("list.header.badge.refreshing")
+								: isLoading ?
+									t("list.header.badge.loading")
+								:	t("list.header.badge.updated")}
+							</Text>
+						</Badge>
+					</View>
 				</ScaffoldAddon>
 			</ScaffoldHeader>
 			<FlatList
@@ -45,30 +48,25 @@ export default function TrainingPlanListScreen() {
 				renderItem={({ item }) => <PlanItem item={item} authorId={session?.userId} />}
 				refreshing={isRefetching}
 				onRefresh={refetch}
-				contentContainerClassName="px-4 pb-6 gap-4"
-				ListEmptyComponent={<PlansEmptyState isLoading={isLoading} error={error} onRetry={refetch} />}
+				contentContainerClassName="px-4 pb-24 gap-4"
+				ListEmptyComponent={
+					<PlansEmptyState
+						isLoading={isLoading}
+						error={error}
+						onRetry={refetch}
+						onCreate={() => router.push({ pathname: "/[locale]/plans/create", params: { locale } })}
+					/>
+				}
 				showsVerticalScrollIndicator={false}
 			/>
 			{!isLoading && !error && (
 				<ScaffoldFAB>
-					<FABTrigger
-						onPress={() => {
-							router.push({ pathname: "/[locale]/plans/create", params: { locale } });
-						}}
-					>
-						<FABLabel>{t("fab.label")}</FABLabel>
+					<FABTrigger onPress={() => router.push({ pathname: "/[locale]/plans/create", params: { locale } })}>
+						<FABLabel>{t("list.actions.createPlanFab")}</FABLabel>
 						<FABAction>
 							<Icon as={PlusIcon} size={24} />
 						</FABAction>
 					</FABTrigger>
-					{/* <FABSpeedDial>
-					<FABSpeedDialItem>
-						<FABSpeedDialLabel>Create from Template</FABSpeedDialLabel>
-						<FABSpeedDialTrigger>
-							<Icon as={PlusIcon} size={24} />
-						</FABSpeedDialTrigger>
-					</FABSpeedDialItem>
-				</FABSpeedDial> */}
 				</ScaffoldFAB>
 			)}
 		</Scaffold>

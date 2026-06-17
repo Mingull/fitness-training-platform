@@ -28,7 +28,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export default function SigninScreen() {
-	const t = useTranslations("signIn");
+	const t = useTranslations("auth.signIn");
 	const { signIn } = useAuthActions();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null); // global error message state
 	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
@@ -87,9 +87,9 @@ export default function SigninScreen() {
 							<View className="bg-muted border-primary mb-6 rounded-4xl border-2 p-3.5">
 								<Icon as={Dumbbell} size={14 * 2.25} className="text-primary items-center justify-center" />
 							</View>
-							<Text className="text-2xl font-bold">{t("title", { title: "FTP" })}</Text>
+							<Text className="text-2xl font-bold">{t("hero.title", { title: "FTP" })}</Text>
 							<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-center font-mono text-sm">
-								{t("subtitle", { title: "FTP" })}
+								{t("hero.subtitle", { title: "FTP" })}
 							</Text>
 						</View>
 						{/* Do i really need an error message container when i have an toast? */}
@@ -102,9 +102,9 @@ export default function SigninScreen() {
 									{(field) => (
 										<>
 											<field.Input
-												label="Email"
+													label={t("form.fields.email.label")}
 												keyboardType="email-address"
-												placeholder="Enter your email"
+													placeholder={t("form.fields.email.label")}
 												labelClassName="font-mono"
 												returnKeyType="next"
 												ref={(input) => registerRef(field.name, input)}
@@ -116,7 +116,7 @@ export default function SigninScreen() {
 								</form.AppField>
 								<form.AppField name="password" validators={{ onBlur: formSchema.shape.password }}>
 									{(field) => (
-										<FormBase label="Password" horizontal>
+												<FormBase label={t("form.fields.password.label")} horizontal>
 											{(isInvalid) => (
 												<InputGroup>
 													<InputGroupInput
@@ -126,7 +126,7 @@ export default function SigninScreen() {
 														onChangeText={field.handleChange}
 														aria-invalid={isInvalid}
 														secureTextEntry={!showPasswordConfirm}
-														placeholder="********"
+																		placeholder={t("form.fields.password.label")}
 														returnKeyType="done"
 														ref={(input) => registerRef(field.name, input)}
 														submitBehavior="blurAndSubmit"
@@ -151,18 +151,18 @@ export default function SigninScreen() {
 							</FieldGroup>
 							<View className="gap-1">
 								<Button className="w-full" onPress={form.handleSubmit} disabled={form.state.isSubmitting}>
-									<Text>{form.state.isSubmitting ? "" : t("button")}</Text>
+									<Text>{form.state.isSubmitting ? "" : t("actions.submit")}</Text>
 								</Button>
 								<Text className="text-center text-sm">
-									{t("noAccount")}{" "}
+									{t("links.noAccount")}{" "}
 									<Link href="/[locale]/sign-up" className="underline underline-offset-4" asChild>
-										<Text>{t("linkText")}</Text>
+										<Text>{t("links.signUp")}</Text>
 									</Link>
 								</Text>
 								<View className="gap-2">
 									<View className="mt-4 mb-4 flex flex-row items-center gap-1">
 										<Separator className="flex-1/2" />
-										<Text className="text-muted-foreground relative px-2">{t("divider")}</Text>
+										<Text className="text-muted-foreground relative px-2">{t("separators.or")}</Text>
 										<Separator className="flex-1/2" />
 									</View>
 									<View className="gap-2">
@@ -170,19 +170,19 @@ export default function SigninScreen() {
 											variant="outline"
 											className="w-full"
 											onPress={() => handleSignInProvider("google")}
-											aria-label={t("continue", { provider: "Google" })}
+											aria-label={t("actions.continueWithProvider", { provider: "Google" })}
 										>
 											<GoogleIcon className="text-foreground" />
-											<Text>{t("continue", { provider: "Google" })}</Text>
+											<Text>{t("actions.continueWithProvider", { provider: "Google" })}</Text>
 										</Button>
 										<Button
 											variant="outline"
 											className="w-full"
 											onPress={() => handleSignInProvider("discord")}
-											aria-label={t("continue", { provider: "Discord" })}
+											aria-label={t("actions.continueWithProvider", { provider: "Discord" })}
 										>
 											<DiscordIcon className="text-foreground" />
-											<Text>{t("continue", { provider: "Discord" })}</Text>
+											<Text>{t("actions.continueWithProvider", { provider: "Discord" })}</Text>
 										</Button>
 									</View>
 								</View>
@@ -194,7 +194,7 @@ export default function SigninScreen() {
 									lineBreakStrategyIOS="push-out"
 									className="text-muted-foreground text-center text-xs text-balance"
 								>
-									{t.rich("tos", {
+									{t.rich("legal.tos", {
 										tos: (chunks) => (
 											<Link href="/terms-of-service" className="underline">
 												{chunks}

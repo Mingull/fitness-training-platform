@@ -1,3 +1,4 @@
+using Fitness.API.Features.Plans.Contracts;
 using Fitness.API.Features.Plans.Models;
 using Fitness.API.Features.Workouts.Models;
 
@@ -43,4 +44,5 @@ public interface IPlanRepository
     /// <returns>The created plan.</returns>
     Task<Plan> CreatePlanAsync(Plan plan);
     Task AddWorkoutAsync(Guid planId, Workout workout);
+    Task SaveWorkoutOrdersAsync(Guid planId, IReadOnlyDictionary<Guid, int> workoutOrders);
 }

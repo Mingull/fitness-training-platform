@@ -3,8 +3,16 @@ import { RouteNamespace } from "@fitness/api-client/types";
 import { apiErrorContract } from "@fitness/contracts/api-error";
 import { apiResponseBaseContract } from "@fitness/contracts/api-response";
 import { authTokensContract, signinContract, signupContract } from "@fitness/contracts/auth";
-import { createTrainingPlanContract, trainingPlanContract, trainingPlanListContract } from "@fitness/contracts/training-plans";
+import { exerciseListContract } from "@fitness/contracts/exercises";
+import {
+	addWorkoutToPlanContract,
+	createTrainingPlanContract,
+	reorderWorkoutsContract,
+	trainingPlanContract,
+	trainingPlanListContract,
+} from "@fitness/contracts/training-plans";
 import { activatePlanContract, activeUserPlanContract, profileContract, updateProfileContract } from "@fitness/contracts/user";
+import { addExerciseToWorkoutContract, reorderExercisesContract, workoutContract } from "@fitness/contracts/workouts";
 import { fetch, FetchRequestInit } from "expo/fetch";
 import { z } from "zod";
 
@@ -68,7 +76,7 @@ const routes = {
 	plans: {
 		getOne: {
 			method: "GET",
-			path: "/plans/{id:string}",
+			path: "/plans/{planId:string}",
 			auth: "optional",
 			out: trainingPlanContract,
 		},
@@ -84,6 +92,50 @@ const routes = {
 			auth: "required",
 			in: createTrainingPlanContract,
 			out: trainingPlanContract,
+		},
+		addWorkout: {
+			method: "POST",
+			path: "/plans/{planId:string}/workouts",
+			auth: "required",
+			in: addWorkoutToPlanContract,
+			out: trainingPlanContract,
+		},
+		reorderWorkouts: {
+			method: "PATCH",
+			path: "/plans/{planId:string}/reorder-workouts",
+			auth: "required",
+			in: reorderWorkoutsContract,
+			out: trainingPlanContract,
+		},
+	},
+	workouts: {
+		getOne: {
+			method: "GET",
+			path: "/workouts/{workoutId:string}",
+			auth: "optional",
+			out: workoutContract,
+		},
+		addExercise: {
+			method: "POST",
+			path: "/workouts/{workoutId:string}/exercises",
+			auth: "required",
+			in: addExerciseToWorkoutContract,
+			out: workoutContract,
+		},
+		reorderExercises: {
+			method: "PATCH",
+			path: "/workouts/{workoutId:string}/reorder-exercises",
+			auth: "required",
+			in: reorderExercisesContract,
+			out: workoutContract,
+		},
+	},
+	exercises: {
+		list: {
+			method: "GET",
+			path: "/exercises",
+			auth: "optional",
+			out: exerciseListContract,
 		},
 	},
 } as const satisfies RouteNamespace;

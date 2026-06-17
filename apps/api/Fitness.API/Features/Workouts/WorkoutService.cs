@@ -11,20 +11,17 @@ namespace Fitness.API.Features.Workouts;
 
 public class WorkoutService(IWorkoutRepository workoutRepository, IExerciseService exerciseService, IWorkoutExerciseService workoutExerciseService) : IWorkoutService
 {
-    public async Task<Result<WorkoutDetailResponse>> GetWorkoutByIdAsync(Guid id, Guid userId)
+    public async Task<Result<WorkoutDetailResponse>> GetWorkoutByIdAsync(Guid id, Guid? userId)
     {
         var workout = await workoutRepository.GetWorkoutByIdAsync(id);
 
         if (workout == null)
             return WorkoutErrors.NotFound;
 
-        if (workout.Plan.CreatedById != userId)
-            return AuthErrors.UnauthorizedWithResource("GetWorkoutById");
-
         return Result<WorkoutDetailResponse>.Success(workout.ToDetailResponse());
     }
 
-    public async Task<Result<WorkoutResponse>> AddExerciseAsync(Guid workoutId, AddExerciseRequest request, Guid userId)
+    public async Task<Result<WorkoutDetailResponse>> AddExerciseAsync(Guid workoutId, AddExerciseRequest request, Guid userId)
     {
         // Check whether an ExerciseId was provided, or an Exercise object was provided.
         if (request.ExerciseId is null && request.Exercise is null)
@@ -57,6 +54,37 @@ public class WorkoutService(IWorkoutRepository workoutRepository, IExerciseServi
             Reps = request.Reps,
             Weight = request.Weight
         });
+
+        var updatedWorkout = await workoutRepository.GetWorkoutByIdAsync(workoutId);
+        return Result<WorkoutDetailResponse>.Success(updatedWorkout!.ToDetailResponse());
+    }
+
+    public async Task<Result<WorkoutResponse>> ReorderExercisesAsync(Guid workoutId, IEnumerable<ReorderExerciseRequest> request, Guid userId)
+    {
+        var workout = await workoutRepository.GetWorkoutByIdAsync(workoutId);
+
+        if (workout == null)
+            return WorkoutErrors.NotFound;
+
+        if (workout.Plan.CreatedById != userId)
+            return AuthErrors.UnauthorizedWithResource("ReorderExercisesInWorkout");
+
+        // Validate that all provided exercise ids exist in the workout
+        var workoutExerciseIds = workout.WorkoutExercises.Select(we => we.ExerciseId).ToHashSet();
+        foreach (var reorderRequest in request)
+        {
+            if (!workoutExerciseIds.Contains(reorderRequest.ExerciseId))
+                return WorkoutErrors.ExerciseNotInWorkout(reorderRequest.ExerciseId);
+        }
+
+        // Update the order of exercises based on the provided new order indices
+        foreach (var reorderRequest in request)
+        {
+            var workoutExercise = workout.WorkoutExercises.First(we => we.ExerciseId == reorderRequest.ExerciseId);
+            workoutExercise.ExerciseOrder = reorderRequest.NewOrderIndex;
+        }
+
+        await workoutExerciseService.UpdateExerciseOrdersAsync(workout.WorkoutExercises);
 
         var updatedWorkout = await workoutRepository.GetWorkoutByIdAsync(workoutId);
         return Result<WorkoutResponse>.Success(updatedWorkout!.ToResponse());

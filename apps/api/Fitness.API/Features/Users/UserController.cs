@@ -11,7 +11,7 @@ namespace Fitness.API.Features.Users;
 [ApiController]
 [Produces("application/json")]
 [Tags("Users")]
-public class UserController(IPlanService planService, ILogger<UserController> logger) : ControllerBase
+public class UserController(IPlanService planService) : ControllerBase
 {
     [HttpGet("users/me/active-plan")]
     [Authorize]
@@ -20,7 +20,6 @@ public class UserController(IPlanService planService, ILogger<UserController> lo
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetActivePlan()
     {
-        logger.LogInformation("Received request to get active plan for user.");
         var userId = this.UserIdFromJwt();
         if (!userId.HasValue)
         {

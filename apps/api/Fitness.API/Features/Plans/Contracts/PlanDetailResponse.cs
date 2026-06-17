@@ -12,9 +12,9 @@ public record PlanDetailResponse
     public required string Description { get; set; }
     public required int EstimatedDuration { get; set; }
     public required bool IsPublic { get; set; }
-    public required DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
-    public DateTime? DeletedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 
     public ICollection<WorkoutResponse> Workouts { get; set; } = [];
 }

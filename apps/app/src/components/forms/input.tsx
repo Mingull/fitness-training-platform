@@ -7,7 +7,7 @@ export function FormInput({ label, description, errorComponent, ...props }: Form
 	const field = useFieldContext<string>();
 
 	return (
-		<FormBase label={label} description={description} horizontal errorComponent={errorComponent}>
+		<FormBase label={label} description={description} horizontal errorComponent={errorComponent} {...props}>
 			{(isInvalid) => (
 				<Input
 					id={field.name}

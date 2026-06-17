@@ -6,8 +6,8 @@ namespace Fitness.API.Features.WorkoutExercises;
 
 public static class WorkoutExerciseMappers
 {
-    public static ExerciseResponse ToResponse(this WorkoutExercise workoutExercise)
+    public static ExerciseDetailResponse ToResponse(this WorkoutExercise workoutExercise)
     {
-        return workoutExercise.Exercise.ToResponse(workoutExercise);
+        return workoutExercise.Exercise.ToDetailResponse(workoutExercise);
     }
 }

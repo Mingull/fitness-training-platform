@@ -40,6 +40,7 @@ public class ExerciseController(IExerciseService exerciseService) : ControllerBa
     [HttpGet("{id:guid}")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(ApiResponse<ExerciseResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetExerciseByIdAsync(Guid id)
     {
@@ -65,6 +66,7 @@ public class ExerciseController(IExerciseService exerciseService) : ControllerBa
     [ProducesResponseType(typeof(ApiResponse<ExerciseResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateExerciseAsync([FromBody] CreateExerciseRequest request)
     {

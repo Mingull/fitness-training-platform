@@ -6,4 +6,5 @@ namespace Fitness.API.Features.WorkoutExercises.Abstract;
 public interface IWorkoutExerciseRepository
 {
     Task<WorkoutExercise> LinkAsync(Guid workoutId, Guid exerciseId, int exerciseOrder, int sets, int reps, decimal weight);
+    Task UpdateExerciseOrdersAsync(IEnumerable<WorkoutExercise> workoutExercises);
 }
