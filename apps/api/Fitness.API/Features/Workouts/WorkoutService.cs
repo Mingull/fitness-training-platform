@@ -79,12 +79,15 @@ public class WorkoutService(IWorkoutRepository workoutRepository, IExerciseServi
         var existingWorkoutExercises = workout.WorkoutExercises.ToList();
         var exerciseCount = existingWorkoutExercises.Count;
 
+        // Nothing to reorder if the workout has 0 or 1 exercises
         if (exerciseCount <= 1)
             return Result<WorkoutDetailResponse>.Success(workout.ToDetailResponse());
 
+        // The request must account for every exercise in the workout — no partial reorders
         if (reorderRequests.Count != exerciseCount)
             return WorkoutErrors.InvalidExerciseReorderRequest("The reorder request must contain every exercise exactly once.");
 
+        // Reject requests that list the same exercise ID more than once
         var duplicateExerciseId = reorderRequests
             .GroupBy(item => item.ExerciseId)
             .FirstOrDefault(group => group.Count() > 1)?.Key;
@@ -92,6 +95,7 @@ public class WorkoutService(IWorkoutRepository workoutRepository, IExerciseServi
         if (duplicateExerciseId.HasValue)
             return WorkoutErrors.InvalidExerciseReorderRequest($"The exercise with ID {duplicateExerciseId.Value} appears more than once in the reorder request.");
 
+        // Reject exercise IDs that don't belong to this workout
         var existingExerciseIds = existingWorkoutExercises.Select(we => we.ExerciseId).ToHashSet();
         var unknownExerciseId = reorderRequests
             .Select(item => item.ExerciseId)
@@ -100,6 +104,8 @@ public class WorkoutService(IWorkoutRepository workoutRepository, IExerciseServi
         if (unknownExerciseId != Guid.Empty)
             return WorkoutErrors.ExerciseNotInWorkout(unknownExerciseId);
 
+        // Accept either 0-based (0..N-1) or 1-based (1..N) indexes; reject anything else to prevent
+        // gaps or out-of-range values that would violate the DB unique index on (WorkoutId, ExerciseOrder)
         var requestedIndexes = reorderRequests.Select(item => item.NewOrderIndex).ToList();
         var usesZeroBasedIndexes = requestedIndexes.Min() == 0 && requestedIndexes.Max() == exerciseCount - 1;
         var usesOneBasedIndexes = requestedIndexes.Min() == 1 && requestedIndexes.Max() == exerciseCount;
@@ -107,10 +113,11 @@ public class WorkoutService(IWorkoutRepository workoutRepository, IExerciseServi
         if (!usesZeroBasedIndexes && !usesOneBasedIndexes)
             return WorkoutErrors.InvalidExerciseReorderRequest("Order indexes must be either 0..N-1 or 1..N.");
 
+        // Ensure no two exercises share the same target index
         if (requestedIndexes.Distinct().Count() != exerciseCount)
             return WorkoutErrors.InvalidExerciseReorderRequest("Order indexes must be unique.");
 
-        // Normalize to 1-based and apply the new order
+        // Apply the new order, normalizing 0-based indexes to 1-based so the DB always stores 1..N
         foreach (var reorderRequest in reorderRequests)
         {
             var workoutExercise = existingWorkoutExercises.First(we => we.ExerciseId == reorderRequest.ExerciseId);
@@ -123,6 +130,7 @@ public class WorkoutService(IWorkoutRepository workoutRepository, IExerciseServi
         }
         catch
         {
+            // Return a user-friendly error instead of propagating the DB exception
             return WorkoutErrors.ReorderExercisesFailed;
         }
 
