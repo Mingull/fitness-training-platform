@@ -18,6 +18,12 @@ public class WorkoutService(IWorkoutRepository workoutRepository, IExerciseServi
         if (workout == null)
             return WorkoutErrors.NotFound;
 
+        // If the parent plan is private and the user is not the owner, return not found
+        if (!workout.Plan.IsPublic && workout.Plan.CreatedById != userId)
+        {
+            return WorkoutErrors.NotFound; // Return not found to avoid exposing the existence of the plan
+        }
+
         return Result<WorkoutDetailResponse>.Success(workout.ToDetailResponse());
     }
 
