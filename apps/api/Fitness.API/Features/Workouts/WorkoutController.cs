@@ -72,7 +72,7 @@ public class WorkoutController(IWorkoutService workoutService) : ControllerBase
 
     [HttpPatch("{workoutId:guid}/reorder-exercises")]
     [Authorize]
-    [ProducesResponseType(typeof(ApiResponse<WorkoutResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<WorkoutDetailResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
@@ -90,7 +90,7 @@ public class WorkoutController(IWorkoutService workoutService) : ControllerBase
             return StatusCode(error.Status ?? StatusCodes.Status500InternalServerError, error);
         }
 
-        return Ok(new ApiResponse<WorkoutResponse>
+        return Ok(new ApiResponse<WorkoutDetailResponse>
         {
             Status = StatusCodes.Status200OK,
             StatusCode = "Ok",

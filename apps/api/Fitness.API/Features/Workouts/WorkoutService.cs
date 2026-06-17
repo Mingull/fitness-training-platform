@@ -65,7 +65,7 @@ public class WorkoutService(IWorkoutRepository workoutRepository, IExerciseServi
         return Result<WorkoutDetailResponse>.Success(updatedWorkout!.ToDetailResponse());
     }
 
-    public async Task<Result<WorkoutResponse>> ReorderExercisesAsync(Guid workoutId, IEnumerable<ReorderExerciseRequest> request, Guid userId)
+    public async Task<Result<WorkoutDetailResponse>> ReorderExercisesAsync(Guid workoutId, IEnumerable<ReorderExerciseRequest> request, Guid userId)
     {
         var workout = await workoutRepository.GetWorkoutByIdAsync(workoutId);
 
@@ -93,6 +93,6 @@ public class WorkoutService(IWorkoutRepository workoutRepository, IExerciseServi
         await workoutExerciseService.UpdateExerciseOrdersAsync(workout.WorkoutExercises);
 
         var updatedWorkout = await workoutRepository.GetWorkoutByIdAsync(workoutId);
-        return Result<WorkoutResponse>.Success(updatedWorkout!.ToResponse());
+        return Result<WorkoutDetailResponse>.Success(updatedWorkout!.ToDetailResponse());
     }
 }
