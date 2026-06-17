@@ -2,330 +2,569 @@
 // See: https://next-intl.dev/docs/workflows/typescript#messages-arguments
 
 declare const messages: {
-	onboarding: {
-		eyebrow: "Fitness Training Platform";
-		title: "Kom in contact met trainers en train slimmer";
-		subtitle: "Vind gecertificeerde trainers, ontvang gepersonaliseerde trainingsschema's en houd samen uw voortgang bij.";
-		features: {
-			findTrainer: {
-				title: "Vind jouw trainer";
-				description: "Kom in contact met gecertificeerde personal trainers die aansluiten bij uw fitnessdoelen.";
+	auth: {
+		onboarding: {
+			hero: {
+				eyebrow: "Fitness Training Platform";
+				title: "Kom in contact met trainers en train slimmer";
+				subtitle: "Vind gecertificeerde trainers, ontvang gepersonaliseerde trainingsschema's en houd samen uw voortgang bij.";
+				footer: "Maak een account aan om trainers te vinden, gepersonaliseerde trainingen te ontvangen en uw fitnesstraject bij te houden.";
 			};
-			personalWorkouts: {
-				title: "Krijg snel trainingen";
-				description: "Ontvang aangepaste trainingsschema's rechtstreeks van uw trainer.";
+			features: {
+				findTrainer: {
+					title: "Vind jouw trainer";
+					description: "Kom in contact met gecertificeerde personal trainers die aansluiten bij uw fitnessdoelen.";
+				};
+				personalWorkouts: {
+					title: "Krijg snel trainingen";
+					description: "Ontvang aangepaste trainingsschema's rechtstreeks van uw trainer.";
+				};
+				shareProgress: {
+					title: "Deel je voortgang";
+					description: "Deel je voortgang in realtime met je trainer en ontvang direct feedback.";
+				};
+				track: {
+					title: "Volg je voortgang";
+					description: "Bekijk je geschiedenis en statistieken om je voortgang in de tijd bij te houden.";
+				};
 			};
-			shareProgress: {
-				title: "Deel je voortgang";
-				description: "Deel je voortgang in realtime met je trainer en ontvang direct feedback.";
-			};
-			track: {
-				title: "Volg je voortgang";
-				description: "Bekijk je geschiedenis en statistieken om je voortgang in de tijd bij te houden.";
+			actions: {
+				continue: "Doorgaan";
 			};
 		};
-		continue: "Doorgaan";
-		footer: "Maak een account aan om trainers te vinden, gepersonaliseerde trainingen te ontvangen en uw fitnesstraject bij te houden.";
-	};
-	signIn: {
-		title: "Meld je aan bij {title}";
-		subtitle: "Meld je aan bij je account om door te gaan naar {title}";
-		divider: "of";
-		email: "E-mail";
-		password: "Wachtwoord";
-		remember: "Onthoud mij";
-		forgot: "Wachtwoord vergeten?";
-		button: "Inloggen";
-		continue: "Doorgaan met {provider}";
-		noAccount: "Nog geen account?";
-		linkText: "Registreren";
-		tos: "Door je in te loggen, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacybeleid</privacy>.";
-	};
-	signUp: {
-		title: "Registreren voor {title}";
-		subtitle: "Maak een account aan om door te gaan naar {title}";
-		divider: "of";
-		username: "Gebruikersnaam";
-		email: "E-mailadres";
-		button: "Registreren";
-		continue: "Doorgaan";
-		continueWith: "Doorgaan met {provider}";
-		back: "Terug";
-		haveAccount: "Heb je al een account?";
-		linkText: "Inloggen";
-		tos: "Door je aan te melden, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacybeleid</privacy>.";
-		steps: {
-			currentStep: "Stap {current, number} van {total, number}";
-			stepOne: {
-				title: "Accountgegevens";
-				subtitle: "Start met je inloggegevens.";
-				inputs: {
+		signIn: {
+			hero: {
+				title: "Meld je aan bij {title}";
+				subtitle: "Meld je aan bij je account om door te gaan naar {title}";
+			};
+			form: {
+				fields: {
 					email: {
-						label: "E-mailadres";
-						placeholder: "Voer je e-mailadres in";
+						label: "E-mail";
 					};
 					password: {
 						label: "Wachtwoord";
-						placeholder: "Voer je wachtwoord in";
-					};
-					confirmPassword: {
-						label: "Bevestig wachtwoord";
-						placeholder: "Bevestig je wachtwoord";
 					};
 				};
-			};
-			stepTwo: {
-				title: "Persoonlijke gegevens";
-				subtitle: "Vertel ons wie je bent.";
-				inputs: {
-					firstname: {
-						label: "Voornaam";
-						placeholder: "Voer je voornaam in";
-					};
-					lastname: {
-						label: "Achternaam";
-						placeholder: "Voer je achternaam in";
-					};
-					username: {
-						label: "Gebruikersnaam";
-						placeholder: "Kies een gebruikersnaam";
-					};
+				options: {
+					remember: "Onthoud mij";
 				};
 			};
-			stepThree: {
-				title: "Trainingsniveau";
-				subtitle: "Vertel ons je ervaring zodat we je training kunnen afstemmen.";
-				inputs: {
-					experienceLevel: {
-						label: "Ervaringsniveau";
-						description: "We stemmen aanbevolen trainingen en intensiteit af op dit niveau.";
-						options: {
-							beginner: {
-								label: "Beginner";
-								description: "Nieuw in fitness of net begonnen.";
+			links: {
+				forgotPassword: "Wachtwoord vergeten?";
+				noAccount: "Nog geen account?";
+				signUp: "Registreren";
+			};
+			separators: {
+				or: "of";
+			};
+			actions: {
+				submit: "Inloggen";
+				continueWithProvider: "Doorgaan met {provider}";
+			};
+			legal: {
+				tos: "Door je in te loggen, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacybeleid</privacy>.";
+			};
+		};
+		signUp: {
+			hero: {
+				title: "Registreren voor {title}";
+				subtitle: "Maak een account aan om door te gaan naar {title}";
+			};
+			separators: {
+				or: "of";
+			};
+			actions: {
+				submit: "Registreren";
+				next: "Doorgaan";
+				back: "Terug";
+				continueWithProvider: "Doorgaan met {provider}";
+			};
+			links: {
+				haveAccount: "Heb je al een account?";
+				signIn: "Inloggen";
+			};
+			legal: {
+				tos: "Door je aan te melden, ga je akkoord met onze <tos>Servicevoorwaarden</tos> en <privacy>Privacybeleid</privacy>.";
+			};
+			progress: {
+				currentStep: "Stap {current, number} van {total, number}";
+			};
+			steps: {
+				account: {
+					title: "Accountgegevens";
+					subtitle: "Start met je inloggegevens.";
+					form: {
+						fields: {
+							email: {
+								label: "E-mailadres";
+								placeholder: "Voer je e-mailadres in";
 							};
-							intermediate: {
-								label: "Gemiddeld";
-								description: "Redelijk ervaren, op zoek naar verbetering.";
+							password: {
+								label: "Wachtwoord";
+								placeholder: "Voer je wachtwoord in";
 							};
-							advanced: {
-								label: "Geavanceerd";
-								description: "Ervaren, gericht op piekprestaties.";
+							confirmPassword: {
+								label: "Bevestig wachtwoord";
+								placeholder: "Bevestig je wachtwoord";
 							};
-							professional: {
-								label: "Professioneel";
-								description: "Zeer ervaren, trainend op een concurrentie niveau.";
+						};
+					};
+				};
+				personal: {
+					title: "Persoonlijke gegevens";
+					subtitle: "Vertel ons wie je bent.";
+					form: {
+						fields: {
+							firstname: {
+								label: "Voornaam";
+								placeholder: "Voer je voornaam in";
+							};
+							lastname: {
+								label: "Achternaam";
+								placeholder: "Voer je achternaam in";
+							};
+							username: {
+								label: "Gebruikersnaam";
+								placeholder: "Kies een gebruikersnaam";
+							};
+						};
+					};
+				};
+				trainingLevel: {
+					title: "Trainingsniveau";
+					subtitle: "Vertel ons je ervaring zodat we je training kunnen afstemmen.";
+					form: {
+						fields: {
+							experienceLevel: {
+								label: "Ervaringsniveau";
+								description: "We stemmen aanbevolen trainingen en intensiteit af op dit niveau.";
+								options: {
+									beginner: {
+										label: "Beginner";
+										description: "Nieuw in fitness of net begonnen.";
+									};
+									intermediate: {
+										label: "Gemiddeld";
+										description: "Redelijk ervaren, op zoek naar verbetering.";
+									};
+									advanced: {
+										label: "Geavanceerd";
+										description: "Ervaren, gericht op piekprestaties.";
+									};
+									professional: {
+										label: "Professioneel";
+										description: "Zeer ervaren, trainend op een concurrentie niveau.";
+									};
+								};
+							};
+						};
+					};
+				};
+				about: {
+					title: "Over jou";
+					subtitle: "Voeg een korte bio en je belangrijkste fitnessdoelen toe.";
+					form: {
+						fields: {
+							bio: {
+								label: "Bio";
+								description: "Een korte bio helpt bij gepersonaliseerde aanbevelingen.";
+								placeholder: "Vertel ons iets over jezelf";
+							};
+							goals: {
+								label: "Doelen";
+								description: "Vertel je belangrijkste fitnessdoelen.";
+								placeholder: "Wat zijn je fitnessdoelen?";
 							};
 						};
 					};
 				};
 			};
-			stepFour: {
-				title: "Over jou";
-				subtitle: "Voeg een korte bio en je belangrijkste fitnessdoelen toe.";
-				inputs: {
-					bio: {
-						label: "Bio";
-						description: "Een korte bio helpt bij gepersonaliseerde aanbevelingen.";
-						placeholder: "Vertel ons iets over jezelf";
-					};
-					goals: {
-						label: "Doelen";
-						description: "Vertel je belangrijkste fitnessdoelen.";
-						placeholder: "Wat zijn je fitnessdoelen?";
-					};
-				};
-			};
 		};
-		confirmPassword: "Bevestig wachtwoord";
-		password: "Wachtwoord";
 	};
-	profile: {
-		title: {
-			label: "Profiel";
-			loading: "Bezig met laden...";
-			failed: "Profiel laden mislukt";
-		};
-		rows: {
-			email: {
-				label: "E-mail";
+	user: {
+		profile: {
+			header: {
+				title: "Profiel";
 			};
-			role: {
-				label: "Rol";
+			status: {
+				loading: "Bezig met laden...";
+				failed: "Profiel laden mislukt";
+				tryAgainLater: "Probeer het later opnieuw.";
 			};
-			experience: {
-				label: "Ervaring";
-				options: {
-					beginner: "Beginner";
-					intermediate: "Gemiddeld";
-					advanced: "Geavanceerd";
-					professional: "Professioneel";
+			fields: {
+				email: {
+					label: "E-mail";
 				};
-			};
-			goals: {
-				label: "Doelen";
-				empty: "Nog geen doelen ingesteld";
-			};
-			bio: {
-				label: "Bio";
-				empty: "Nog geen bio ingesteld";
-			};
-		};
-		tryAgain: "Probeer het later opnieuw.";
-		actions: {
-			retry: "Opnieuw";
-			signOut: "Afmelden";
-			editProfile: "Profiel bewerken";
-		};
-		editModal: {
-			title: "Profiel bewerken";
-			inputs: {
-				firstName: {
-					label: "Voornaam";
-					placeholder: "Voer je voornaam in";
+				role: {
+					label: "Rol";
 				};
-				lastName: {
-					label: "Achternaam";
-					placeholder: "Voer je achternaam in";
-				};
-				bio: {
-					label: "Bio";
-					description: "Een korte bio helpt bij gepersonaliseerde aanbevelingen.";
-					placeholder: "Vertel ons iets over jezelf";
+				experience: {
+					label: "Ervaring";
+					options: {
+						beginner: "Beginner";
+						intermediate: "Gemiddeld";
+						advanced: "Geavanceerd";
+						professional: "Professioneel";
+					};
 				};
 				goals: {
 					label: "Doelen";
-					description: "Vertel je belangrijkste fitnessdoelen.";
-					placeholder: "Wat zijn je fitnessdoelen?";
+					empty: "Nog geen doelen ingesteld";
 				};
-				experienceLevel: {
-					label: "Ervaringsniveau";
-					description: "We stemmen aanbevolen trainingen en intensiteit af op dit niveau.";
-					options: {
-						beginner: {
-							label: "Beginner";
-							description: "Nieuw in fitness of net begonnen.";
+				bio: {
+					label: "Bio";
+					empty: "Nog geen bio ingesteld";
+				};
+			};
+			actions: {
+				retry: "Opnieuw";
+				signOut: "Afmelden";
+				editProfile: "Profiel bewerken";
+			};
+			editModal: {
+				header: {
+					title: "Profiel bewerken";
+				};
+				form: {
+					fields: {
+						firstName: {
+							label: "Voornaam";
+							placeholder: "Voer je voornaam in";
 						};
-						intermediate: {
-							label: "Gemiddeld";
-							description: "Redelijk ervaren, op zoek naar verbetering.";
+						lastName: {
+							label: "Achternaam";
+							placeholder: "Voer je achternaam in";
 						};
-						advanced: {
-							label: "Geavanceerd";
-							description: "Ervaren, gericht op piekprestaties.";
+						bio: {
+							label: "Bio";
+							description: "Een korte bio helpt bij gepersonaliseerde aanbevelingen.";
+							placeholder: "Vertel ons iets over jezelf";
 						};
-						professional: {
-							label: "Professioneel";
-							description: "Zeer ervaren, trainend op een concurrentie niveau.";
+						goals: {
+							label: "Doelen";
+							description: "Vertel je belangrijkste fitnessdoelen.";
+							placeholder: "Wat zijn je fitnessdoelen?";
+						};
+						experienceLevel: {
+							label: "Ervaringsniveau";
+							description: "We stemmen aanbevolen trainingen en intensiteit af op dit niveau.";
+							options: {
+								beginner: {
+									label: "Beginner";
+									description: "Nieuw in fitness of net begonnen.";
+								};
+								intermediate: {
+									label: "Gemiddeld";
+									description: "Redelijk ervaren, op zoek naar verbetering.";
+								};
+								advanced: {
+									label: "Geavanceerd";
+									description: "Ervaren, gericht op piekprestaties.";
+								};
+								professional: {
+									label: "Professioneel";
+									description: "Zeer ervaren, trainend op een concurrentie niveau.";
+								};
+							};
 						};
 					};
 				};
-			};
-			buttons: {
-				save: "Wijzigingen opslaan";
-				saving: "Bezig met opslaan...";
-				cancel: "Annuleren";
-			};
-			messages: {
-				success: "Profiel succesvol bijgewerkt!";
-				error: "Fout bij het bijwerken van het profiel.";
+				actions: {
+					save: "Wijzigingen opslaan";
+					saving: "Bezig met opslaan...";
+					cancel: "Annuleren";
+				};
+				feedback: {
+					success: "Profiel succesvol bijgewerkt!";
+					error: "Fout bij het bijwerken van het profiel.";
+				};
 			};
 		};
 	};
-	trainingPrograms: {
-		header: {
-			eyebrow: "Trainingsprogramma's";
-			title: "Trainingsprogramma's";
-			available: "{count, plural, =0 {Geen programma's} =1 {Een programma} other {# programma's}} beschikbaar";
-			indicators: {
-				loading: "Programma's laden";
-				refreshing: "Programma's verversen";
-				none: "Geen programma's beschikbaar";
+	plans: {
+		list: {
+			header: {
+				eyebrow: "Trainingsprogramma's";
+				title: "Trainingsprogramma's";
+				available: "{count, plural, =0 {Geen programma's} =1 {Een programma} other {# programma's}} beschikbaar";
+				indicators: {
+					loading: "Programma's laden";
+					refreshing: "Programma's verversen";
+					none: "Geen programma's beschikbaar";
+				};
+				badge: {
+					loading: "Laden";
+					refreshing: "Verversen";
+					updated: "Bijgewerkt";
+				};
 			};
-			badge: {
-				loading: "Laden";
-				refreshing: "Verversen";
-				updated: "Bijgewerkt";
+			actions: {
+				createPlanFab: "Plan aanmaken";
 			};
-		};
-		fab: {
-			label: "Plan aanmaken";
+			states: {
+				empty: {
+					title: "Geen trainingsprogramma's";
+					description: "Je hebt nog geen trainingsprogramma's. \nAls een trainer een programma heeft toegewezen, verschijnt dit hier; \nmaak anders uw eerste programma om aan de slag te gaan.";
+					create: "Plan aanmaken";
+					refresh: "Ververs";
+				};
+				error: {
+					title: "Trainingsprogramma's niet beschikbaar";
+					description: "Kan trainingsprogramma's niet laden. \nControleer uw verbinding en probeer het opnieuw.";
+					tryAgain: "Opnieuw proberen";
+				};
+			};
 		};
 		item: {
-			duration: "{minutes, number} min";
-			you: "Jij";
-			visibility: {
-				public: "Openbaar";
-				private: "Privé";
+			meta: {
+				duration: "{minutes, number} min";
+				you: "Jij";
+				visibility: {
+					public: "Openbaar";
+					private: "Privé";
+				};
+				difficulty: {
+					beginner: "Beginner";
+					novice: "Novice";
+					intermediate: "Gemiddeld";
+					advanced: "Geavanceerd";
+					expert: "Expert";
+				};
+				created: "Gemaakt op {date, date, medium}";
+				updated: "Bijgewerkt op {date, date, medium}";
 			};
-			difficulty: {
-				beginner: "Beginner";
-				novice: "Novice";
-				intermediate: "Gemiddeld";
-				advanced: "Geavanceerd";
-				expert: "Expert";
+			actions: {
+				activePlan: "Actief Plan";
+				activatePlan: "Activeer Plan";
+				addWorkoutFab: "Voeg Workout toe";
+			};
+			modals: {
+				addWorkout: {
+					header: {
+						title: "Voeg een workout toe";
+						description: "Je kunt een nieuwe workout toevoegen aan dit trainingsplan.";
+					};
+					feedback: {
+						success: "Workout succesvol toegevoegd aan het plan!";
+						error: "Kon de workout niet toevoegen aan het plan. Probeer het opnieuw.";
+					};
+					actions: {
+						save: "Voeg workout toe";
+						saving: "Bezig met toevoegen...";
+						cancel: "Annuleren";
+					};
+					form: {
+						fields: {
+							name: {
+								label: "Naam";
+								placeholder: "Voer een naam in voor de workout";
+								description: "Gebruik een korte, herkenbare naam die de inhoud of het doel van de workout samenvat.";
+								validations: {
+									required: "Naam is verplicht";
+									minLength: "Naam moet minimaal 2 tekens bevatten";
+									maxLength: "Naam kan maximaal 100 tekens bevatten";
+								};
+							};
+						};
+					};
+				};
 			};
 		};
-		states: {
-			empty: {
-				title: "Geen trainingsprogramma's";
-				description: "Je hebt nog geen trainingsprogramma's. \nAls een trainer een programma heeft toegewezen, verschijnt dit hier; \nmaak anders uw eerste programma om aan de slag te gaan.";
-				refresh: "Ververs";
+		createPlan: {
+			header: {
+				title: "Nieuw trainingsplan aanmaken.";
+				description: "Voeg hieronder de gegevens toe voor je trainingsplan.";
 			};
-			error: {
-				title: "Trainingsprogramma's niet beschikbaar";
-				description: "Kan trainingsprogramma's niet laden. \nControleer uw verbinding en probeer het opnieuw.";
-				tryAgain: "Opnieuw proberen";
-			};
-		};
-		create: {
-			title: "Nieuw trainingsplan aanmaken.";
-			description: "Voeg hieronder de gegevens toe voor je trainingsplan.";
-			toasts: {
+			feedback: {
 				success: "Trainingsplan succesvol gemaakt!";
 				error: "Kan trainingsplan niet maken. Probeer het opnieuw.";
 			};
-			fields: {
-				name: {
-					label: "Naam";
-					placeholder: "Voer een naam in voor je trainingsplan";
-					description: "Gebruik een korte herkenbare naam die de inhoud of het doel van het plan samenvat.";
-					validations: {
-						required: "Naam is verplicht";
-						minLength: "Naam moet ten minste 2 tekens bevatten";
-						maxLength: "Naam mag maximaal 100 tekens bevatten";
+			form: {
+				fields: {
+					name: {
+						label: "Naam";
+						placeholder: "Voer een naam in voor je trainingsplan";
+						description: "Gebruik een korte herkenbare naam die de inhoud of het doel van het plan samenvat.";
+						validations: {
+							required: "Naam is verplicht";
+							minLength: "Naam moet ten minste 2 tekens bevatten";
+							maxLength: "Naam mag maximaal 100 tekens bevatten";
+						};
+					};
+					description: {
+						label: "Beschrijving";
+						placeholder: "Beschrijf je trainingsplan";
+						description: "Vat het plan samen, beschrijf bijvoorbeeld welke soorten oefeningen het bevat, de focus (kracht, cardio, flexibiliteit) en het beoogde doel (afvallen, spieropbouw, conditieverbetering).";
+						validations: {
+							required: "Beschrijving is verplicht";
+							minLength: "Beschrijving moet ten minste 2 tekens bevatten";
+							maxLength: "Beschrijving mag maximaal 1000 tekens bevatten";
+						};
+					};
+					difficulty: {
+						label: "Moeilijkheid";
+						description: "Stel in hoe zwaar dit plan is, van 1 voor makkelijk tot 100 voor erg zwaar.";
+						selected: "Geselecteerde moeilijkheid: {label, select, beginner {Beginner} novice {Novice} intermediate {Gemiddeld} advanced {Gevorderd} expert {Expert} other {Overig}} ({level, number})";
+						validations: {
+							min: "Moeilijkheid moet ten minste 0 zijn";
+							max: "Moeilijkheid kan maximaal 100 zijn";
+						};
+					};
+					estimatedDuration: {
+						label: "Geschatte duur";
+						placeholder: "Voer de geschatte duur van het trainingsplan in minuten in";
+						description: "Geef een schatting van hoe lang het duurt om het volledige trainingsplan te voltooien, bijvoorbeeld 60 minuten. Dit helpt gebruikers te bepalen of het plan past binnen hun beschikbare tijd.";
+						validations: {
+							min: "Geschatte duur moet minimaal 1 minuut zijn";
+						};
+					};
+					isPublic: {
+						label: "Openbaar";
+						description: "Schakel deze optie in als je wilt dat dit trainingsplan zichtbaar is voor andere gebruikers.";
 					};
 				};
-				description: {
-					label: "Beschrijving";
-					placeholder: "Beschrijf je trainingsplan";
-					description: "Vat het plan samen, beschrijf bijvoorbeeld welke soorten oefeningen het bevat, de focus (kracht, cardio, flexibiliteit) en het beoogde doel (afvallen, spieropbouw, conditieverbetering).";
-					validations: {
-						required: "Beschrijving is verplicht";
-						minLength: "Beschrijving moet ten minste 2 tekens bevatten";
-						maxLength: "Beschrijving mag maximaal 1000 tekens bevatten";
+			};
+		};
+		workouts: {
+			list: {
+				states: {
+					empty: {
+						title: "Geen workouts in dit trainingsplan";
+						description: "Geen workouts beschikbaar voor dit trainingsplan. Voeg workouts toe om aan de slag te gaan.";
+						create: "Workout toevoegen";
+						refresh: "Vernieuwen";
+					};
+					error: {
+						title: "Workouts niet beschikbaar";
+						description: "Kon de workouts niet laden. Controleer je verbinding en probeer het opnieuw.";
+						tryAgain: "Probeer opnieuw";
 					};
 				};
-				difficulty: {
-					label: "Moeilijkheid";
-					description: "Stel in hoe zwaar dit plan is, van 1 voor makkelijk tot 100 voor erg zwaar.";
-					selected: "Geselecteerde moeilijkheid: {label, select, beginner {Beginner} novice {Novice} intermediate {Gemiddeld} advanced {Gevorderd} expert {Expert} other {Overig}} ({level, number})";
-					validations: {
-						min: "Moeilijkheid moet ten minste 0 zijn";
-						max: "Moeilijkheid kan maximaal 100 zijn";
+			};
+			item: {
+				actions: {
+					addExerciseFab: "Oefening toevoegen";
+				};
+			};
+			exercises: {
+				list: {
+					states: {
+						empty: {
+							title: "Geen oefeningen voor deze workout";
+							description: "Geen oefeningen beschikbaar voor deze workout. Voeg oefeningen toe om aan de slag te gaan.";
+							create: "Oefening toevoegen";
+							refresh: "Vernieuwen";
+						};
+						error: {
+							title: "Oefeningen niet beschikbaar";
+							description: "Kon de oefeningen niet laden. Controleer je verbinding en probeer het opnieuw.";
+							tryAgain: "Probeer opnieuw";
+						};
 					};
 				};
-				estimatedDuration: {
-					label: "Geschatte duur";
-					placeholder: "Voer de geschatte duur van het trainingsplan in minuten in";
-					description: "Geef een schatting van hoe lang het duurt om het volledige trainingsplan te voltooien, bijvoorbeeld 60 minuten. Dit helpt gebruikers te bepalen of het plan past binnen hun beschikbare tijd.";
-					validations: {
-						min: "Geschatte duur moet minimaal 1 minuut zijn";
+			};
+			modals: {
+				addExercise: {
+					header: {
+						title: "Voeg een oefening toe";
+						description: "Je kunt een nieuwe oefening toevoegen aan deze workout.";
 					};
-				};
-				isPublic: {
-					label: "Openbaar";
-					description: "Schakel deze optie in als je wilt dat dit trainingsplan zichtbaar is voor andere gebruikers.";
+					feedback: {
+						success: "Oefening succesvol toegevoegd aan de workout!";
+						error: "Kon de oefening niet toevoegen aan de workout. Probeer het opnieuw.";
+					};
+					actions: {
+						next: "Volgende";
+						back: "Terug";
+						save: "Oefening toevoegen";
+						saving: "Bezig met toevoegen...";
+						cancel: "Annuleren";
+					};
+					form: {
+						fields: {
+							step1: {
+								source: {
+									label: "Bron van oefening";
+									description: "Kies of je een bestaande oefening wilt gebruiken of een nieuwe wilt maken.";
+									options: {
+										existing: {
+											label: "Bestaande koppelen";
+											description: "Koppel een bestaande oefening met het unieke ID.";
+										};
+										new: {
+											label: "Nieuwe oefening maken";
+											description: "Maak een nieuwe oefening en voeg die direct toe aan deze workout.";
+										};
+									};
+								};
+								exerciseId: {
+									label: "Selecteer een oefening";
+									placeholder: "Oefening";
+									description: "Selecteer een bestaande oefening uit de lijst..";
+									validations: {
+										required: "Oefening is verplicht bij een bestaande oefening.";
+									};
+								};
+								exercise: {
+									name: {
+										label: "Naam";
+										placeholder: "Voer een naam in voor de oefening";
+										description: "Gebruik een korte, herkenbare naam die de inhoud of het doel van de oefening samenvat.";
+										validations: {
+											required: "Naam is verplicht";
+											minLength: "Naam moet minimaal 2 tekens bevatten";
+											maxLength: "Naam mag maximaal 100 tekens bevatten";
+										};
+									};
+									description: {
+										label: "Beschrijving";
+										placeholder: "Voer een korte beschrijving van de oefening in";
+										description: "Beschrijf wat deze oefening traint of hoe je deze uitvoert.";
+										validations: {
+											required: "Beschrijving is verplicht";
+											minLength: "Beschrijving moet minimaal 2 tekens bevatten";
+											maxLength: "Beschrijving mag maximaal 1000 tekens bevatten";
+										};
+									};
+									mediaUrl: {
+										label: "Media URL";
+										"placeholder": "Voer een geldige URL in.",
+										description: "Geef een link naar een afbeelding of video die laat zien hoe de oefening moet worden uitgevoerd. Dit kan gebruikers helpen de juiste vorm en techniek te begrijpen.";
+										validations: {
+											invalid: "Voer een geldige URL in";
+										};
+									};
+								};
+							};
+							step2: {
+								sets: {
+									label: "Sets";
+									placeholder: "3";
+									description: "Aantal sets dat je uitvoert.";
+									validations: {
+										min: "Sets moeten minimaal 1 zijn";
+									};
+								};
+								reps: {
+									label: "Herhalingen";
+									placeholder: "10";
+									description: "Aantal herhalingen per set.";
+									validations: {
+										min: "Herhalingen moeten minimaal 1 zijn";
+									};
+								};
+								weight: {
+									label: "Gewicht (kg)";
+									placeholder: "0";
+									description: "Gewicht dat je voor deze oefening gebruikt.";
+									validations: {
+										min: "Gewicht mag niet negatief zijn";
+									};
+								};
+							};
+						};
+					};
 				};
 			};
 		};

@@ -88,7 +88,7 @@ export const createApiClient = <const R extends RouteNamespace>({
 		let resolvedPath = config.path;
 		if (isParameterizedPath(config.path)) {
 			try {
-				resolvedPath = buildPath(config.path, (options as any)?.params);
+				resolvedPath = buildPath(config.path, options?.params);
 			} catch (err) {
 				return {
 					data: null,
@@ -282,7 +282,7 @@ export const createApiClient = <const R extends RouteNamespace>({
 	/**
 	 * Recursively build the client object by traversing the route namespace tree and creating handler functions for each route config.
 	 */
-	const builder = (branch: RouteNamespace): any => {
+	const builder = (branch: RouteNamespace): unknown => {
 		const result: Record<string, unknown> = {};
 
 		for (const [key, value] of Object.entries(branch) as [string, Route | RouteNamespace][]) {

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Icon } from "@/components/ui/icon";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,11 +11,13 @@ import { useTranslations } from "use-intl";
 type PlansEmptyStateProps = {
 	isLoading: boolean;
 	error: { message?: string } | null;
+	onCreate: () => void;
 	onRetry: () => void;
 };
 
-export function PlansEmptyState({ isLoading, error, onRetry }: PlansEmptyStateProps) {
-	const t = useTranslations("trainingPrograms.states");
+export function PlansEmptyState({ isLoading, error, onCreate, onRetry }: PlansEmptyStateProps) {
+	const t = useTranslations("plans.list.states");
+
 	if (isLoading) {
 		return (
 			<View className="gap-3 pt-2">
@@ -70,6 +72,9 @@ export function PlansEmptyState({ isLoading, error, onRetry }: PlansEmptyStatePr
 				<EmptyDescription>{t("empty.description")}</EmptyDescription>
 			</EmptyHeader>
 			<EmptyContent>
+				<Button variant="default" onPress={onCreate}>
+					<Text>{t("empty.create")}</Text>
+				</Button>
 				<Button variant="outline" size="sm" onPress={onRetry} className="">
 					<Text>{t("empty.refresh")}</Text>
 				</Button>

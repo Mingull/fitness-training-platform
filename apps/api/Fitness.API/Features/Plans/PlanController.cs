@@ -3,7 +3,6 @@ using Fitness.API.Core.Extensions;
 using Fitness.API.Core.Utilities;
 using Fitness.API.Features.Plans.Abstract;
 using Fitness.API.Features.Plans.Contracts;
-using Fitness.API.Features.Workouts.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -125,5 +124,32 @@ public class PlanController(IPlanService planService) : ControllerBase
             Message = "Workout added to training plan successfully",
             Data = result.Value
         });
+    }
+
+    [HttpPatch("{planId:guid}/reorder-workouts")]
+    [Authorize]
+    public async Task<IActionResult> ReorderWorkoutsInPlanAsync([FromRoute] Guid planId, [FromBody] IEnumerable<ReorderWorkoutRequest> request)
+    {
+        var userId = this.UserIdFromJwt();
+        if (!userId.HasValue)
+        {
+            return Unauthorized(new ApiError("InvalidToken", ErrorType.Unauthorized, "Invalid token", "The provided token is invalid."));
+        }
+
+        var result = await planService.ReorderWorkoutsInPlanAsync(planId, request, userId.Value);
+        if (!result.IsSuccess)
+        {
+            var error = result.Error!;
+            return StatusCode(error.Status ?? StatusCodes.Status500InternalServerError, error);
+        }
+
+        return Ok(new ApiResponse<PlanDetailResponse>
+        {
+            Status = StatusCodes.Status200OK,
+            StatusCode = "Ok",
+            Message = "Workouts reordered in plan successfully",
+            Data = result.Value
+        });
+
     }
 }

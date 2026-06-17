@@ -14,6 +14,9 @@ public static class WorkoutMappers
             Id = workout.Id,
             Name = workout.Name,
             Order = workout.Order,
+            CreatedAt = workout.CreatedAt,
+            UpdatedAt = workout.UpdatedAt,
+            DeletedAt = workout.DeletedAt,
         };
     }
     public static WorkoutDetailResponse ToDetailResponse(this Workout workout)
@@ -22,6 +25,9 @@ public static class WorkoutMappers
         {
             Id = workout.Id,
             Name = workout.Name,
+            CreatedAt = workout.CreatedAt,
+            UpdatedAt = workout.UpdatedAt,
+            DeletedAt = workout.DeletedAt,
             Exercises = [.. workout.WorkoutExercises
                 .OrderBy(we => we.ExerciseOrder)
                 .Select(we => we.ToResponse())]

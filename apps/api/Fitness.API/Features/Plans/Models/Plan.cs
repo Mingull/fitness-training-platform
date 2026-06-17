@@ -19,9 +19,9 @@ public sealed class Plan
     public required int DifficultyLevel { get; init; }
     public required int EstimatedDuration { get; init; }
     public required bool IsPublic { get; init; }
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? UpdatedAt { get; private set; }
-    public DateTime? DeletedAt { get; private set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 
     public ICollection<Workout> Workouts { get; init; } = [];
 }

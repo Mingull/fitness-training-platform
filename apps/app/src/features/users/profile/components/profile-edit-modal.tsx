@@ -20,7 +20,7 @@ import { useUpdateProfile } from "../hooks/use-update-profile";
 type FormData = z.infer<typeof updateProfileContract>;
 
 export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: boolean; onClose: () => void; defaultValues: FormData }) {
-	const t = useTranslations("profile.editModal");
+	const t = useTranslations("user.profile.editModal");
 	const mutator = useUpdateProfile();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const fields = useRef(new Map<string, TextInput>());
@@ -43,37 +43,37 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 			});
 
 			if (mutator.isError) {
-				const msg = mutator.error.message || t("messages.error");
+				const msg = mutator.error.message || t("feedback.error");
 				setErrorMessage(msg);
 				toast.error(msg, { position: "top-center" });
 				return;
 			}
 
 			form.reset();
-			toast.success(t("messages.success"), { position: "top-center" });
+			toast.success(t("feedback.success"), { position: "top-center" });
 			onClose();
 		},
 	});
 	const options = [
 		{
 			value: "beginner",
-			label: t("inputs.experienceLevel.options.beginner.label"),
-			description: t("inputs.experienceLevel.options.beginner.description"),
+			label: t("form.fields.experienceLevel.options.beginner.label"),
+			description: t("form.fields.experienceLevel.options.beginner.description"),
 		},
 		{
 			value: "intermediate",
-			label: t("inputs.experienceLevel.options.intermediate.label"),
-			description: t("inputs.experienceLevel.options.intermediate.description"),
+			label: t("form.fields.experienceLevel.options.intermediate.label"),
+			description: t("form.fields.experienceLevel.options.intermediate.description"),
 		},
 		{
 			value: "advanced",
-			label: t("inputs.experienceLevel.options.advanced.label"),
-			description: t("inputs.experienceLevel.options.advanced.description"),
+			label: t("form.fields.experienceLevel.options.advanced.label"),
+			description: t("form.fields.experienceLevel.options.advanced.description"),
 		},
 		{
 			value: "professional",
-			label: t("inputs.experienceLevel.options.professional.label"),
-			description: t("inputs.experienceLevel.options.professional.description"),
+			label: t("form.fields.experienceLevel.options.professional.label"),
+			description: t("form.fields.experienceLevel.options.professional.description"),
 		},
 	] as const;
 
@@ -95,7 +95,7 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 				<View className="bg-background py-safe flex-1">
 					<ScrollView className="flex-1" contentContainerClassName="px-6">
 						<View className="mb-4 flex-row items-center justify-between">
-							<Text className="text-foreground text-xl font-bold">{t("title")}</Text>
+							<Text className="text-foreground text-xl font-bold">{t("header.title")}</Text>
 							<Button onPress={onClose} size="icon">
 								<Icon as={XIcon} />
 							</Button>
@@ -108,9 +108,9 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 								<form.AppField name="firstName" validators={{ onBlur: updateProfileContract.shape.firstName }}>
 									{(field) => (
 										<field.Input
-											label={t("inputs.firstName.label")}
+											label={t("form.fields.firstName.label")}
 											keyboardType="default"
-											placeholder={t("inputs.firstName.placeholder")}
+											placeholder={t("form.fields.firstName.placeholder")}
 											labelClassName="font-mono"
 											returnKeyType="next"
 											ref={(input) => registerRef(field.name, input)}
@@ -122,9 +122,9 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 								<form.AppField name="lastName" validators={{ onBlur: updateProfileContract.shape.lastName }}>
 									{(field) => (
 										<field.Input
-											label={t("inputs.lastName.label")}
+											label={t("form.fields.lastName.label")}
 											keyboardType="default"
-											placeholder={t("inputs.lastName.placeholder")}
+											placeholder={t("form.fields.lastName.placeholder")}
 											labelClassName="font-mono"
 											returnKeyType="next"
 											ref={(input) => registerRef(field.name, input)}
@@ -138,9 +138,9 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 								<form.AppField name="bio" validators={{ onBlur: updateProfileContract.shape.bio }}>
 									{(field) => (
 										<field.Textarea
-											label={t("inputs.bio.label")}
+											label={t("form.fields.bio.label")}
 											keyboardType="default"
-											placeholder={t("inputs.bio.placeholder")}
+											placeholder={t("form.fields.bio.placeholder")}
 											labelClassName="font-mono"
 											returnKeyType="next"
 											ref={(input) => registerRef(field.name, input)}
@@ -152,9 +152,9 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 								<form.AppField name="goals" validators={{ onBlur: updateProfileContract.shape.goals }}>
 									{(field) => (
 										<field.Input
-											label={t("inputs.goals.label")}
+											label={t("form.fields.goals.label")}
 											keyboardType="default"
-											placeholder={t("inputs.goals.placeholder")}
+											placeholder={t("form.fields.goals.placeholder")}
 											labelClassName="font-mono"
 											returnKeyType="next"
 											ref={(input) => registerRef(field.name, input)}
@@ -171,7 +171,10 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 										};
 
 										return (
-											<FormBase label={t("inputs.experienceLevel.label")} description={t("inputs.experienceLevel.description")}>
+											<FormBase
+												label={t("form.fields.experienceLevel.label")}
+												description={t("form.fields.experienceLevel.description")}
+											>
 												{() => (
 													<RadioGroup onValueChange={handleChange} value={field.state.value}>
 														{options.map((opt) => {
@@ -207,10 +210,10 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 								</form.AppField>
 								<View className="mt-2 gap-3">
 									<Button onPress={form.handleSubmit} disabled={form.state.isSubmitting}>
-										<Text>{form.state.isSubmitting ? t("buttons.saving") : t("buttons.save")}</Text>
+										<Text>{form.state.isSubmitting ? t("actions.saving") : t("actions.save")}</Text>
 									</Button>
 									<Button variant="outline" onPress={onClose}>
-										<Text>{t("buttons.cancel")}</Text>
+										<Text>{t("actions.cancel")}</Text>
 									</Button>
 								</View>
 							</FieldGroup>

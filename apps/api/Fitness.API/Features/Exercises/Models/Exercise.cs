@@ -21,9 +21,9 @@ public sealed class Exercise
     [MaxLength(1000)]
     public required string Description { get; set; }
     public string? MediaUrl { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
-    public DateTime? DeletedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 
     public ICollection<WorkoutExercise> WorkoutExercises { get; set; } = [];
 }

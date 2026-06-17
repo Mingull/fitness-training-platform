@@ -15,13 +15,7 @@ const Select = SelectPrimitive.Root;
 
 const SelectGroup = SelectPrimitive.Group;
 
-function SelectValue({
-	ref,
-	className,
-	...props
-}: React.ComponentProps<typeof SelectPrimitive.Value> & {
-	className?: string;
-}) {
+function SelectValue({ ref, className, ...props }: React.ComponentProps<typeof SelectPrimitive.Value>) {
 	const { value } = SelectPrimitive.useRootContext();
 	return (
 		<SelectPrimitive.Value
@@ -46,17 +40,15 @@ function SelectTrigger({
 		<SelectPrimitive.Trigger
 			ref={ref}
 			className={cn(
-				"border-input dark:bg-input/30 dark:active:bg-input/50 bg-background flex h-10 flex-row items-center justify-between gap-2 rounded-md border px-3 py-2 shadow-sm shadow-black/5 sm:h-9",
+				"bg-input aria-invalid:border-destructive flex w-fit flex-row items-center justify-between gap-1.5 rounded-3xl border border-transparent px-3 py-2 text-sm transition-[color,box-shadow,background-color]",
 				Platform.select({
-					web: "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:hover:bg-input/50 w-fit text-sm whitespace-nowrap transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0",
+					web: "aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 focus-visible:border-ring focus-visible:ring-ring/30 whitespace-nowrap outline-none focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
 				}),
-				props.disabled && "opacity-50",
-				size === "sm" && "h-8 py-2 sm:py-1.5",
 				className,
 			)}
 			{...props}
 		>
-			<>{children}</>
+			{children}
 			<Icon as={ChevronDown} aria-hidden={true} className="text-muted-foreground size-4" />
 		</SelectPrimitive.Trigger>
 	);
@@ -67,7 +59,7 @@ const FullWindowOverlay = Platform.OS === "ios" ? RNFullWindowOverlay : React.Fr
 function SelectContent({
 	className,
 	children,
-	position = "popper",
+	position = "item-aligned",
 	portalHost,
 	...props
 }: React.ComponentProps<typeof SelectPrimitive.Content> & {
@@ -82,14 +74,13 @@ function SelectContent({
 						<NativeOnlyAnimatedView className="z-50" entering={FadeIn} exiting={FadeOut}>
 							<SelectPrimitive.Content
 								className={cn(
-									"bg-popover border-border relative z-50 min-w-[8rem] rounded-md border shadow-md shadow-black/5",
+									"dark bg-popover text-popover-foreground relative z-50 max-h-(--radix-select-content-available-height) min-w-36 overflow-x-hidden overflow-y-auto rounded-3xl shadow-lg",
 									Platform.select({
 										web: cn(
-											"animate-in fade-in-0 zoom-in-95 max-h-52 origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto",
+											"ring-foreground/5 dark:ring-foreground/10 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 max-h-52 origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto ring-1 duration-100 data-[align-trigger=true]:animate-none",
 											props.side === "bottom" && "slide-in-from-top-2",
 											props.side === "top" && "slide-in-from-bottom-2",
 										),
-										native: "p-1",
 									}),
 									position === "popper" &&
 										Platform.select({
@@ -108,7 +99,7 @@ function SelectContent({
 											cn(
 												"w-full",
 												Platform.select({
-													web: "h-[var(--radix-select-trigger-height)] min-w-[var(--radix-select-trigger-width)]",
+													web: "h-(--radix-select-trigger-height) min-w-(--radix-select-trigger-width)",
 												}),
 											),
 									)}
@@ -126,16 +117,16 @@ function SelectContent({
 }
 
 function SelectLabel({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
-	return <SelectPrimitive.Label className={cn("text-muted-foreground px-2 py-2 text-xs sm:py-1.5", className)} {...props} />;
+	return <SelectPrimitive.Label className={cn("text-muted-foreground px-3 py-2.5 text-xs", className)} {...props} />;
 }
 
 function SelectItem({ className, children, ...props }: React.ComponentProps<typeof SelectPrimitive.Item>) {
 	return (
 		<SelectPrimitive.Item
 			className={cn(
-				"active:bg-accent group relative flex w-full flex-row items-center gap-2 rounded-sm py-2 pr-8 pl-2 sm:py-1.5",
+				"relative flex w-full flex-row items-center gap-2.5 rounded-2xl py-2 pr-8 pl-3 text-sm font-medium",
 				Platform.select({
-					web: "focus:bg-accent focus:text-accent-foreground cursor-default outline-none data-[disabled]:pointer-events-none [&_svg]:pointer-events-none *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+					web: "not-data-[variant=destructive]:focus:**:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-default outline-hidden outline-none select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
 				}),
 				props.disabled && "opacity-50",
 				className,

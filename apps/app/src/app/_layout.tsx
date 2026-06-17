@@ -7,7 +7,7 @@ import { NAV_THEME } from "@/lib/theme";
 import "@/polyfills";
 import { PortalHost } from "@rn-primitives/portal";
 import { QueryClient } from "@tanstack/react-query";
-import { getLocales } from "expo-localization";
+import { getCalendars, getLocales } from "expo-localization";
 import { Stack, useTheme } from "expo-router";
 import { ThemeProvider } from "expo-router/react-navigation";
 import { StatusBar } from "expo-status-bar";
@@ -18,18 +18,19 @@ import nlMessages from "../../messages/nl.json";
 const deviceLocale = getLocales()[0];
 const locale = deviceLocale?.languageCode === "nl" ? "nl" : "en";
 const messages = locale === "nl" ? nlMessages : enMessages;
+const timeZone = getCalendars()[0]?.timeZone ?? "UTC";
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
 	const colorScheme = useColorScheme();
 	return (
-		<Providers queryClient={queryClient} locale={locale} messages={messages}>
+		<Providers queryClient={queryClient} locale={locale} messages={messages} timeZone={timeZone}>
 			<ThemeProvider value={NAV_THEME[colorScheme === "unspecified" ? "dark" : colorScheme]}>
 				<SplashScreenController />
 				<StatusBar style={colorScheme === "dark" ? "light" : "dark"} animated />
 				<RootNavigator />
-				<PortalHost />
 				<Toaster position="top-center" theme={colorScheme === "dark" ? "dark" : "light"} />
+				<PortalHost />
 			</ThemeProvider>
 		</Providers>
 	);

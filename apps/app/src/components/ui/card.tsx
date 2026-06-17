@@ -7,7 +7,7 @@ function Card({ className, ...props }: React.ComponentProps<typeof View> & React
 		<TextClassContext.Provider value="text-card-foreground text-sm">
 			<View
 				className={cn(
-					"group/card bg-card flex flex-col gap-6 overflow-hidden rounded-4xl py-6 shadow-md has-[>img:first-child]:pt-0 data-[size=sm]:gap-4 data-[size=sm]:py-4 *:[img:first-child]:rounded-t-4xl *:[img:last-child]:rounded-b-4xl",
+					"group/card bg-card relative flex flex-col gap-6 overflow-hidden rounded-4xl py-6 shadow-md has-[>img:first-child]:pt-0 data-[size=sm]:gap-4 data-[size=sm]:py-4 *:[img:first-child]:rounded-t-4xl *:[img:last-child]:rounded-b-4xl",
 					Platform.select({
 						web: "ring-foreground/5 dark:ring-foreground/10 ring-1",
 					}),

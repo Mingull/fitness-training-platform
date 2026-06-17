@@ -9,16 +9,14 @@ export const useTrainingPlan = (planId: string) => {
 	const { userId } = useSession();
 	const { withRefresh } = useAuthActions();
 	return useQuery<TrainingPlan["data"], ClientError>({
-		queryKey: ["training-plan", planId, withRefresh],
+		queryKey: ["training-plan", planId],
 		enabled: !!userId,
 		retry: false,
 		// Keep training plans fresh for 5 minutes and cache for 30 minutes
 		staleTime: 1000 * 60 * 5,
 		refetchOnWindowFocus: false,
 		queryFn: async ({ signal }) => {
-			const result = await withRefresh((accessToken) =>
-				apiClient.plans.getOne({ params: { id: planId }, accessToken: accessToken ?? undefined, signal }),
-			);
+			const result = await withRefresh((accessToken) => apiClient.plans.getOne({ params: { planId }, accessToken: accessToken ?? undefined, signal }));
 
 			if (result.error) {
 				throw result.error;

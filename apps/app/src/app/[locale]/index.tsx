@@ -8,7 +8,7 @@ import { View } from "react-native";
 import { useTranslations } from "use-intl";
 
 export default function OnboardingScreen() {
-	const t = useTranslations("onboarding");
+	const t = useTranslations("auth.onboarding");
 
 	return (
 		<View className="bg-background p-safe flex-1">
@@ -17,16 +17,16 @@ export default function OnboardingScreen() {
 					<View className="bg-muted border-primary rounded-4xl border-2 p-3.5">
 						<Icon as={Dumbbell} size={14 * 2.25} className="text-primary items-center justify-center" />
 					</View>
-					<Text className="text-muted-foreground font-mono-semibold mb-4 text-xs uppercase">{t("eyebrow")}</Text>
+					<Text className="text-muted-foreground font-mono-semibold mb-4 text-xs uppercase">{t("hero.eyebrow")}</Text>
 					<Text
 						textBreakStrategy="balanced"
 						lineBreakStrategyIOS="push-out"
 						className="font-mono-medium text-center text-2xl leading-tight font-medium tracking-tight"
 					>
-						{t("title")}
+						{t("hero.title")}
 					</Text>
 					<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-center text-base leading-6">
-						{t("subtitle")}
+						{t("hero.subtitle")}
 					</Text>
 				</View>
 				<View className="bg-card rounded-4xl p-4 shadow-md">
@@ -84,13 +84,13 @@ export default function OnboardingScreen() {
 
 				<Link href="/[locale]/sign-in" asChild>
 					<Button className="my-4 h-12 w-full gap-2">
-						<Text>{t("continue")}</Text>
+						<Text>{t("actions.continue")}</Text>
 						<Icon as={ArrowRight} size={18} />
 					</Button>
 				</Link>
 				<View className="flex items-center rounded-b-4xl px-6">
 					<Text textBreakStrategy="balanced" lineBreakStrategyIOS="push-out" className="text-muted-foreground text-center text-sm leading-5">
-						{t("footer")}
+						{t("hero.footer")}
 					</Text>
 				</View>
 			</View>

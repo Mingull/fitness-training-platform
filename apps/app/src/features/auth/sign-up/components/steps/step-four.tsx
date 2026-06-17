@@ -7,22 +7,26 @@ import { sharedForm } from "../../shared-form";
 export const StepFour = withForm({
 	...sharedForm,
 	render: function Render({ form, className }) {
-		const t = useTranslations("signUp.steps.stepFour");
+		const t = useTranslations("auth.signUp.steps.about");
 
 		return (
 			<FieldGroup className={cn("gap-4", className)}>
 				<form.AppField name="stepFour.bio">
 					{(field) => (
-						<field.Textarea label={t("inputs.bio.label")} description={t("inputs.bio.description")} placeholder={t("inputs.bio.placeholder")} />
+						<field.Textarea
+							label={t("form.fields.bio.label")}
+							description={t("form.fields.bio.description")}
+							placeholder={t("form.fields.bio.placeholder")}
+						/>
 					)}
 				</form.AppField>
 
 				<form.AppField name="stepFour.goals">
 					{(field) => (
 						<field.Textarea
-							label={t("inputs.goals.label")}
-							description={t("inputs.goals.description")}
-							placeholder={t("inputs.goals.placeholder")}
+							label={t("form.fields.goals.label")}
+							description={t("form.fields.goals.description")}
+							placeholder={t("form.fields.goals.placeholder")}
 						/>
 					)}
 				</form.AppField>

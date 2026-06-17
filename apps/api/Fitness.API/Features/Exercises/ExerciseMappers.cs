@@ -6,9 +6,23 @@ namespace Fitness.API.Features.Exercises;
 
 public static class ExerciseMappers
 {
-    public static ExerciseResponse ToResponse(this Exercise exercise, WorkoutExercise? workoutExercise = null)
+    public static ExerciseResponse ToResponse(this Exercise exercise)
     {
         return new ExerciseResponse
+        {
+            Id = exercise.Id,
+            Name = exercise.Name,
+            Description = exercise.Description,
+            MediaUrl = exercise.MediaUrl,
+            CreatedAt = exercise.CreatedAt,
+            UpdatedAt = exercise.UpdatedAt,
+            DeletedAt = exercise.DeletedAt
+        };
+    }
+    
+    public static ExerciseDetailResponse ToDetailResponse(this Exercise exercise, WorkoutExercise? workoutExercise = null)
+    {
+        return new ExerciseDetailResponse
         {
             Id = exercise.Id,
             Name = exercise.Name,

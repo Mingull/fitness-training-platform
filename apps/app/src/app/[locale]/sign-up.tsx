@@ -22,17 +22,17 @@ import { toast } from "sonner-native";
 import { useTranslations } from "use-intl";
 
 export default function SignupScreen() {
-	const t = useTranslations("signUp");
+	const t = useTranslations("auth.signUp");
 	const router = useRouter();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [currentStepIndex, setCurrentStepIndex] = useState(0);
 	const [currentStepValidator, setCurrentStepValidator] = useState(formSchema.pick({ stepOne: true }));
 
 	const steps = [
-		{ title: t("steps.stepOne.title"), subtitle: t("steps.stepOne.subtitle") },
-		{ title: t("steps.stepTwo.title"), subtitle: t("steps.stepTwo.subtitle") },
-		{ title: t("steps.stepThree.title"), subtitle: t("steps.stepThree.subtitle") },
-		{ title: t("steps.stepFour.title"), subtitle: t("steps.stepFour.subtitle") },
+		{ title: t("steps.account.title"), subtitle: t("steps.account.subtitle") },
+		{ title: t("steps.personal.title"), subtitle: t("steps.personal.subtitle") },
+		{ title: t("steps.trainingLevel.title"), subtitle: t("steps.trainingLevel.subtitle") },
+		{ title: t("steps.about.title"), subtitle: t("steps.about.subtitle") },
 	];
 
 	const submitSchemaByStep = useMemo(
@@ -107,20 +107,20 @@ export default function SignupScreen() {
 							<View className="bg-muted border-primary mb-6 rounded-4xl border-2 p-3.5">
 								<Icon as={Dumbbell} size={14 * 2.25} className="text-primary items-center justify-center" />
 							</View>
-							<Text className="text-2xl font-bold">{t("title", { title: "FTP" })}</Text>
+							<Text className="text-2xl font-bold">{t("hero.title", { title: "FTP" })}</Text>
 							<Text
 								textBreakStrategy="balanced"
 								lineBreakStrategyIOS="push-out"
 								className="text-muted-foreground px-2 text-center font-mono text-sm"
 							>
-								{t("subtitle", { title: "Fitness Training Platform" })}
+								{t("hero.subtitle", { title: "Fitness Training Platform" })}
 							</Text>
 						</View>
 
 						<View className="mb-4 gap-2">
 							<View className="flex-row items-center justify-between">
 								<Text className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
-									{t("steps.currentStep", { current: currentStepIndex + 1, total: steps.length })}
+									{t("progress.currentStep", { current: currentStepIndex + 1, total: steps.length })}
 								</Text>
 								<Text className="text-muted-foreground text-xs">{steps[currentStepIndex].title}</Text>
 							</View>
@@ -149,7 +149,7 @@ export default function SignupScreen() {
 								<View className={"flex-row gap-3"}>
 									{!(currentStepIndex === 0) && (
 										<Button variant="outline" className="flex-1" onPress={back}>
-											<Text>{t("back")}</Text>
+											<Text>{t("actions.back")}</Text>
 										</Button>
 									)}
 									<form.Subscribe selector={(state) => [state.isSubmitting]}>
@@ -163,22 +163,22 @@ export default function SignupScreen() {
 												disabled={isSubmitting}
 											>
 												{currentStepIndex === steps.length - 1 ?
-													<Text>{t("button")}</Text>
-												:	<Text>{t("continue")}</Text>}
+													<Text>{t("actions.submit")}</Text>
+												:	<Text>{t("actions.next")}</Text>}
 											</Button>
 										)}
 									</form.Subscribe>
 								</View>
 								<Text className="text-center text-sm">
-									{t("haveAccount")}{" "}
+									{t("links.haveAccount")}{" "}
 									<Link href="/[locale]/sign-in" className="underline underline-offset-4" asChild>
-										<Text>{t("linkText")}</Text>
+										<Text>{t("links.signIn")}</Text>
 									</Link>
 								</Text>
 								<View className="gap-2">
 									<View className="mt-4 mb-4 flex flex-row items-center gap-1">
 										<Separator className="flex-1/2" />
-										<Text className="text-muted-foreground relative px-2">{t("divider")}</Text>
+										<Text className="text-muted-foreground relative px-2">{t("separators.or")}</Text>
 										<Separator className="flex-1/2" />
 									</View>
 									<View className="gap-2">
@@ -186,19 +186,19 @@ export default function SignupScreen() {
 											variant="outline"
 											className="w-full"
 											onPress={() => handleSignInProvider("google")}
-											aria-label={t("continueWith", { provider: "Google" })}
+											aria-label={t("actions.continueWithProvider", { provider: "Google" })}
 										>
 											<GoogleIcon className="text-foreground" />
-											<Text>{t("continueWith", { provider: "Google" })}</Text>
+											<Text>{t("actions.continueWithProvider", { provider: "Google" })}</Text>
 										</Button>
 										<Button
 											variant="outline"
 											className="w-full"
 											onPress={() => handleSignInProvider("discord")}
-											aria-label={t("continueWith", { provider: "Discord" })}
+											aria-label={t("actions.continueWithProvider", { provider: "Discord" })}
 										>
 											<DiscordIcon className="text-foreground" />
-											<Text>{t("continueWith", { provider: "Discord" })}</Text>
+											<Text>{t("actions.continueWithProvider", { provider: "Discord" })}</Text>
 										</Button>
 									</View>
 								</View>
@@ -209,7 +209,7 @@ export default function SignupScreen() {
 									lineBreakStrategyIOS="push-out"
 									className="text-muted-foreground text-center text-xs text-balance"
 								>
-									{t.rich("tos", {
+									{t.rich("legal.tos", {
 										tos: (chunks) => (
 											<Link href="/terms-of-service" className="underline">
 												{chunks}

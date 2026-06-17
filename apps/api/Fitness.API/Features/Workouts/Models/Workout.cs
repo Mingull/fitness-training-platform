@@ -16,8 +16,8 @@ public sealed class Workout
     [MaxLength(100)]
     public string Name { get; set; } = null!;
     public int Order { get; set; }
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? UpdatedAt { get; private set; }
-    public DateTime? DeletedAt { get; private set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
     public ICollection<WorkoutExercise> WorkoutExercises { get; set; } = [];
 }

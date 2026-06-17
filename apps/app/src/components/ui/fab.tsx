@@ -26,6 +26,7 @@ const useFABContext = () => {
 };
 
 type FABProps = {
+	disabled?: boolean;
 	alwaysShowLabel?: boolean;
 	extendTitleOnLongPress?: boolean;
 	children: React.ReactNode;
@@ -64,6 +65,7 @@ const fabVariants = cva("absolute", {
 });
 
 function FAB({
+	disabled,
 	position = "bottom-right",
 	spacing = "default",
 	alwaysShowLabel = false,
@@ -96,7 +98,7 @@ function FAB({
 
 	return (
 		<FABContext.Provider value={{ isExtended, extendFAB, setIsExtended, showLabel, extendTitleOnLongPress, position, spacing }}>
-			<View className={cn(fabVariants({ position, spacing }), className)} {...props}>
+			<View className={cn(fabVariants({ position, spacing }), className, disabled && "hidden")} {...props}>
 				{children}
 			</View>
 		</FABContext.Provider>
@@ -139,11 +141,10 @@ function FABLabel({ className, ...props }: FABTitleProps) {
 
 	return (
 		<NativeOnlyAnimatedView
-			className="ml-2"
 			entering={FadeIn.duration(150).withInitialValues({ opacity: 0, transform: [{ translateX: -6 }] })}
 			exiting={FadeOut.duration(100)}
 		>
-			<Text className={cn("text-foreground text-sm font-medium", className)} {...props} />
+			<Text className={cn("text-foreground m-2 text-sm font-medium", className)} {...props} />
 		</NativeOnlyAnimatedView>
 	);
 }

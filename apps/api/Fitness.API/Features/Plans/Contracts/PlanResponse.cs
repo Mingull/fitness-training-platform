@@ -11,7 +11,7 @@ public record PlanResponse
     public required string Description { get; init; }
     public required int EstimatedDuration { get; init; }
     public required bool IsPublic { get; init; }
-    public required DateTime CreatedAt { get; init; }
-    public DateTime? UpdatedAt { get; init; }
-    public DateTime? DeletedAt { get; init; }
+    public required DateTimeOffset  CreatedAt { get; init; }
+    public DateTimeOffset? UpdatedAt { get; init; }
+    public DateTimeOffset? DeletedAt { get; init; }
 }

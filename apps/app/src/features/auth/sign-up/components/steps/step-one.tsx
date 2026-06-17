@@ -15,7 +15,7 @@ import { FlattenRefName, sharedForm } from "../../shared-form";
 export const StepOne = withForm({
 	...sharedForm,
 	render: function Render({ form, className }) {
-		const t = useTranslations("signUp.steps.stepOne");
+		const t = useTranslations("auth.signUp.steps.account");
 		const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 		const fields = useRef(new Map<FlattenRefName<FormSchema>, TextInput>());
 
@@ -37,9 +37,9 @@ export const StepOne = withForm({
 				<form.AppField name="stepOne.email">
 					{(field) => (
 						<field.Input
-							label={t("inputs.email.label")}
+							label={t("form.fields.email.label")}
 							keyboardType="email-address"
-							placeholder={t("inputs.email.placeholder")}
+							placeholder={t("form.fields.email.placeholder")}
 							returnKeyType="next"
 							ref={(input) => registerRef(field.name, input)}
 							submitBehavior="submit"
@@ -50,7 +50,7 @@ export const StepOne = withForm({
 
 				<form.AppField name="stepOne.password">
 					{(field) => (
-						<FormBase label={t("inputs.password.label")} horizontal>
+						<FormBase label={t("form.fields.password.label")} horizontal>
 							{(isInvalid) => (
 								<AdvancedInput
 									id={field.name}
@@ -59,7 +59,7 @@ export const StepOne = withForm({
 									onChangeText={field.handleChange}
 									aria-invalid={isInvalid}
 									textContentType="password"
-									placeholder={t("inputs.password.placeholder")}
+											placeholder={t("form.fields.password.placeholder")}
 									requirements={passwordRequirements}
 									onStrengthChange={(strength) => {
 										if (strength === 0) return { color: "bg-border", text: "Enter a password" };
@@ -82,7 +82,7 @@ export const StepOne = withForm({
 
 				<form.AppField name="stepOne.confirmPassword">
 					{(field) => (
-						<FormBase label={t("inputs.confirmPassword.label")} horizontal>
+						<FormBase label={t("form.fields.confirmPassword.label")} horizontal>
 							{(isInvalid) => (
 								<InputGroup>
 									<InputGroupInput
@@ -92,7 +92,7 @@ export const StepOne = withForm({
 										onChangeText={field.handleChange}
 										aria-invalid={isInvalid}
 										secureTextEntry={!showPasswordConfirm}
-										placeholder={t("inputs.confirmPassword.placeholder")}
+											placeholder={t("form.fields.confirmPassword.placeholder")}
 										returnKeyType="done"
 										ref={(input) => registerRef(field.name, input)}
 										submitBehavior="blurAndSubmit"

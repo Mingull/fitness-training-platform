@@ -10,27 +10,27 @@ import { sharedForm } from "../../shared-form";
 export const StepThree = withForm({
 	...sharedForm,
 	render: function Render({ form, className }) {
-		const t = useTranslations("signUp.steps.stepThree");
+		const t = useTranslations("auth.signUp.steps.trainingLevel");
 		const options = [
 			{
 				value: "beginner",
-				label: t("inputs.experienceLevel.options.beginner.label"),
-				description: t("inputs.experienceLevel.options.beginner.description"),
+				label: t("form.fields.experienceLevel.options.beginner.label"),
+				description: t("form.fields.experienceLevel.options.beginner.description"),
 			},
 			{
 				value: "intermediate",
-				label: t("inputs.experienceLevel.options.intermediate.label"),
-				description: t("inputs.experienceLevel.options.intermediate.description"),
+				label: t("form.fields.experienceLevel.options.intermediate.label"),
+				description: t("form.fields.experienceLevel.options.intermediate.description"),
 			},
 			{
 				value: "advanced",
-				label: t("inputs.experienceLevel.options.advanced.label"),
-				description: t("inputs.experienceLevel.options.advanced.description"),
+				label: t("form.fields.experienceLevel.options.advanced.label"),
+				description: t("form.fields.experienceLevel.options.advanced.description"),
 			},
 			{
 				value: "professional",
-				label: t("inputs.experienceLevel.options.professional.label"),
-				description: t("inputs.experienceLevel.options.professional.description"),
+				label: t("form.fields.experienceLevel.options.professional.label"),
+				description: t("form.fields.experienceLevel.options.professional.description"),
 			},
 		] as const;
 
@@ -43,7 +43,7 @@ export const StepThree = withForm({
 							field.handleChange(value);
 						};
 						return (
-							<FormBase label={t("inputs.experienceLevel.label")} description={t("inputs.experienceLevel.description")}>
+							<FormBase label={t("form.fields.experienceLevel.label")} description={t("form.fields.experienceLevel.description")}>
 								{(isInvalid) => (
 									<RadioGroup onValueChange={handleChange} value={field.state.value}>
 										{options.map((opt) => {

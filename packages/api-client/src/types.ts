@@ -54,7 +54,7 @@ type IsParamPath<Path extends string> = Path extends `${string}{${string}}${stri
  * This allows for strong typing of route parameters when defining API routes and using the generated client methods.
  */
 type InferPath<Path extends string, Acc extends string = never, Obj extends Record<string, unknown> = {}> =
-	Path extends `${infer _Start}{${infer Param}}${infer Rest}` ?
+	Path extends `${string}{${infer Param}}${infer Rest}` ?
 		InferPath<
 			Rest,
 			Acc | Param,

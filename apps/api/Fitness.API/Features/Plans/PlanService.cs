@@ -65,7 +65,11 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
     }
     public async Task<Result> DeactivatePlanForUserAsync(Guid userId)
     {
-        await planRepository.DeactivatePlanForUserAsync(userId);
+        var result = await planRepository.DeactivatePlanForUserAsync(userId);
+        if (!result)
+        {
+            return PlanErrors.PlanDeactivationFailed;
+        }
         return Result.Success();
     }
 
@@ -107,6 +111,73 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
             Name = request.Name,
             Order = nextOrder
         });
+
+        // Reload the plan with workouts to return the updated details
+        plan = await planRepository.GetByIdAsync(planId, withWorkouts: true);
+        return Result<PlanDetailResponse>.Success(plan!.ToDetailResponse());
+    }
+
+    public async Task<Result<PlanDetailResponse>> ReorderWorkoutsInPlanAsync(Guid planId, IEnumerable<ReorderWorkoutRequest> request, Guid userId)
+    {
+        // Get the plan to ensure it exists and the user has permission to modify it
+        var plan = await planRepository.GetByIdAsync(planId, withWorkouts: true);
+
+        // Check if the plan exists
+        if (plan == null)
+            return PlanErrors.NotFound;
+
+        // Check if the user has permission to modify the plan
+        if (plan.CreatedById != userId)
+            return AuthErrors.UnauthorizedWithResource("plan");
+
+        var reorderRequests = request.ToList();
+        var existingWorkouts = plan.Workouts.ToList();
+        var workoutCount = existingWorkouts.Count;
+
+        if (workoutCount <= 1)
+            return Result<PlanDetailResponse>.Success(plan.ToDetailResponse());
+
+        if (reorderRequests.Count != workoutCount)
+            return PlanErrors.InvalidWorkoutReorderRequest("The reorder request must contain every workout exactly once.");
+
+        var duplicateWorkoutId = reorderRequests
+            .GroupBy(item => item.WorkoutId)
+            .FirstOrDefault(group => group.Count() > 1)?.Key;
+
+        if (duplicateWorkoutId.HasValue)
+            return PlanErrors.InvalidWorkoutReorderRequest($"The workout with ID {duplicateWorkoutId.Value} appears more than once in the reorder request.");
+
+        var existingWorkoutIds = existingWorkouts.Select(workout => workout.Id).ToHashSet();
+        var unknownWorkoutId = reorderRequests
+            .Select(item => item.WorkoutId)
+            .FirstOrDefault(workoutId => !existingWorkoutIds.Contains(workoutId));
+
+        if (unknownWorkoutId != Guid.Empty)
+            return PlanErrors.WorkoutNotPartOfPlan(unknownWorkoutId);
+
+        var requestedIndexes = reorderRequests.Select(item => item.NewOrderIndex).ToList();
+        var usesZeroBasedIndexes = requestedIndexes.Min() == 0 && requestedIndexes.Max() == workoutCount - 1;
+        var usesOneBasedIndexes = requestedIndexes.Min() == 1 && requestedIndexes.Max() == workoutCount;
+
+        if (!usesZeroBasedIndexes && !usesOneBasedIndexes)
+            return PlanErrors.InvalidWorkoutReorderRequest("Order indexes must be either 0..N-1 or 1..N.");
+
+        if (requestedIndexes.Distinct().Count() != workoutCount)
+            return PlanErrors.InvalidWorkoutReorderRequest("Order indexes must be unique.");
+
+        var normalizedWorkoutOrders = reorderRequests.ToDictionary(
+            item => item.WorkoutId,
+            item => usesZeroBasedIndexes ? item.NewOrderIndex + 1 : item.NewOrderIndex
+        );
+
+        try
+        {
+            await planRepository.SaveWorkoutOrdersAsync(plan.Id, normalizedWorkoutOrders);
+        }
+        catch
+        {
+            return PlanErrors.ReorderWorkoutsFailed;
+        }
 
         // Reload the plan with workouts to return the updated details
         plan = await planRepository.GetByIdAsync(planId, withWorkouts: true);

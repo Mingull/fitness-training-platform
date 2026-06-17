@@ -83,4 +83,19 @@ public class PlanRepository(FitnessContext context) : IPlanRepository
         context.Workouts.Add(workout);
         await context.SaveChangesAsync();
     }
+
+    public async Task SaveWorkoutOrdersAsync(Guid planId, IReadOnlyDictionary<Guid, int> workoutOrders)
+    {
+        var workoutIds = workoutOrders.Keys.ToList();
+        var workouts = await context.Workouts
+            .Where(workout => workout.PlanId == planId && workoutIds.Contains(workout.Id))
+            .ToListAsync();
+
+        foreach (var workout in workouts)
+        {
+            workout.Order = workoutOrders[workout.Id];
+        }
+
+        await context.SaveChangesAsync();
+    }
 }
