@@ -7,7 +7,7 @@ export function FormTextarea({ label, description, errorComponent, ...props }: F
 	const field = useFieldContext<string>();
 
 	return (
-		<FormBase label={label} description={description} horizontal errorComponent={errorComponent} {...props}>
+		<FormBase label={label} description={description} horizontal errorComponent={errorComponent}>
 			{(isInvalid) => (
 				<Textarea
 					id={field.name}

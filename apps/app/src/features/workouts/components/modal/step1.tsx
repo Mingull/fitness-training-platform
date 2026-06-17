@@ -72,8 +72,7 @@ export const Step1Form = withForm({
 				validators={{
 					onDynamic: step1Schema,
 				}}
-				onGroupSubmit={({ value: _value }) => {
-					console.log("Step 1 values:", _value);
+				onGroupSubmit={() => {
 					setStep(step + 1);
 				}}
 			>
