@@ -1,0 +1,26 @@
+meta {
+  name: Deactivate Device
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{host}}/devices/:expoToken
+  body: json
+  auth: bearer
+}
+
+params:path {
+  expoToken: ExponentPushToken[123456789]
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "expoToken": "ExponentPushToken[123456789]",
+    "platform": "android"
+  }
+}

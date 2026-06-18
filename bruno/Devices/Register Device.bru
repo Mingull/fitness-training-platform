@@ -1,0 +1,22 @@
+meta {
+  name: Register Device
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/devices
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "expoToken": "ExponentPushToken[123456789]",
+    "platform": "android"
+  }
+}

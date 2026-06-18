@@ -1,6 +1,7 @@
+import { useNotificationSocket } from "@/features/notifications/hooks/use-notification-socket";
 import { THEME } from "@/lib/theme";
 import { Tabs } from "expo-router";
-import { Home, List, User } from "lucide-react-native";
+import { BellIcon, HomeIcon, ListIcon, SearchIcon, UserIcon } from "lucide-react-native";
 import { styled } from "nativewind";
 import { useColorScheme } from "react-native";
 
@@ -10,6 +11,7 @@ const StyledTabs = styled(Tabs, {
 
 export default function AppLayout() {
 	const colorScheme = useColorScheme();
+	const { unreadCount } = useNotificationSocket();
 	return (
 		<StyledTabs
 			className="bg-muted border-t-0"
@@ -23,21 +25,36 @@ export default function AppLayout() {
 				name="index"
 				options={{
 					title: "Home",
-					tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
+					tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={size} />,
 				}}
 			/>
 			<Tabs.Screen
 				name="plans"
 				options={{
 					title: "Training Plans",
-					tabBarIcon: ({ color, size }) => <List color={color} size={size} />,
+					tabBarIcon: ({ color, size }) => <ListIcon color={color} size={size} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="explore"
+				options={{
+					title: "Explore",
+					tabBarIcon: ({ color, size }) => <SearchIcon color={color} size={size} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="notifications"
+				options={{
+					title: "Notifications",
+					tabBarIcon: ({ color, size }) => <BellIcon color={color} size={size} />,
+					tabBarBadge: unreadCount > 0 ? unreadCount : undefined,
 				}}
 			/>
 			<Tabs.Screen
 				name="profile"
 				options={{
 					title: "Profile",
-					tabBarIcon: ({ color, size }) => <User color={color} size={size} />,
+					tabBarIcon: ({ color, size }) => <UserIcon color={color} size={size} />,
 				}}
 			/>
 		</StyledTabs>

@@ -2,7 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { FABAction, FABLabel, FABTrigger } from "@/components/ui/fab";
 import { Icon } from "@/components/ui/icon";
-import { Scaffold, ScaffoldAddon, ScaffoldBackButton, ScaffoldDescription, ScaffoldFAB, ScaffoldHeader, ScaffoldTitle } from "@/components/ui/scaffold";
+import {
+	Scaffold,
+	ScaffoldAddon,
+	ScaffoldBackButton,
+	ScaffoldContent,
+	ScaffoldDescription,
+	ScaffoldFAB,
+	ScaffoldHeader,
+	ScaffoldTitle,
+} from "@/components/ui/scaffold";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Text } from "@/components/ui/text";
 import { useSession } from "@/features/auth/context";
@@ -95,23 +104,21 @@ export default function TrainingPlanDetailScreen() {
 						<Skeleton className="h-6 w-18" />
 					</ScaffoldAddon>
 				</ScaffoldHeader>
-				<View>
-					<View className="gap-3 px-4 pt-2 pb-4">
-						{Array.from({ length: 3 }, (_, index) => (
-							<Card key={index} className="shadow-sm">
-								<CardHeader className="items-start">
-									<View className="flex-row items-start gap-3">
-										<Skeleton className="mt-0.5 size-11 rounded-full" />
-										<View className="flex-1 gap-2">
-											<Skeleton className="h-5 w-40" />
-											<Skeleton className="h-4 w-full" />
-										</View>
+				<ScaffoldContent>
+					{Array.from({ length: 3 }, (_, index) => (
+						<Card key={index} className="shadow-sm">
+							<CardHeader className="items-start">
+								<View className="flex-row items-start gap-3">
+									<Skeleton className="mt-0.5 size-11 rounded-full" />
+									<View className="flex-1 gap-2">
+										<Skeleton className="h-5 w-40" />
+										<Skeleton className="h-4 w-full" />
 									</View>
-								</CardHeader>
-							</Card>
-						))}
-					</View>
-				</View>
+								</View>
+							</CardHeader>
+						</Card>
+					))}
+				</ScaffoldContent>
 			</Scaffold>
 		);
 

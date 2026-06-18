@@ -141,6 +141,57 @@ namespace Mingull.Fitness.API.Migrations
                     b.ToTable("refresh_tokens", (string)null);
                 });
 
+            modelBuilder.Entity("Fitness.API.Features.Devices.Models.Device", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("ExpoToken")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("expo_token");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_active");
+
+                    b.Property<DateTimeOffset>("LastActiveAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("last_active_at");
+
+                    b.Property<string>("Platform")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("platform");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_devices");
+
+                    b.HasIndex("UserId", "ExpoToken")
+                        .IsUnique()
+                        .HasDatabaseName("ix_devices_user_id_expo_token");
+
+                    b.ToTable("devices", (string)null);
+                });
+
             modelBuilder.Entity("Fitness.API.Features.Exercises.Models.Exercise", b =>
                 {
                     b.Property<Guid>("Id")
@@ -148,7 +199,7 @@ namespace Mingull.Fitness.API.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasColumnName("created_at")
@@ -158,7 +209,7 @@ namespace Mingull.Fitness.API.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("created_by_id");
 
-                    b.Property<DateTime?>("DeletedAt")
+                    b.Property<DateTimeOffset?>("DeletedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasColumnName("deleted_at")
@@ -180,7 +231,7 @@ namespace Mingull.Fitness.API.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("name");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTimeOffset?>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime")
                         .HasColumnName("updated_at")
@@ -193,6 +244,62 @@ namespace Mingull.Fitness.API.Migrations
                         .HasDatabaseName("ix_exercises_created_by_id");
 
                     b.ToTable("exercises", (string)null);
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.Notifications.Models.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("message");
+
+                    b.Property<string>("Metadata")
+                        .HasColumnType("longtext")
+                        .HasColumnName("metadata");
+
+                    b.Property<DateTimeOffset?>("ReadAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("read_at");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("title");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("type");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("NULL ON UPDATE CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_notifications");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_notifications_user_id");
+
+                    b.ToTable("notifications", (string)null);
                 });
 
             modelBuilder.Entity("Fitness.API.Features.Plans.Models.ActiveUserPlan", b =>
@@ -231,7 +338,7 @@ namespace Mingull.Fitness.API.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasColumnName("created_at")
@@ -241,7 +348,7 @@ namespace Mingull.Fitness.API.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("created_by_id");
 
-                    b.Property<DateTime?>("DeletedAt")
+                    b.Property<DateTimeOffset?>("DeletedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasColumnName("deleted_at")
@@ -272,7 +379,7 @@ namespace Mingull.Fitness.API.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("name");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTimeOffset?>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime")
                         .HasColumnName("updated_at")
@@ -399,13 +506,13 @@ namespace Mingull.Fitness.API.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<DateTime?>("DeletedAt")
+                    b.Property<DateTimeOffset?>("DeletedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasColumnName("deleted_at")
@@ -425,7 +532,7 @@ namespace Mingull.Fitness.API.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("plan_id");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTimeOffset?>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime")
                         .HasColumnName("updated_at")
@@ -614,6 +721,18 @@ namespace Mingull.Fitness.API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Fitness.API.Features.Devices.Models.Device", b =>
+                {
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_devices_users_user_id");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Fitness.API.Features.Exercises.Models.Exercise", b =>
                 {
                     b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "CreatedBy")
@@ -624,6 +743,18 @@ namespace Mingull.Fitness.API.Migrations
                         .HasConstraintName("fk_exercises_users_created_by_id");
 
                     b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.Notifications.Models.Notification", b =>
+                {
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_notifications_users_user_id");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Fitness.API.Features.Plans.Models.ActiveUserPlan", b =>

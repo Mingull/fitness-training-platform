@@ -3,7 +3,9 @@ import { RouteNamespace } from "@fitness/api-client/types";
 import { apiErrorContract } from "@fitness/contracts/api-error";
 import { apiResponseBaseContract } from "@fitness/contracts/api-response";
 import { authTokensContract, signinContract, signupContract } from "@fitness/contracts/auth";
+import { deviceContract, registerDeviceContract } from "@fitness/contracts/devices";
 import { exerciseListContract } from "@fitness/contracts/exercises";
+import { notificationListContract } from "@fitness/contracts/notifications";
 import {
 	addWorkoutToPlanContract,
 	createTrainingPlanContract,
@@ -136,6 +138,29 @@ const routes = {
 			path: "/exercises",
 			auth: "optional",
 			out: exerciseListContract,
+		},
+	},
+	devices: {
+		register: {
+			method: "POST",
+			path: "/devices",
+			auth: "required",
+			in: registerDeviceContract,
+			out: deviceContract,
+		},
+	},
+	notifications: {
+		list: {
+			method: "GET",
+			path: "/notifications",
+			auth: "required",
+			out: notificationListContract,
+		},
+		markRead: {
+			method: "PATCH",
+			path: "/notifications/{notificationId:string}/read",
+			auth: "required",
+			out: apiResponseBaseContract,
 		},
 	},
 } as const satisfies RouteNamespace;

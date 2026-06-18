@@ -21,6 +21,10 @@ using Fitness.API.Features.Workouts.Abstract;
 using Fitness.API.Features.Workouts;
 using Fitness.API.Features.WorkoutExercises.Abstract;
 using Fitness.API.Features.WorkoutExercises;
+using Fitness.API.Features.Devices.Abstract;
+using Fitness.API.Features.Devices;
+using Fitness.API.Features.Notifications.Abstract;
+using Fitness.API.Features.Notifications;
 
 namespace Fitness.API;
 
@@ -40,6 +44,7 @@ public class Startup(IConfiguration configuration)
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.MapHub<NotificationHub>("/hubs/notifications");
             if (env.IsDevelopment())
             {
                 endpoints.MapOpenApi();
@@ -63,6 +68,7 @@ public class Startup(IConfiguration configuration)
                     new BadRequestObjectResult(AuthErrors.MapModelStateValidationFailure(context.ModelState));
             });
         services.AddOpenApi();
+        services.AddSignalR();
 
         ConfigureDatabase(services);
 
@@ -82,6 +88,8 @@ public class Startup(IConfiguration configuration)
         services.AddHttpContextAccessor();
 
         // Add dependency injection here
+
+        services.AddHttpClient<ExpoPushService>(); // for sending push notifications to Expo devices
         InitializeRepositories(services);
         InitializeServices(services);
     }
@@ -106,7 +114,9 @@ public class Startup(IConfiguration configuration)
             .AddScoped<IPlanRepository, PlanRepository>()
             .AddScoped<IExerciseRepository, ExerciseRepository>()
             .AddScoped<IWorkoutRepository, WorkoutRepository>()
-            .AddScoped<IWorkoutExerciseRepository, WorkoutExerciseRepository>();
+            .AddScoped<IWorkoutExerciseRepository, WorkoutExerciseRepository>()
+            .AddScoped<IDeviceRepository, DeviceRepository>()
+            .AddScoped<INotificationRepository, NotificationRepository>();
         // services.AddSingleton<IRepository, Repository>() for repositories that should be created once and shared across the application
     }
     private void InitializeServices(IServiceCollection services)
@@ -117,6 +127,9 @@ public class Startup(IConfiguration configuration)
             .AddScoped<IWorkoutService, WorkoutService>()
             .AddScoped<IExerciseService, ExerciseService>()
             .AddScoped<IWorkoutExerciseService, WorkoutExerciseService>()
-            .AddSingleton<TokenProvider>(); // for services that should be created once and shared across the application
+            .AddScoped<IDeviceService, DeviceService>()
+            .AddScoped<INotificationService, NotificationService>()
+            .AddSingleton<TokenProvider>() // for services that should be created once and shared across the application
+            .AddTransient<NotificationHub>(); // for services that should be created each time they are requested (e.g., SignalR hubs)
     }
 }

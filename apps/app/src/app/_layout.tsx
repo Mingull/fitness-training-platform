@@ -8,6 +8,7 @@ import "@/polyfills";
 import { PortalHost } from "@rn-primitives/portal";
 import { QueryClient } from "@tanstack/react-query";
 import { getCalendars, getLocales } from "expo-localization";
+import * as Notifications from "expo-notifications";
 import { Stack, useTheme } from "expo-router";
 import { ThemeProvider } from "expo-router/react-navigation";
 import { StatusBar } from "expo-status-bar";
@@ -20,6 +21,15 @@ const locale = deviceLocale?.languageCode === "nl" ? "nl" : "en";
 const messages = locale === "nl" ? nlMessages : enMessages;
 const timeZone = getCalendars()[0]?.timeZone ?? "UTC";
 const queryClient = new QueryClient();
+
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldPlaySound: false,
+		shouldSetBadge: false,
+		shouldShowBanner: false,
+		shouldShowList: false,
+	}),
+});
 
 export default function RootLayout() {
 	const colorScheme = useColorScheme();
