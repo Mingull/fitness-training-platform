@@ -41,7 +41,9 @@ export async function registerForPushNotificationsAsync() {
 				projectId,
 			})
 		).data;
-		console.log(pushTokenString);
+		if (__DEV__) {
+			console.log("[PushNotifications] Registered Expo push token");
+		}
 		return pushTokenString;
 	} catch (e: unknown) {
 		handleRegistrationError(`${e}`);

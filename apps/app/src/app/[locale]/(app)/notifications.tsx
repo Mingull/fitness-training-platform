@@ -1,22 +1,13 @@
 import { Scaffold, ScaffoldDescription, ScaffoldHeader, ScaffoldTitle } from "@/components/ui/scaffold";
 import { NotificationItem } from "@/features/notifications/components/notification-item";
 import { NotificationsEmptyState } from "@/features/notifications/components/notifications-empty-state";
-import { useNotificationSocket } from "@/features/notifications/hooks/use-notification-socket";
 import { useNotifications } from "@/features/notifications/hooks/use-notifications";
-import { useEffect } from "react";
 import { FlatList, View } from "react-native";
 import { useTranslations } from "use-intl";
 
 export default function NotificationsScreen() {
 	const { data: notifications, isLoading, isRefetching, refetch, error } = useNotifications();
-	const { unreadCount } = useNotificationSocket();
 	const t = useTranslations("notifications");
-
-	useEffect(() => {
-		if (unreadCount > 0) {
-			refetch();
-		}
-	}, [unreadCount, refetch]);
 
 	return (
 		<Scaffold>

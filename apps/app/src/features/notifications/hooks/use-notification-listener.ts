@@ -17,14 +17,14 @@ export function useNotificationListener() {
 			setNotification(n);
 		});
 		responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
-			const data = response.notification.request.content.data;
+			const _data = response.notification.request.content.data;
 
 			router.push({
 				pathname: "/[locale]/notifications",
 				params: { locale },
 			});
 
-			// later: route based on data.type
+			// later: route based on _data.type
 		});
 
 		return () => {

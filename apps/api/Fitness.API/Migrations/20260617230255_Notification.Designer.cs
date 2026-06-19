@@ -198,7 +198,7 @@ namespace Mingull.Fitness.API.Migrations
                     b.ToTable("exercises", (string)null);
                 });
 
-            modelBuilder.Entity("Fitness.API.Features.Notifications.Models.Device", b =>
+            modelBuilder.Entity("Fitness.API.Features.Devices.Models.Device", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -736,7 +736,7 @@ namespace Mingull.Fitness.API.Migrations
                     b.Navigation("CreatedBy");
                 });
 
-            modelBuilder.Entity("Fitness.API.Features.Notifications.Models.Device", b =>
+            modelBuilder.Entity("Fitness.API.Features.Devices.Models.Device", b =>
                 {
                     b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "User")
                         .WithMany()

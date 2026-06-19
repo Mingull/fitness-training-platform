@@ -50,10 +50,9 @@ public class NotificationService(
         var connections = hub.Clients.Group(userId.ToString());
         try
         {
-            var response = created.ToResponse();
-            await connections.SendAsync("notification", new { title, message, type, metadata });
-            await connections.SendAsync("notification_created", response);
-        }
+			var response = created.ToResponse();
+			await connections.SendAsync("notification", new { title, message, type = type.ToString(), metadata });
+			await connections.SendAsync("notification_created", response);
         catch (Exception ex)
         {
             // log only, do NOT fail notification
@@ -80,12 +79,11 @@ public class NotificationService(
                     To = device.ExpoToken,
                     Title = title,
                     Body = message,
-                    ChannelId = "default",
-                    Data = new
-                    {
-                        type,
-                        metadata
-                    }
+					Data = new
+					{
+						type = type.ToString(),
+						metadata
+					}
                 });
             }
             catch (ExpoPushException ex)
