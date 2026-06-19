@@ -66,7 +66,7 @@ export function useNotificationSocket() {
 
 		const subscription = AppState.addEventListener("change", (nextState) => {
 			if (nextState === "active") {
-				void queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
+				queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
 			}
 		});
 
@@ -95,7 +95,6 @@ export function useNotificationSocket() {
 
 	useEffect(() => {
 		if (!isMounted) {
-			console.log("Component not mounted, skipping SignalR connection setup.");
 			return;
 		}
 		if (isLoading || !userId || !accessToken) {
@@ -127,7 +126,7 @@ export function useNotificationSocket() {
 		});
 
 		const invalidateNotifications = () => {
-			void queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
+			queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
 		};
 
 		connection.on("notification_badge", invalidateNotifications);
@@ -136,11 +135,11 @@ export function useNotificationSocket() {
 
 		connection.onreconnected(() => {
 			if (disposed) return;
-			void connection.invoke("Register", userId).catch(console.error);
+			connection.invoke("Register", userId).catch(console.error);
 			invalidateNotifications();
 		});
 
-		void (async () => {
+		(async () => {
 			try {
 				await connection.start();
 
