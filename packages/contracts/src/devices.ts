@@ -2,7 +2,7 @@ import { z } from "zod";
 import { apiResponseBaseContract } from "./api-response";
 
 /**
- * This is the base contract for a notification item that will be returned from the API.
+ * This is the base contract for a device item that will be returned from the API.
  */
 export const deviceItemContract = z.object({
 	id: z.uuidv7(),
