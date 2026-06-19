@@ -1,8 +1,10 @@
 import { useNotificationSocket } from "@/features/notifications/hooks/use-notification-socket";
 import { THEME } from "@/lib/theme";
+import { useQueryClient } from "@tanstack/react-query";
 import { Tabs } from "expo-router";
 import { BellIcon, HomeIcon, ListIcon, SearchIcon, UserIcon } from "lucide-react-native";
 import { styled } from "nativewind";
+import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 
 const StyledTabs = styled(Tabs, {
@@ -12,6 +14,14 @@ const StyledTabs = styled(Tabs, {
 export default function AppLayout() {
 	const colorScheme = useColorScheme();
 	const { unreadCount } = useNotificationSocket();
+	const queryClient = useQueryClient();
+
+	useEffect(() => {
+		if (unreadCount > 0) {
+			queryClient.invalidateQueries({ queryKey: ["notifications"] });
+		}
+	}, [unreadCount]);
+
 	return (
 		<StyledTabs
 			className="bg-muted border-t-0"

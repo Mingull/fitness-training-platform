@@ -1,4 +1,5 @@
 import { useSession } from "@/features/auth/context";
+import { useAuthActions } from "@/features/auth/hooks/use-auth-actions";
 import { useNotifications } from "@/features/notifications/hooks/use-notifications";
 import * as signalR from "@microsoft/signalr";
 import { useQueryClient } from "@tanstack/react-query";
@@ -42,7 +43,8 @@ const createConnection = (hubUrl: string, accessTokenRef: React.RefObject<string
 };
 
 export function useNotificationSocket() {
-	const { userId, accessTokenRef } = useSession();
+	const { userId, isLoading, accessToken, accessTokenRef } = useSession();
+	const { refresh } = useAuthActions();
 	const queryClient = useQueryClient();
 	const connectionRef = useRef<signalR.HubConnection | null>(null);
 	const { unreadCount } = useNotifications();
@@ -57,7 +59,7 @@ export function useNotificationSocket() {
 	}, [unreadCount, userId]);
 
 	useEffect(() => {
-		if (!userId) return;
+		if (isLoading || !userId || !accessToken) return;
 
 		const subscription = AppState.addEventListener("change", (nextState) => {
 			if (nextState === "active") {
@@ -68,10 +70,16 @@ export function useNotificationSocket() {
 		return () => {
 			subscription.remove();
 		};
-	}, [queryClient, userId]);
+	}, [accessToken, isLoading, queryClient, userId]);
 
 	useEffect(() => {
-		if (!userId) return;
+		if (isLoading || !userId) return;
+
+		if (!accessToken) {
+			refresh();
+			return;
+		}
+
 		const hubUrls = buildHubUrls();
 		if (!hubUrls.length) return;
 
@@ -85,64 +93,25 @@ export function useNotificationSocket() {
 			}
 		});
 
-		// 👂 listen for badge updates
-		connection.on("notification_badge", () => {
-			queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
-		});
+		const invalidateNotifications = () => {
+			void queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
+		};
 
-		// 👂 optional: new notification event
-		connection.on("notification_created", () => {
-			queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
-		});
-
-		connection.on("notification", () => {
-			queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
-		});
+		connection.on("notification_badge", invalidateNotifications);
+		connection.on("notification_created", invalidateNotifications);
+		connection.on("notification", invalidateNotifications);
 
 		connection.onreconnected(() => {
 			void connection.invoke("Register", userId).catch(console.error);
-			void queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
+			invalidateNotifications();
 		});
 
-		void (async () => {
+		(async () => {
 			try {
 				await connection.start();
 				await connection.invoke("Register", userId);
-			} catch (initialError) {
-				if (__DEV__ && hubUrls.length > 1) {
-					const fallbackConnection = createConnection(hubUrls[1], accessTokenRef);
-					connectionRef.current = fallbackConnection;
-
-					fallbackConnection.on("notification_badge", () => {
-						queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
-					});
-					fallbackConnection.on("notification_created", () => {
-						queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
-					});
-					fallbackConnection.on("notification", () => {
-						queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
-					});
-					fallbackConnection.onreconnected(() => {
-						void fallbackConnection.invoke("Register", userId).catch(console.error);
-						void queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
-					});
-
-					fallbackConnection.onclose((error) => {
-						if (error) {
-							console.warn("[SignalR] Fallback connection closed with error:", error.message);
-						}
-					});
-
-					try {
-						await fallbackConnection.start();
-						await fallbackConnection.invoke("Register", userId);
-						console.warn("SignalR HTTPS connection failed in dev; connected over HTTP fallback.");
-					} catch (fallbackError) {
-						console.error(fallbackError);
-					}
-				} else {
-					console.error(initialError);
-				}
+			} catch (error) {
+				console.error(error);
 			}
 		})();
 
@@ -153,7 +122,7 @@ export function useNotificationSocket() {
 			currentConnection?.off("notification");
 			void currentConnection?.stop();
 		};
-	}, [accessTokenRef, queryClient, userId]);
+	}, [accessToken, accessTokenRef, isLoading, queryClient, refresh, userId]);
 
 	return badge;
 }

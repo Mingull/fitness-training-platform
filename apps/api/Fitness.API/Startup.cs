@@ -10,6 +10,7 @@ using Fitness.API.Features.Profiles;
 using Fitness.API.Features.Profiles.Abstract;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -90,12 +91,26 @@ public class Startup(IConfiguration configuration)
             {
                 OnMessageReceived = context =>
                 {
-                    var accessToken = context.Request.Query["access_token"];
                     var path = context.HttpContext.Request.Path;
-                    if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/notifications"))
+
+                    if (!path.StartsWithSegments("/hubs/notifications"))
+                    {
+                        return Task.CompletedTask;
+                    }
+
+                    var accessToken = context.Request.Query["access_token"];
+                    if (!string.IsNullOrEmpty(accessToken))
                     {
                         context.Token = accessToken;
+                        return Task.CompletedTask;
                     }
+
+                    var authorizationHeader = context.Request.Headers[HeaderNames.Authorization].ToString();
+                    if (authorizationHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                    {
+                        context.Token = authorizationHeader["Bearer ".Length..].Trim();
+                    }
+
                     return Task.CompletedTask;
                 }
             };
