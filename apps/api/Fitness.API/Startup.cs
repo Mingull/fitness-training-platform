@@ -10,6 +10,7 @@ using Fitness.API.Features.Profiles;
 using Fitness.API.Features.Profiles.Abstract;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -21,6 +22,10 @@ using Fitness.API.Features.Workouts.Abstract;
 using Fitness.API.Features.Workouts;
 using Fitness.API.Features.WorkoutExercises.Abstract;
 using Fitness.API.Features.WorkoutExercises;
+using Fitness.API.Features.Devices.Abstract;
+using Fitness.API.Features.Devices;
+using Fitness.API.Features.Notifications.Abstract;
+using Fitness.API.Features.Notifications;
 
 namespace Fitness.API;
 
@@ -40,6 +45,7 @@ public class Startup(IConfiguration configuration)
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.MapHub<NotificationHub>("/hubs/notifications");
             if (env.IsDevelopment())
             {
                 endpoints.MapOpenApi();
@@ -63,6 +69,7 @@ public class Startup(IConfiguration configuration)
                     new BadRequestObjectResult(AuthErrors.MapModelStateValidationFailure(context.ModelState));
             });
         services.AddOpenApi();
+        services.AddSignalR();
 
         ConfigureDatabase(services);
 
@@ -76,12 +83,45 @@ public class Startup(IConfiguration configuration)
             options.TokenValidationParameters.ValidAudience = configuration["Jwt:Audience"];
             options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]!));
             options.MapInboundClaims = false; // to prevent the default mapping of claim types to Microsoft-specific ones
+
+            // SignalR clients cannot set HTTP headers reliably across all transports
+            // (e.g. long polling), so they pass the JWT via the "access_token" query
+            // string. Read it here so the hub endpoint can be authenticated.
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var path = context.HttpContext.Request.Path;
+
+                    if (!path.StartsWithSegments("/hubs/notifications"))
+                    {
+                        return Task.CompletedTask;
+                    }
+
+                    var accessToken = context.Request.Query["access_token"];
+                    if (!string.IsNullOrEmpty(accessToken))
+                    {
+                        context.Token = accessToken;
+                        return Task.CompletedTask;
+                    }
+
+                    var authorizationHeader = context.Request.Headers[HeaderNames.Authorization].ToString();
+                    if (authorizationHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                    {
+                        context.Token = authorizationHeader["Bearer ".Length..].Trim();
+                    }
+
+                    return Task.CompletedTask;
+                }
+            };
         });
 
         services.AddAuthorization();
         services.AddHttpContextAccessor();
 
         // Add dependency injection here
+
+        services.AddHttpClient<ExpoPushService>(); // for sending push notifications to Expo devices
         InitializeRepositories(services);
         InitializeServices(services);
     }
@@ -106,7 +146,9 @@ public class Startup(IConfiguration configuration)
             .AddScoped<IPlanRepository, PlanRepository>()
             .AddScoped<IExerciseRepository, ExerciseRepository>()
             .AddScoped<IWorkoutRepository, WorkoutRepository>()
-            .AddScoped<IWorkoutExerciseRepository, WorkoutExerciseRepository>();
+            .AddScoped<IWorkoutExerciseRepository, WorkoutExerciseRepository>()
+            .AddScoped<IDeviceRepository, DeviceRepository>()
+            .AddScoped<INotificationRepository, NotificationRepository>();
         // services.AddSingleton<IRepository, Repository>() for repositories that should be created once and shared across the application
     }
     private void InitializeServices(IServiceCollection services)
@@ -117,6 +159,9 @@ public class Startup(IConfiguration configuration)
             .AddScoped<IWorkoutService, WorkoutService>()
             .AddScoped<IExerciseService, ExerciseService>()
             .AddScoped<IWorkoutExerciseService, WorkoutExerciseService>()
-            .AddSingleton<TokenProvider>(); // for services that should be created once and shared across the application
+            .AddScoped<IDeviceService, DeviceService>()
+            .AddScoped<INotificationService, NotificationService>()
+            .AddSingleton<TokenProvider>() // for services that should be created once and shared across the application
+            .AddTransient<NotificationHub>(); // for services that should be created each time they are requested (e.g., SignalR hubs)
     }
 }

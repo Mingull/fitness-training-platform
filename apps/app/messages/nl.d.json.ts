@@ -529,7 +529,7 @@ declare const messages: {
 									};
 									mediaUrl: {
 										label: "Media URL";
-										"placeholder": "Voer een geldige URL in.",
+										placeholder: "Voer een geldige URL in.";
 										description: "Geef een link naar een afbeelding of video die laat zien hoe de oefening moet worden uitgevoerd. Dit kan gebruikers helpen de juiste vorm en techniek te begrijpen.";
 										validations: {
 											invalid: "Voer een geldige URL in";
@@ -566,6 +566,24 @@ declare const messages: {
 						};
 					};
 				};
+			};
+		};
+	};
+	notifications: {
+		header: {
+			title: "Notificaties";
+			description: "Bekijk je recente meldingen en updates van je trainers en trainingsschema's.";
+		};
+		states: {
+			empty: {
+				title: "Geen meldingen";
+				description: "Je hebt momenteel geen meldingen. Wanneer je meldingen ontvangt, verschijnen ze hier.";
+				refresh: "Vernieuwen";
+			};
+			error: {
+				title: "Fout";
+				description: "Er is een fout opgetreden bij het laden van meldingen.";
+				tryAgain: "Probeer het opnieuw.";
 			};
 		};
 	};

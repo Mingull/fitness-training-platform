@@ -568,5 +568,23 @@ declare const messages: {
 			};
 		};
 	};
+	notifications: {
+		header: {
+			title: "Notifications";
+			description: "View your recent notifications and updates from your trainers and training plans.";
+		};
+		states: {
+			empty: {
+				title: "No notifications";
+				description: "You have no notifications at the moment. When you receive notifications, they will appear here.";
+				refresh: "Refresh";
+			};
+			error: {
+				title: "Error";
+				description: "An error occurred while loading notifications.";
+				tryAgain: "Please try.";
+			};
+		};
+	};
 };
 export default messages;

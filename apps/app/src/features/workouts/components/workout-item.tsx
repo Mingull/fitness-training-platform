@@ -24,7 +24,7 @@ export const WorkoutItem = ({
 	return (
 		<Link href={{ pathname: "/[locale]/plans/[planId]/workouts/[workoutId]", params: { locale, planId, workoutId: item.id } }} asChild>
 			<Pressable accessibilityRole="link" className="cursor-pointer active:opacity-90">
-				<Card pointerEvents="none" className="py-4">
+				<Card pointerEvents="box-none" className="py-4">
 					<CardHeader className="flex-row items-start gap-3">
 						{isDragEnabled && drag && (
 							<TouchableOpacity onLongPress={drag} delayLongPress={100} hitSlop={8} className="mt-1">
