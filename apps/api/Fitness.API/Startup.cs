@@ -112,6 +112,13 @@ public class Startup(IConfiguration configuration)
                     }
 
                     return Task.CompletedTask;
+                },
+                OnAuthenticationFailed = context =>
+                {
+                    // log the exception to see why authentication failed (e.g., token expired, invalid signature, etc.)
+                    var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Startup>>();
+                    logger.LogError(context.Exception, "Authentication failed: {Message}", context.Exception.Message);
+                    return Task.CompletedTask;
                 }
             };
         });

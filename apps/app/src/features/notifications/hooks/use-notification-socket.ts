@@ -1,6 +1,7 @@
 import { useSession } from "@/features/auth/context";
 import { useAuthActions } from "@/features/auth/hooks/use-auth-actions";
 import { useNotifications } from "@/features/notifications/hooks/use-notifications";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import * as signalR from "@microsoft/signalr";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
@@ -43,10 +44,12 @@ const createConnection = (hubUrl: string, accessTokenRef: React.RefObject<string
 };
 
 export function useNotificationSocket() {
+	const isMounted = useIsMounted();
 	const { userId, isLoading, accessToken, accessTokenRef } = useSession();
 	const { refresh } = useAuthActions();
 	const queryClient = useQueryClient();
 	const connectionRef = useRef<signalR.HubConnection | null>(null);
+	const refreshInFlightRef = useRef(false);
 	const { unreadCount } = useNotifications();
 
 	const [badge, setBadge] = useState<BadgeState>({
@@ -59,7 +62,7 @@ export function useNotificationSocket() {
 	}, [unreadCount, userId]);
 
 	useEffect(() => {
-		if (isLoading || !userId || !accessToken) return;
+		if (!userId) return;
 
 		const subscription = AppState.addEventListener("change", (nextState) => {
 			if (nextState === "active") {
@@ -70,13 +73,41 @@ export function useNotificationSocket() {
 		return () => {
 			subscription.remove();
 		};
-	}, [accessToken, isLoading, queryClient, userId]);
+	}, [queryClient, userId]);
 
 	useEffect(() => {
 		if (isLoading || !userId) return;
 
-		if (!accessToken) {
-			refresh();
+		if (accessToken) {
+			refreshInFlightRef.current = false;
+			return;
+		}
+
+		if (refreshInFlightRef.current) {
+			return;
+		}
+
+		refreshInFlightRef.current = true;
+		void refresh().finally(() => {
+			refreshInFlightRef.current = false;
+		});
+	}, [accessToken, isLoading, refresh, userId]);
+
+	useEffect(() => {
+		if (!isMounted) {
+			return;
+		}
+		if (isLoading || !userId || !accessToken) {
+			return;
+		}
+
+		const existingConnection = connectionRef.current;
+		if (
+			existingConnection &&
+			(existingConnection.state === signalR.HubConnectionState.Connected ||
+				existingConnection.state === signalR.HubConnectionState.Connecting ||
+				existingConnection.state === signalR.HubConnectionState.Reconnecting)
+		) {
 			return;
 		}
 
@@ -84,6 +115,7 @@ export function useNotificationSocket() {
 		if (!hubUrls.length) return;
 
 		const connection = createConnection(hubUrls[0], accessTokenRef);
+		let disposed = false;
 
 		connectionRef.current = connection;
 
@@ -94,7 +126,7 @@ export function useNotificationSocket() {
 		});
 
 		const invalidateNotifications = () => {
-			void queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
+			queryClient.invalidateQueries({ queryKey: ["notifications", userId] });
 		};
 
 		connection.on("notification_badge", invalidateNotifications);
@@ -102,27 +134,42 @@ export function useNotificationSocket() {
 		connection.on("notification", invalidateNotifications);
 
 		connection.onreconnected(() => {
-			void connection.invoke("Register", userId).catch(console.error);
+			if (disposed) return;
+			connection.invoke("Register", userId).catch(console.error);
 			invalidateNotifications();
 		});
 
 		(async () => {
 			try {
 				await connection.start();
+
+				if (disposed || connection.state !== signalR.HubConnectionState.Connected) {
+					return;
+				}
+
 				await connection.invoke("Register", userId);
 			} catch (error) {
+				if (disposed) {
+					return;
+				}
 				console.error(error);
 			}
 		})();
 
 		return () => {
-			const currentConnection = connectionRef.current;
-			currentConnection?.off("notification_badge");
-			currentConnection?.off("notification_created");
-			currentConnection?.off("notification");
-			void currentConnection?.stop();
+			disposed = true;
+
+			connection.off("notification_badge");
+			connection.off("notification_created");
+			connection.off("notification");
+
+			if (connectionRef.current === connection) {
+				connectionRef.current = null;
+			}
+
+			void connection.stop();
 		};
-	}, [accessToken, accessTokenRef, isLoading, queryClient, refresh, userId]);
+	}, [accessToken, accessTokenRef, isLoading, queryClient, userId, isMounted]);
 
 	return badge;
 }
