@@ -19,14 +19,12 @@ export function ExercisesEmptyState({ isLoading, error, onRetry }: ExercisesEmpt
 
 	if (isLoading) {
 		return (
-			<View className="gap-3 pt-2">
+			<View className="flex-row gap-4">
 				{Array.from({ length: 3 }, (_, index) => (
 					<Card key={index} className="shadow-sm">
-						<CardHeader className="items-start pb-4">
-							<View className="flex-1 gap-2">
-								<Skeleton className="h-5 w-40" />
-								<Skeleton className="h-4 w-full" />
-							</View>
+						<CardHeader>
+							<Skeleton className="h-5 w-40" />
+							<Skeleton className="h-4 w-full" />
 						</CardHeader>
 					</Card>
 				))}

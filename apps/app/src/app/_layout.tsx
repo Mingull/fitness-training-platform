@@ -23,6 +23,7 @@ const queryClient = new QueryClient();
 
 export default function RootLayout() {
 	const colorScheme = useColorScheme();
+
 	return (
 		<Providers queryClient={queryClient} locale={locale} messages={messages} timeZone={timeZone}>
 			<ThemeProvider value={NAV_THEME[colorScheme === "unspecified" ? "dark" : colorScheme]}>
@@ -41,7 +42,6 @@ function RootNavigator() {
 	const { isAuthenticated } = useSession();
 	const theme = useTheme();
 
-	if (__DEV__) console.log({ isAuthenticated });
 	return (
 		<Stack
 			screenOptions={{

@@ -8,6 +8,7 @@ import { BellIcon, HomeIcon, ListIcon, SearchIcon, UserIcon } from "lucide-react
 import { styled } from "nativewind";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
+import { useTranslations } from "use-intl";
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -26,6 +27,7 @@ export default function AppLayout() {
 	const colorScheme = useColorScheme();
 	const { unreadCount } = useNotificationSocket();
 	const queryClient = useQueryClient();
+	const t = useTranslations("bottomTabs");
 
 	useEffect(() => {
 		if (unreadCount > 0) {
@@ -46,28 +48,28 @@ export default function AppLayout() {
 				<Tabs.Screen
 					name="index"
 					options={{
-						title: "Home",
+						title: t("home"),
 						tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={size} />,
 					}}
 				/>
 				<Tabs.Screen
 					name="my-plans"
 					options={{
-						title: "My Programs",
+						title: t("myPlans"),
 						tabBarIcon: ({ color, size }) => <ListIcon color={color} size={size} />,
 					}}
 				/>
 				<Tabs.Screen
 					name="explore"
 					options={{
-						title: "Explore",
+						title: t("explore"),
 						tabBarIcon: ({ color, size }) => <SearchIcon color={color} size={size} />,
 					}}
 				/>
 				<Tabs.Screen
 					name="notifications"
 					options={{
-						title: "Notifications",
+						title: t("notifications"),
 						tabBarIcon: ({ color, size }) => <BellIcon color={color} size={size} />,
 						tabBarBadge: unreadCount > 0 ? unreadCount : undefined,
 					}}
@@ -75,7 +77,7 @@ export default function AppLayout() {
 				<Tabs.Screen
 					name="profile"
 					options={{
-						title: "Profile",
+						title: t("profile"),
 						tabBarIcon: ({ color, size }) => <UserIcon color={color} size={size} />,
 					}}
 				/>

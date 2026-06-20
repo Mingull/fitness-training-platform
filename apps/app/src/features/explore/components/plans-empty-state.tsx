@@ -15,11 +15,11 @@ type PlansEmptyStateProps = {
 };
 
 export function PlansEmptyState({ isLoading, error, onRetry }: PlansEmptyStateProps) {
-	const t = useTranslations("plans.list.states");
+	const t = useTranslations("myPlans.list.states");
 
 	if (isLoading) {
 		return (
-			<View className="gap-3 pt-2">
+			<View className="gap-4 pt-2 flex-row">
 				{Array.from({ length: 3 }, (_, index) => (
 					<Card key={index} className="shadow-sm">
 						<CardHeader className="items-start pb-4">

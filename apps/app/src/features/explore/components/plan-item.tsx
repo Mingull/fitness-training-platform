@@ -11,24 +11,18 @@ import { useLocale, useTranslations } from "use-intl";
 export const PlanItem = ({
 	item,
 	authorId,
-	orientation = "vertical",
 }: {
 	item: TrainingPlanItem;
 	authorId?: string | null;
-	orientation?: "horizontal" | "vertical";
 }) => {
 	const locale = useLocale();
 	const router = useRouter();
 	const t = useTranslations("plans.item");
 
 	return (
-		<Pressable
-			accessibilityRole="link"
-			className="cursor-pointer active:opacity-90"
-			onPress={() => router.push({ pathname: "/[locale]/(app)/plans/[planId]", params: { locale, planId: item.id } })}
-		>
+		<Pressable accessibilityRole="link" onPress={() => router.push({ pathname: "/[locale]/(app)/plans/[planId]", params: { locale, planId: item.id } })}>
 			<Card pointerEvents="none" className="py-4">
-				<CardHeader className={orientation === "horizontal" ? "flex-col items-start gap-3" : "flex-row items-start gap-3"}>
+				<CardHeader className={"flex-row items-start gap-3"}>
 					<View className="bg-primary/10 mt-0.5 size-11 items-center justify-center rounded-full">
 						<Text className="text-primary text-base font-bold">{item.name.trim().charAt(0).toUpperCase()}</Text>
 					</View>

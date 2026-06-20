@@ -12,7 +12,7 @@ import { toast } from "sonner-native";
 import { useLocale, useTranslations } from "use-intl";
 
 export default function TrainingPlanListScreen() {
-	const t = useTranslations("plans.createPlan");
+	const t = useTranslations("myPlans.createPlan");
 	const router = useRouter();
 	const locale = useLocale();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null); // global error message state

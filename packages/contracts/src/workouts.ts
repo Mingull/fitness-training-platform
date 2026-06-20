@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { apiResponseBaseContract } from "./api-response";
-import { createExerciseContract, exerciseItemContract } from "./exercises";
+import { createExerciseContract, exerciseDetailItemContract } from "./exercises";
 
 /**
  * This is the base contract for a workout item that will be returned from the API.
@@ -24,7 +24,7 @@ export type WorkoutItem = z.infer<typeof workoutItemContract>;
 export const workoutContract = apiResponseBaseContract.extend({
 	data: workoutItemContract
 		.extend({
-			exercises: z.array(exerciseItemContract),
+			exercises: z.array(exerciseDetailItemContract),
 		})
 		.omit({ order: true }), // as the order is not relevant for the workout detail response, we omit it here
 });

@@ -4,7 +4,7 @@ import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTi
 import { Icon } from "@/components/ui/icon";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Text } from "@/components/ui/text";
-import { Dumbbell, Globe2 } from "lucide-react-native";
+import { Dumbbell } from "lucide-react-native";
 import { View } from "react-native";
 import { useTranslations } from "use-intl";
 
@@ -16,7 +16,7 @@ type PlansEmptyStateProps = {
 };
 
 export function PlansEmptyState({ isLoading, error, onCreate, onRetry }: PlansEmptyStateProps) {
-	const t = useTranslations("plans.list.states");
+	const t = useTranslations("myPlans.list.states");
 
 	if (isLoading) {
 		return (
@@ -66,10 +66,10 @@ export function PlansEmptyState({ isLoading, error, onCreate, onRetry }: PlansEm
 		<Empty className="border-border border border-dashed">
 			<EmptyHeader>
 				<EmptyMedia variant="icon">
-					<Icon as={Globe2} size={18} />
+					<Icon as={Dumbbell} size={18} />
 				</EmptyMedia>
 				<EmptyTitle>{t("empty.title")}</EmptyTitle>
-				<EmptyDescription>{t("empty.description")}</EmptyDescription>
+				<EmptyDescription className="text-center">{t("empty.description")}</EmptyDescription>
 			</EmptyHeader>
 			<EmptyContent className="flex-row justify-center gap-2">
 				<Button variant="default" onPress={onCreate}>

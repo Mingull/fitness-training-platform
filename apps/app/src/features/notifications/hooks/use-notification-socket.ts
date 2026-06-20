@@ -143,8 +143,8 @@ export function useNotificationSocket() {
 					console.warn("[SignalR] Connection was disposed or not connected after start.");
 					return;
 				}
-				
-				await connection.invoke("Register", userId);
+				// Ensure the connection is established before registering the user with the hub
+				if (connection.state == signalR.HubConnectionState.Connected) await connection.invoke("Register", userId);
 			} catch (error) {
 				if (disposed) {
 					return;

@@ -16,12 +16,13 @@ import { useTrainingPlans } from "@/features/plans/hooks/use-training-plans";
 import { useProfiles } from "@/features/users/profile/hooks/use-profiles";
 import { Search } from "lucide-react-native";
 import { useMemo, useState } from "react";
-import { FlatList, View } from "react-native";
-import { RefreshControl, ScrollView } from "react-native-gesture-handler";
+import { FlatList, RefreshControl, ScrollView, View } from "react-native";
+import { useTranslations } from "use-intl";
 
 type FilterOptions = "all" | "exercises" | "both" | "sporters" | "trainers" | "plans";
 
 export default function ExploreScreen() {
+	const t = useTranslations("explore");
 	const [filter, setFilter] = useState<FilterOptions>("all");
 	const [searchQuery, setSearchQuery] = useState("");
 	const session = useSession();
@@ -93,26 +94,28 @@ export default function ExploreScreen() {
 		<Scaffold>
 			<ScaffoldHeader>
 				<View className="items-start justify-between gap-1">
-					<ScaffoldTitle>Explore</ScaffoldTitle>
-					<ScaffoldDescription>Discover new exercises and connect with other fitness enthusiasts and trainers</ScaffoldDescription>
+					<ScaffoldTitle>{t("header.title")}</ScaffoldTitle>
+					<ScaffoldDescription>{t("header.description")}</ScaffoldDescription>
 				</View>
 			</ScaffoldHeader>
 			<ScaffoldContent
 				className="flex-1"
-				refreshControl={filter == "all" ? <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} /> : undefined}
+				scrollable
+				scrollEnabled={false}
+				refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
 			>
 				<InputGroup>
 					<InputGroupAddon>
 						<Icon as={Search} />
 					</InputGroupAddon>
-					<InputGroupInput value={searchQuery} onChangeText={setSearchQuery} placeholder="Search..." />
+					<InputGroupInput value={searchQuery} onChangeText={setSearchQuery} placeholder={t("search.placeholder")} />
 					<InputGroupAddon align="inline-end">
-						<Text>{resultCount} results</Text>
+						<Text>{t("search.results", { count: resultCount })}</Text>
 					</InputGroupAddon>
 				</InputGroup>
 				<ScrollView horizontal className="grow-0" contentContainerClassName="flex-row items-center gap-2" showsHorizontalScrollIndicator={false}>
 					<Button className="will-change-variable" variant={filter === "all" ? "default" : "outline"} onPress={() => setFilter("all")}>
-						<Text>All</Text>
+						<Text>{t("tabs.all")}</Text>
 					</Button>
 					<View className="flex-row gap-0">
 						<Button
@@ -120,51 +123,51 @@ export default function ExploreScreen() {
 							variant={filter === "both" ? "default" : "outline"}
 							onPress={() => setFilter("both")}
 						>
-							<Text>Both</Text>
+							<Text>{t("tabs.both")}</Text>
 						</Button>
 						<Button
 							className="will-change-variable rounded-none"
 							variant={filter === "sporters" ? "default" : "outline"}
 							onPress={() => setFilter("sporters")}
 						>
-							<Text>Sporters</Text>
+							<Text>{t("tabs.sporters")}</Text>
 						</Button>
 						<Button
 							className="will-change-variable rounded-l-none border-l-0"
 							variant={filter === "trainers" ? "default" : "outline"}
 							onPress={() => setFilter("trainers")}
 						>
-							<Text>Trainers</Text>
+							<Text>{t("tabs.trainers")}</Text>
 						</Button>
 					</View>
 					<Button className="will-change-variable" variant={filter === "plans" ? "default" : "outline"} onPress={() => setFilter("plans")}>
-						<Text>Training Plans</Text>
+						<Text>{t("tabs.plans")}</Text>
 					</Button>
 					<Button className="will-change-variable" variant={filter === "exercises" ? "default" : "outline"} onPress={() => setFilter("exercises")}>
-						<Text>Exercises</Text>
+						<Text>{t("tabs.exercises")}</Text>
 					</Button>
 				</ScrollView>
 				{filter === "all" && (
 					<ScrollView className="flex-1" contentContainerClassName="grow-0 gap-6" showsVerticalScrollIndicator={false}>
 						<SectionGroup>
 							<Section>
-								<SectionTitle>Sporters</SectionTitle>
+								<SectionTitle>{t("sections.sportersAndTrainers")}</SectionTitle>
 								<FlatList
 									data={filteredProfiles}
 									keyExtractor={(item) => item.id}
 									renderItem={({ item }) => <ProfileItem item={item} orientation="horizontal" />}
-									contentContainerClassName="gap-4 h-full"
+									contentContainerClassName="gap-4"
 									ListEmptyComponent={<ProfilesEmptyState isLoading={isLoadingProfiles} error={errorProfiles} onRetry={refetchProfiles} />}
 									horizontal
 									showsHorizontalScrollIndicator={false}
 								/>
 							</Section>
 							<Section>
-								<SectionTitle>Training Plans</SectionTitle>
+								<SectionTitle>{t("sections.plans")}</SectionTitle>
 								<FlatList
 									data={filteredPlans}
 									keyExtractor={(item) => item.id}
-									renderItem={({ item }) => <PlanItem item={item} authorId={session.userId} orientation="horizontal" />}
+									renderItem={({ item }) => <PlanItem item={item} authorId={session.userId} />}
 									contentContainerClassName="gap-4"
 									ListEmptyComponent={<PlansEmptyState isLoading={isLoadingPlans} error={errorPlans} onRetry={refetchPlans} />}
 									horizontal
@@ -172,7 +175,7 @@ export default function ExploreScreen() {
 								/>
 							</Section>
 							<Section>
-								<SectionTitle>Oefeningen</SectionTitle>
+								<SectionTitle>{t("sections.exercises")}</SectionTitle>
 								<FlatList
 									data={filteredExercises}
 									keyExtractor={(item) => item.id}
@@ -192,20 +195,20 @@ export default function ExploreScreen() {
 					<Section className="flex-1">
 						<SectionTitle>
 							{filter === "both" ?
-								"Sporters and Trainers"
+								t("sections.sportersAndTrainers")
 							: filter === "sporters" ?
-								"Sporters"
-							:	"Trainers"}
+								t("sections.sporters")
+							:	t("sections.trainers")}
 						</SectionTitle>
 						<FlatList
 							data={filteredProfiles}
 							keyExtractor={(item) => item.id}
 							renderItem={({ item }) => <ProfileItem item={item} orientation="vertical" />}
-							refreshing={isRefetchingProfiles}
-							onRefresh={refetchProfiles}
 							className="flex-1"
 							contentContainerClassName="gap-4 grow-0"
-							ListEmptyComponent={<ProfilesEmptyState isLoading={isLoadingProfiles} error={errorProfiles} onRetry={refetchProfiles} />}
+							ListEmptyComponent={
+								<ProfilesEmptyState isLoading={isLoadingProfiles || isRefetchingProfiles} error={errorProfiles} onRetry={refetchProfiles} />
+							}
 							showsVerticalScrollIndicator={false}
 							nestedScrollEnabled
 						/>
@@ -213,16 +216,14 @@ export default function ExploreScreen() {
 				)}
 				{filter === "plans" && (
 					<Section className="flex-1">
-						<SectionTitle>Training plans</SectionTitle>
+						<SectionTitle>{t("sections.plans")}</SectionTitle>
 						<FlatList
 							data={filteredPlans}
 							keyExtractor={(item) => item.id}
-							renderItem={({ item }) => <PlanItem item={item} orientation="vertical" />}
-							refreshing={isRefetchingPlans}
-							onRefresh={refetchPlans}
+							renderItem={({ item }) => <PlanItem item={item} />}
 							className="flex-1"
 							contentContainerClassName="gap-4 grow-0"
-							ListEmptyComponent={<PlansEmptyState isLoading={isLoadingPlans} error={errorPlans} onRetry={refetchPlans} />}
+							ListEmptyComponent={<PlansEmptyState isLoading={isLoadingPlans || isRefetchingPlans} error={errorPlans} onRetry={refetchPlans} />}
 							showsVerticalScrollIndicator={false}
 							nestedScrollEnabled
 						/>
@@ -230,16 +231,20 @@ export default function ExploreScreen() {
 				)}
 				{filter === "exercises" && (
 					<Section className="flex-1">
-						<SectionTitle>Oefeningen</SectionTitle>
+						<SectionTitle>{t("sections.exercises")}</SectionTitle>
 						<FlatList
 							data={filteredExercises}
 							keyExtractor={(item) => item.id}
 							renderItem={({ item }) => <ExerciseItem item={item} orientation="vertical" />}
-							refreshing={isRefetchingExercises}
-							onRefresh={refetchExercises}
 							className="flex-1"
 							contentContainerClassName="gap-4 grow-0"
-							ListEmptyComponent={<ExercisesEmptyState isLoading={isLoadingExercises} error={errorExercises} onRetry={refetchExercises} />}
+							ListEmptyComponent={
+								<ExercisesEmptyState
+									isLoading={isLoadingExercises || isRefetchingExercises}
+									error={errorExercises}
+									onRetry={refetchExercises}
+								/>
+							}
 							showsVerticalScrollIndicator={false}
 							nestedScrollEnabled
 						/>

@@ -7,22 +7,16 @@ import { cn } from "@fitness/ui/lib/utils";
 import { useRouter } from "expo-router";
 import { ChevronRight, Clock3, FlameIcon, Globe2, UserRound } from "lucide-react-native";
 import { Pressable, View } from "react-native";
-import { useFormatter, useLocale, useTranslations } from "use-intl";
+import { useLocale, useTranslations } from "use-intl";
 
-export const PlanItem = ({ item, authorId, active }: { item: TrainingPlanItem; authorId?: string | null; active?: boolean }) => {
+export const PlanItem = ({ item, authorId, active, className }: { item: TrainingPlanItem; authorId?: string | null; active?: boolean; className?: string }) => {
 	const locale = useLocale();
 	const router = useRouter();
-	const formatter = useFormatter();
 	const t = useTranslations("plans.item");
-	const updatedAt = item.updatedAt ?? item.createdAt;
 
 	return (
-		<Pressable
-			accessibilityRole="link"
-			className="cursor-pointer active:opacity-90"
-			onPress={() => router.push({ pathname: "/[locale]/(app)/plans/[planId]", params: { locale, planId: item.id } })}
-		>
-			<Card pointerEvents="none" className={cn("py-4", { "border-primary border": active })}>
+		<Pressable accessibilityRole="link" onPress={() => router.push({ pathname: "/[locale]/(app)/plans/[planId]", params: { locale, planId: item.id } })}>
+			<Card pointerEvents="none" className={cn("py-4", { "border-primary border": active }, className)}>
 				<CardHeader className="flex-row items-start gap-3">
 					<View className="bg-primary/10 mt-0.5 size-11 items-center justify-center rounded-full">
 						<Text className="text-primary text-base font-bold">{item.name.trim().charAt(0).toUpperCase()}</Text>

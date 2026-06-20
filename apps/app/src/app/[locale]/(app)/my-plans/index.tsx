@@ -7,8 +7,8 @@ import { Text } from "@/components/ui/text";
 import { useSession } from "@/features/auth/context";
 import { PlanItem } from "@/features/plans/components/plan-item";
 import { PlansEmptyState } from "@/features/plans/components/plans-empty-state";
-import { useMyTrainingPlans } from "@/features/users/hooks/use-my-training-plans";
 import { useActiveUserPlan } from "@/features/users/hooks/use-active-user-plan";
+import { useMyTrainingPlans } from "@/features/users/hooks/use-my-training-plans";
 import { useRouter } from "expo-router";
 import { PlusIcon } from "lucide-react-native";
 import { FlatList, View } from "react-native";
@@ -22,11 +22,9 @@ export default function TrainingPlanListScreen() {
 	const { data: myPlans, error, isLoading, isRefetching, refetch } = useMyTrainingPlans();
 	const { data: activePlan, isLoading: isLoadingActivePlan, error: errorActivePlan } = useActiveUserPlan();
 	// if my plans includes the active plan, remove the active plan from the list of my plans to avoid showing it twice
-	const plans = activePlan ? myPlans?.filter((plan) => plan.id !== activePlan.plan.id) ?? [] : myPlans ?? [];
+	const plans = activePlan ? (myPlans?.filter((plan) => plan.id !== activePlan.plan.id) ?? []) : (myPlans ?? []);
 	// count all plans including the active plan if it's not already in the list of my plans
 	const planCount = activePlan && !plans.some((plan) => plan.id === activePlan.plan.id) ? plans.length + 1 : plans.length;
-
-	console.log({ plans, activePlan, errorActivePlan });
 
 	return (
 		<Scaffold>
@@ -50,32 +48,36 @@ export default function TrainingPlanListScreen() {
 					</View>
 				</ScaffoldAddon>
 			</ScaffoldHeader>
-			{activePlan && (
-				<Section className="px-4">
-					<SectionTitle>Your Active Plan</SectionTitle>
-					<PlanItem item={activePlan?.plan} authorId={session?.userId} active />
-				</Section>
-			)}
-			<Section className="px-4">
-				<SectionTitle>All your Plans</SectionTitle>
-				<FlatList
-					data={plans}
-					keyExtractor={(item) => item.id}
-					renderItem={({ item }) => <PlanItem item={item} authorId={session?.userId} />}
-					refreshing={isRefetching}
-					onRefresh={refetch}
-					contentContainerClassName="gap-4"
-					ListEmptyComponent={
-						<PlansEmptyState
-							isLoading={isLoading}
-							error={error}
-							onRetry={refetch}
-							onCreate={() => router.push({ pathname: "/[locale]/(app)/my-plans/create", params: { locale } })}
-						/>
-					}
-					showsVerticalScrollIndicator={false}
-				/>
-			</Section>
+			<FlatList
+				data={plans}
+				keyExtractor={(item) => item.id}
+				renderItem={({ item }) => <PlanItem item={item} authorId={session?.userId} className="mb-4" />}
+				contentContainerClassName="px-4"
+				refreshing={isRefetching}
+				onRefresh={refetch}
+				ListHeaderComponent={
+					<>
+						{activePlan && (
+							<Section className="mb-6">
+								<SectionTitle>{t("list.sections.myActivePlan")}</SectionTitle>
+								<PlanItem item={activePlan?.plan} authorId={session?.userId} active />
+							</Section>
+						)}
+						<Section>
+							<SectionTitle>{t("list.sections.allMyPlans")}</SectionTitle>
+						</Section>
+					</>
+				}
+				ListEmptyComponent={
+					<PlansEmptyState
+						isLoading={isLoading}
+						error={error}
+						onRetry={refetch}
+						onCreate={() => router.push({ pathname: "/[locale]/(app)/my-plans/create", params: { locale } })}
+					/>
+				}
+				showsVerticalScrollIndicator={false}
+			/>
 			{!isLoading && !error && (
 				<ScaffoldFAB>
 					<FABTrigger onPress={() => router.push({ pathname: "/[locale]/(app)/my-plans/create", params: { locale } })}>

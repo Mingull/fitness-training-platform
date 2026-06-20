@@ -11,7 +11,7 @@ import { useTrainingPlan } from "@/features/plans/hooks/use-training-plan";
 import { AddExerciseModal } from "@/features/workouts/components/modal/add-exercise-modal";
 import { useReorderWorkoutExercises } from "@/features/workouts/hooks/use-reorder-workout-exercises";
 import { useWorkout } from "@/features/workouts/hooks/use-workout";
-import type { ExerciseItem as ExerciseItemType } from "@fitness/contracts/exercises";
+import type { ExerciseDetailItem } from "@fitness/contracts/exercises";
 import { BlurTargetView } from "expo-blur";
 import { useLocalSearchParams } from "expo-router";
 import { PlusIcon } from "lucide-react-native";
@@ -26,7 +26,7 @@ const REORDER_DEBOUNCE_MS = 500;
 export default function TrainingPlanWorkoutScreen() {
 	const [isAddWorkoutModalOpen, setIsAddWorkoutModalOpen] = useState(false);
 	const [isRefreshEnabled, setIsRefreshEnabled] = useState(true);
-	const [exercises, setExercises] = useState<ExerciseItemType[]>([]);
+	const [exercises, setExercises] = useState<ExerciseDetailItem[]>([]);
 	const targetRef = useRef<View | null>(null);
 	const reorderTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const { planId, workoutId } = useLocalSearchParams<"/[locale]/plans/[planId]/workouts/[workoutId]">();
@@ -61,7 +61,7 @@ export default function TrainingPlanWorkoutScreen() {
 	const exercisesLabel = `${exercises.length} exercise${exercises.length === 1 ? "" : "s"}`;
 	const workoutSubtitle = plan?.name ? `${plan.name} - ${exercisesLabel}` : exercisesLabel;
 
-	const handleDragEnd = ({ data }: DragEndParams<ExerciseItemType>) => {
+	const handleDragEnd = ({ data }: DragEndParams<ExerciseDetailItem>) => {
 		setIsRefreshEnabled(true);
 		if (!isPlanOwner) return;
 
@@ -128,7 +128,7 @@ export default function TrainingPlanWorkoutScreen() {
 					<NestableDraggableFlatList
 						data={exercises}
 						keyExtractor={(item) => item.id}
-						renderItem={({ item, drag }: RenderItemParams<ExerciseItemType>) => (
+						renderItem={({ item, drag }: RenderItemParams<ExerciseDetailItem>) => (
 							<ScaleDecorator activeScale={0.97}>
 								<View className="px-4 pb-4">
 									<ExerciseItem item={item} drag={drag} isDragEnabled={isDragEnabled} />
