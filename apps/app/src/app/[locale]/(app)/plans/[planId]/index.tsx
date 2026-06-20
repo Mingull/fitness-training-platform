@@ -41,7 +41,7 @@ export default function TrainingPlanDetailScreen() {
 	const reorderTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const targetRef = useRef<View | null>(null);
 	const t = useTranslations("plans.item");
-	const { planId } = useLocalSearchParams<"/[locale]/plans/[planId]">();
+	const { planId } = useLocalSearchParams<"/[locale]/(app)/plans/[planId]">();
 
 	const { userId } = useSession();
 	const { data: plan, error, isLoading: isLoadingPlan, isRefetching, refetch } = useTrainingPlan(planId);

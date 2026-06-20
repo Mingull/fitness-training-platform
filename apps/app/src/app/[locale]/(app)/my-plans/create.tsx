@@ -12,7 +12,7 @@ import { toast } from "sonner-native";
 import { useLocale, useTranslations } from "use-intl";
 
 export default function TrainingPlanListScreen() {
-	const t = useTranslations("plans.createPlan");
+	const t = useTranslations("myPlans.createPlan");
 	const router = useRouter();
 	const locale = useLocale();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null); // global error message state
@@ -49,7 +49,7 @@ export default function TrainingPlanListScreen() {
 
 			form.reset();
 			toast.success(t("feedback.success"), { position: "top-center" });
-			router.push({ pathname: "/[locale]/(app)/plans", params: { locale } });
+			router.push({ pathname: "/[locale]/(app)/my-plans", params: { locale } });
 		},
 	});
 

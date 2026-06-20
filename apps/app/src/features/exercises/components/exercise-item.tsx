@@ -1,11 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
-import { type ExerciseItem as ExerciseItemType } from "@fitness/contracts/exercises";
+import { type Exercise } from "@fitness/contracts/exercises";
 import { Menu } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
 
-export const ExerciseItem = ({ item, drag, isDragEnabled = false }: { item: ExerciseItemType; drag?: () => void; isDragEnabled?: boolean }) => {
+/**
+ * Component to display an exercise item in the training plan workout screen.
+ */
+export const ExerciseItem = ({ item, drag, isDragEnabled = false }: { item: Exercise["data"]; drag?: () => void; isDragEnabled?: boolean }) => {
 	const initials = item.name.trim().charAt(0).toUpperCase();
 	const weightLabel = Number.isInteger(item.weight) ? `${item.weight} kg` : `${item.weight.toFixed(1)} kg`;
 	const totalVolume = item.sets * item.reps * item.weight;

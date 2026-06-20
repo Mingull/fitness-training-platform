@@ -10,7 +10,7 @@ export const NotificationItem = ({ item }: { item: NotificationItemType }) => {
 	const markAsReadMutator = useMarkNotificationAsRead();
 	const formatter = useFormatter();
 	const isRead = Boolean(item.readAt);
-    
+
 	return (
 		<Pressable
 			key={item.id}
@@ -36,7 +36,7 @@ export const NotificationItem = ({ item }: { item: NotificationItemType }) => {
 					<Text className="text-muted-foreground text-xs">
 						{formatter.dateTime(new Date(item.createdAt), {
 							year: "numeric",
-							month: "short",
+							month: "long",
 							day: "numeric",
 							hour: "2-digit",
 							minute: "2-digit",

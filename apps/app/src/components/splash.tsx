@@ -19,7 +19,7 @@ import {
 } from "@expo-google-fonts/jetbrains-mono";
 import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -45,13 +45,11 @@ const jetBrainsMonoFonts = {
 export function SplashScreenController() {
 	const { isLoading } = useSession();
 	const [fontsLoaded, error] = useFonts(jetBrainsMonoFonts);
-	const hasHiddenSplash = useRef(false);
 	const isReady = !isLoading && (fontsLoaded || error);
 
 	useEffect(() => {
-		if (isReady && !hasHiddenSplash.current) {
-			hasHiddenSplash.current = true;
-			SplashScreen.hideAsync();
+		if (isReady) {
+			SplashScreen.hide();
 		}
 	}, [isReady]);
 

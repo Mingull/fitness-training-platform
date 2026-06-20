@@ -17,6 +17,15 @@ public class PlanRepository(FitnessContext context) : IPlanRepository
                 .ThenInclude(user => user.Profile)
             .ToListAsync();
     }
+    public async Task<IEnumerable<Plan>> GetAllFromUserAsync(Guid? userId)
+    {
+        // Get all plans that belong to the specified user
+        return await context.Plans
+            .Where(plan => plan.CreatedById == userId)
+            .Include(plan => plan.CreatedBy)
+                .ThenInclude(user => user.Profile)
+            .ToListAsync();
+    }
 
     public async Task<Plan?> GetByIdAsync(Guid planId, bool withWorkouts = false)
     {

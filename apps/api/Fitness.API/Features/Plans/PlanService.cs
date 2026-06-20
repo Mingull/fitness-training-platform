@@ -4,9 +4,8 @@ using Fitness.API.Features.Plans.Abstract;
 using Fitness.API.Features.Plans.Contracts;
 using Fitness.API.Features.Plans;
 using Fitness.API.Features.Plans.Utilities;
-using Fitness.API.Features.Users;
 using Fitness.API.Features.Users.Contracts;
-using Fitness.API.Features.Workouts.Contracts;
+using Fitness.API.Features.Users.Mappers;
 
 namespace Fitness.API.Features.Plans;
 
@@ -28,21 +27,31 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
 
         return Result<IEnumerable<PlanResponse>>.Success(planResponses);
     }
+    public async Task<Result<IEnumerable<PlanResponse>>> GetPlansForUserAsync(Guid userId)
+    {
+        var plans = await planRepository.GetAllFromUserAsync(userId);
+
+        var planResponses = new List<PlanResponse>();
+
+        foreach (var plan in plans)
+        {
+            planResponses.Add(plan.ToResponse());
+            continue;
+        }
+
+        return Result<IEnumerable<PlanResponse>>.Success(planResponses);
+    }
 
     public async Task<Result<PlanDetailResponse>> GetPlanByIdAsync(Guid planId, Guid? userId = null)
     {
         var plan = await planRepository.GetByIdAsync(planId, withWorkouts: true);
 
         if (plan == null)
-        {
             return PlanErrors.NotFound;
-        }
 
         // If the plan is private and the user is not the owner, return an error
         if (!plan.IsPublic && plan.CreatedById != userId)
-        {
             return PlanErrors.NotFound; // Return not found to avoid exposing the existence of the plan
-        }
 
         return Result<PlanDetailResponse>.Success(plan.ToDetailResponse());
     }
@@ -58,18 +67,15 @@ public class PlanService(IPlanRepository planRepository) : IPlanService
     {
         var result = await planRepository.ActivatePlanForUserAsync(userId, planId);
         if (!result)
-        {
             return PlanErrors.PlanActivationFailed;
-        }
+
         return Result.Success();
     }
     public async Task<Result> DeactivatePlanForUserAsync(Guid userId)
     {
         var result = await planRepository.DeactivatePlanForUserAsync(userId);
         if (!result)
-        {
             return PlanErrors.PlanDeactivationFailed;
-        }
         return Result.Success();
     }
 

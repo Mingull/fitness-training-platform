@@ -2,6 +2,13 @@
 // See: https://next-intl.dev/docs/workflows/typescript#messages-arguments
 
 declare const messages: {
+	bottomTabs: {
+		home: "Home";
+		myPlans: "Mijn Schema's";
+		explore: "Ontdek";
+		notifications: "Meldingen";
+		profile: "Profiel";
+	};
 	auth: {
 		onboarding: {
 			hero: {
@@ -221,6 +228,10 @@ declare const messages: {
 				retry: "Opnieuw";
 				signOut: "Afmelden";
 				editProfile: "Profiel bewerken";
+				requestTraining: {
+					request: "Vraag training aan";
+					requested: "Training aangevraagd";
+				};
 			};
 			editModal: {
 				header: {
@@ -282,16 +293,29 @@ declare const messages: {
 			};
 		};
 	};
-	plans: {
+	profiles: {
+		states: {
+			empty: {
+				title: "Geen profielen gevonden";
+				description: "We konden geen profielen vinden die overeenkomen met je zoekcriteria. Probeer je filters of zoektermen aan te passen.";
+				refresh: "Ververs";
+			};
+			error: {
+				title: "Profielen niet beschikbaar";
+				description: "Kon de profielen niet laden. Controleer je verbinding en probeer het opnieuw.";
+				tryAgain: "Opnieuw proberen";
+			};
+		};
+	};
+	myPlans: {
 		list: {
 			header: {
-				eyebrow: "Trainingsprogramma's";
-				title: "Trainingsprogramma's";
-				available: "{count, plural, =0 {Geen programma's} =1 {Een programma} other {# programma's}} beschikbaar";
+				title: "Mijn Trainingsprogramma's";
+				available: "{count, plural, =0 {Geen programma's} =1 {Een programma} other {# programma's}} beschikbaar.";
 				indicators: {
-					loading: "Programma's laden";
-					refreshing: "Programma's verversen";
-					none: "Geen programma's beschikbaar";
+					loading: "Mijn programma's laden";
+					refreshing: "Mijn programma's verversen";
+					none: "Je hebt geen trainingsprogramma's beschikbaar";
 				};
 				badge: {
 					loading: "Laden";
@@ -302,72 +326,21 @@ declare const messages: {
 			actions: {
 				createPlanFab: "Plan aanmaken";
 			};
+			sections: {
+				myActivePlan: "Mijn Actieve Programma";
+				allMyPlans: "Al mijn Programma's";
+			};
 			states: {
 				empty: {
-					title: "Geen trainingsprogramma's";
-					description: "Je hebt nog geen trainingsprogramma's. \nAls een trainer een programma heeft toegewezen, verschijnt dit hier; \nmaak anders uw eerste programma om aan de slag te gaan.";
+					title: "Je hebt geen trainingsprogramma's";
+					description: "Je hebt geen trainingsprogramma's beschikbaar. Als een trainer een programma heeft toegewezen, verschijnt dit hier; maak anders je eerste programma om aan de slag te gaan.";
 					create: "Plan aanmaken";
 					refresh: "Ververs";
 				};
 				error: {
-					title: "Trainingsprogramma's niet beschikbaar";
-					description: "Kan trainingsprogramma's niet laden. \nControleer uw verbinding en probeer het opnieuw.";
+					title: "Je trainingsprogramma's zijn niet beschikbaar";
+					description: "Kan je trainingsprogramma's niet laden. Controleer je verbinding en probeer het opnieuw.";
 					tryAgain: "Opnieuw proberen";
-				};
-			};
-		};
-		item: {
-			meta: {
-				duration: "{minutes, number} min";
-				you: "Jij";
-				visibility: {
-					public: "Openbaar";
-					private: "Privé";
-				};
-				difficulty: {
-					beginner: "Beginner";
-					novice: "Novice";
-					intermediate: "Gemiddeld";
-					advanced: "Geavanceerd";
-					expert: "Expert";
-				};
-				created: "Gemaakt op {date, date, medium}";
-				updated: "Bijgewerkt op {date, date, medium}";
-			};
-			actions: {
-				activePlan: "Actief Plan";
-				activatePlan: "Activeer Plan";
-				addWorkoutFab: "Voeg Workout toe";
-			};
-			modals: {
-				addWorkout: {
-					header: {
-						title: "Voeg een workout toe";
-						description: "Je kunt een nieuwe workout toevoegen aan dit trainingsplan.";
-					};
-					feedback: {
-						success: "Workout succesvol toegevoegd aan het plan!";
-						error: "Kon de workout niet toevoegen aan het plan. Probeer het opnieuw.";
-					};
-					actions: {
-						save: "Voeg workout toe";
-						saving: "Bezig met toevoegen...";
-						cancel: "Annuleren";
-					};
-					form: {
-						fields: {
-							name: {
-								label: "Naam";
-								placeholder: "Voer een naam in voor de workout";
-								description: "Gebruik een korte, herkenbare naam die de inhoud of het doel van de workout samenvat.";
-								validations: {
-									required: "Naam is verplicht";
-									minLength: "Naam moet minimaal 2 tekens bevatten";
-									maxLength: "Naam kan maximaal 100 tekens bevatten";
-								};
-							};
-						};
-					};
 				};
 			};
 		};
@@ -422,6 +395,63 @@ declare const messages: {
 					isPublic: {
 						label: "Openbaar";
 						description: "Schakel deze optie in als je wilt dat dit trainingsplan zichtbaar is voor andere gebruikers.";
+					};
+				};
+			};
+		};
+	};
+	plans: {
+		item: {
+			meta: {
+				duration: "{minutes, number} min";
+				you: "Jij";
+				visibility: {
+					public: "Openbaar";
+					private: "Privé";
+				};
+				difficulty: {
+					beginner: "Beginner";
+					novice: "Novice";
+					intermediate: "Gemiddeld";
+					advanced: "Geavanceerd";
+					expert: "Expert";
+				};
+				created: "Gemaakt op {date, date, medium}";
+				updated: "Bijgewerkt op {date, date, medium}";
+			};
+			actions: {
+				activePlan: "Actief Plan";
+				activatePlan: "Activeer Plan";
+				addWorkoutFab: "Voeg Workout toe";
+			};
+			modals: {
+				addWorkout: {
+					header: {
+						title: "Voeg een workout toe";
+						description: "Je kunt een nieuwe workout toevoegen aan dit trainingsplan.";
+					};
+					feedback: {
+						success: "Workout succesvol toegevoegd aan het plan!";
+						error: "Kon de workout niet toevoegen aan het plan. Probeer het opnieuw.";
+					};
+					actions: {
+						save: "Voeg workout toe";
+						saving: "Bezig met toevoegen...";
+						cancel: "Annuleren";
+					};
+					form: {
+						fields: {
+							name: {
+								label: "Naam";
+								placeholder: "Voer een naam in voor de workout";
+								description: "Gebruik een korte, herkenbare naam die de inhoud of het doel van de workout samenvat.";
+								validations: {
+									required: "Naam is verplicht";
+									minLength: "Naam moet minimaal 2 tekens bevatten";
+									maxLength: "Naam kan maximaal 100 tekens bevatten";
+								};
+							};
+						};
 					};
 				};
 			};
@@ -585,6 +615,31 @@ declare const messages: {
 				description: "Er is een fout opgetreden bij het laden van meldingen.";
 				tryAgain: "Probeer het opnieuw.";
 			};
+		};
+	};
+	explore: {
+		header: {
+			title: "Ontdek";
+			description: "Ontdek nieuwe oefeningen en maak verbinding met andere fitnessliefhebbers en trainers";
+		};
+		search: {
+			placeholder: "Zoeken...";
+			results: "{count, plural, =0 {Geen resultaten} =1 {Één resultaat} other {# resultaten}}";
+		};
+		tabs: {
+			all: "Alles";
+			both: "Beide";
+			sporters: "Sporters";
+			trainers: "Trainers";
+			plans: "Trainingsschema's";
+			exercises: "Oefeningen";
+		};
+		sections: {
+			sportersAndTrainers: "Sporters en Trainers";
+			sporters: "Sporters";
+			trainers: "Trainers";
+			plans: "Trainingsschema's";
+			exercises: "Oefeningen";
 		};
 	};
 };

@@ -2,6 +2,13 @@
 // See: https://next-intl.dev/docs/workflows/typescript#messages-arguments
 
 declare const messages: {
+	bottomTabs: {
+		home: "Home";
+		myPlans: "My Plans";
+		explore: "Explore";
+		notifications: "Notifications";
+		profile: "Profile";
+	};
 	auth: {
 		onboarding: {
 			hero: {
@@ -221,6 +228,10 @@ declare const messages: {
 				retry: "Retry";
 				signOut: "Sign Out";
 				editProfile: "Edit Profile";
+				requestTraining: {
+					request: "Request Training";
+					requested: "Training Requested";
+				};
 			};
 			editModal: {
 				header: {
@@ -282,15 +293,29 @@ declare const messages: {
 			};
 		};
 	};
-	plans: {
+	profiles: {
+		states: {
+			empty: {
+				title: "No profiles found";
+				description: "We couldn't find any profiles matching your search criteria. Try adjusting your filters or search terms.";
+				refresh: "Refresh";
+			};
+			error: {
+				title: "Profiles unavailable";
+				description: "Could not load profiles. Check your connection and try again.";
+				tryAgain: "Try again";
+			};
+		};
+	};
+	myPlans: {
 		list: {
 			header: {
-				title: "Training programs";
+				title: "My Training Programs";
 				available: "{count, plural, =0 {No programs} =1 {One program} other {# programs}} available.";
 				indicators: {
-					loading: "Loading programs";
-					refreshing: "Refreshing programs";
-					none: "No programs available";
+					loading: "Loading my programs";
+					refreshing: "Refreshing my programs";
+					none: "You have no training programs available";
 				};
 				badge: {
 					loading: "Loading";
@@ -301,72 +326,21 @@ declare const messages: {
 			actions: {
 				createPlanFab: "Create Plan";
 			};
+			sections: {
+				myActivePlan: "My Active Plan";
+				allMyPlans: "All My Plans";
+			};
 			states: {
 				empty: {
-					title: "No training programs";
-					description: "No training programs available. If a trainer assigned a program it will appear here; otherwise create your first program to get started.";
+					title: "You have no training programs";
+					description: "You have no training programs available. If a trainer assigned a program it will appear here; otherwise create your first program to get started.";
 					create: "Create Plan";
 					refresh: "Refresh";
 				};
 				error: {
-					title: "Training programs unavailable";
-					description: "Could not load training programs. Check your connection and try again.";
+					title: "Your training programs are unavailable";
+					description: "Could not load your training programs. Check your connection and try again.";
 					tryAgain: "Try again";
-				};
-			};
-		};
-		item: {
-			meta: {
-				duration: "{minutes, number} min";
-				you: "You";
-				visibility: {
-					public: "Public";
-					private: "Private";
-				};
-				difficulty: {
-					beginner: "Beginner";
-					novice: "Novice";
-					intermediate: "Intermediate";
-					advanced: "Advanced";
-					expert: "Expert";
-				};
-				created: "Created on {date, date, medium}";
-				updated: "Updated on {date, date, medium}";
-			};
-			actions: {
-				activePlan: "Active Plan";
-				activatePlan: "Activate Plan";
-				addWorkoutFab: "Add Workout";
-			};
-			modals: {
-				addWorkout: {
-					header: {
-						title: "Add a workout";
-						description: "You can add a new workout to this training plan.";
-					};
-					feedback: {
-						success: "Adding workout to plan was successful!";
-						error: "Failed to add workout to plan. Please try again.";
-					};
-					actions: {
-						save: "Add Workout";
-						saving: "Adding...";
-						cancel: "Cancel";
-					};
-					form: {
-						fields: {
-							name: {
-								label: "Name";
-								placeholder: "Enter a name for the workout";
-								description: "Use a short, recognizable name that summarizes the content or purpose of the workout.";
-								validations: {
-									required: "Name is required";
-									minLength: "Name must be at least 2 characters";
-									maxLength: "Name can be at most 100 characters";
-								};
-							};
-						};
-					};
 				};
 			};
 		};
@@ -421,6 +395,63 @@ declare const messages: {
 					isPublic: {
 						label: "Public";
 						description: "Turn this on if you want other users to be able to see and use this training plan.";
+					};
+				};
+			};
+		};
+	};
+	plans: {
+		item: {
+			meta: {
+				duration: "{minutes, number} min";
+				you: "You";
+				visibility: {
+					public: "Public";
+					private: "Private";
+				};
+				difficulty: {
+					beginner: "Beginner";
+					novice: "Novice";
+					intermediate: "Intermediate";
+					advanced: "Advanced";
+					expert: "Expert";
+				};
+				created: "Created on {date, date, medium}";
+				updated: "Updated on {date, date, medium}";
+			};
+			actions: {
+				activePlan: "Active Plan";
+				activatePlan: "Activate Plan";
+				addWorkoutFab: "Add Workout";
+			};
+			modals: {
+				addWorkout: {
+					header: {
+						title: "Add a workout";
+						description: "You can add a new workout to this training plan.";
+					};
+					feedback: {
+						success: "Adding workout to plan was successful!";
+						error: "Failed to add workout to plan. Please try again.";
+					};
+					actions: {
+						save: "Add Workout";
+						saving: "Adding...";
+						cancel: "Cancel";
+					};
+					form: {
+						fields: {
+							name: {
+								label: "Name";
+								placeholder: "Enter a name for the workout";
+								description: "Use a short, recognizable name that summarizes the content or purpose of the workout.";
+								validations: {
+									required: "Name is required";
+									minLength: "Name must be at least 2 characters";
+									maxLength: "Name can be at most 100 characters";
+								};
+							};
+						};
 					};
 				};
 			};
@@ -584,6 +615,31 @@ declare const messages: {
 				description: "An error occurred while loading notifications.";
 				tryAgain: "Please try.";
 			};
+		};
+	};
+	explore: {
+		header: {
+			title: "Explore";
+			description: "Discover new exercises and connect with other fitness enthusiasts and trainers";
+		};
+		search: {
+			placeholder: "Search...";
+			results: "{count, plural, =0 {No results} =1 {One result} other {# results}}";
+		};
+		tabs: {
+			all: "All";
+			both: "Both";
+			sporters: "Sporters";
+			trainers: "Trainers";
+			plans: "Training Plans";
+			exercises: "Exercises";
+		};
+		sections: {
+			sportersAndTrainers: "Sporters and Trainers";
+			sporters: "Sporters";
+			trainers: "Trainers";
+			plans: "Training Plans";
+			exercises: "Exercises";
 		};
 	};
 };

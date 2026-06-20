@@ -26,6 +26,8 @@ using Fitness.API.Features.Devices.Abstract;
 using Fitness.API.Features.Devices;
 using Fitness.API.Features.Notifications.Abstract;
 using Fitness.API.Features.Notifications;
+using Fitness.API.Features.TrainerRequests.Abstract;
+using Fitness.API.Features.TrainerRequests;
 
 namespace Fitness.API;
 
@@ -113,13 +115,6 @@ public class Startup(IConfiguration configuration)
 
                     return Task.CompletedTask;
                 },
-                OnAuthenticationFailed = context =>
-                {
-                    // log the exception to see why authentication failed (e.g., token expired, invalid signature, etc.)
-                    var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Startup>>();
-                    logger.LogError(context.Exception, "Authentication failed: {Message}", context.Exception.Message);
-                    return Task.CompletedTask;
-                }
             };
         });
 
@@ -155,7 +150,8 @@ public class Startup(IConfiguration configuration)
             .AddScoped<IWorkoutRepository, WorkoutRepository>()
             .AddScoped<IWorkoutExerciseRepository, WorkoutExerciseRepository>()
             .AddScoped<IDeviceRepository, DeviceRepository>()
-            .AddScoped<INotificationRepository, NotificationRepository>();
+            .AddScoped<INotificationRepository, NotificationRepository>()
+            .AddScoped<ITrainerRequestRepository, TrainerRequestRepository>();
         // services.AddSingleton<IRepository, Repository>() for repositories that should be created once and shared across the application
     }
     private void InitializeServices(IServiceCollection services)
@@ -168,6 +164,7 @@ public class Startup(IConfiguration configuration)
             .AddScoped<IWorkoutExerciseService, WorkoutExerciseService>()
             .AddScoped<IDeviceService, DeviceService>()
             .AddScoped<INotificationService, NotificationService>()
+            .AddScoped<ITrainerRequestService, TrainerRequestService>()
             .AddSingleton<TokenProvider>() // for services that should be created once and shared across the application
             .AddTransient<NotificationHub>(); // for services that should be created each time they are requested (e.g., SignalR hubs)
     }
