@@ -94,7 +94,6 @@ export function useNotificationSocket() {
 	}, [accessToken, isLoading, refresh, userId]);
 
 	useEffect(() => {
-		console.log({ isMounted });
 		if (!isMounted) return;
 		if (isLoading || !userId || !accessToken) return;
 
@@ -139,13 +138,12 @@ export function useNotificationSocket() {
 		(async () => {
 			try {
 				await connection.start();
-				console.log("[SignalR] Connected to notifications hub");
 
 				if (disposed || connection.state !== signalR.HubConnectionState.Connected) {
 					console.warn("[SignalR] Connection was disposed or not connected after start.");
 					return;
 				}
-				console.log("[SignalR] Registering user");
+				
 				await connection.invoke("Register", userId);
 			} catch (error) {
 				if (disposed) {
