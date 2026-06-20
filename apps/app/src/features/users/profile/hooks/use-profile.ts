@@ -19,7 +19,7 @@ export const useProfile = (userId?: string) => {
 		queryFn: async ({ signal }) => {
 			// if the userId if equal to the current user's ID, fetch the profile using the "me" endpoint, otherwise fetch the profile using the user ID
 			const result = await withRefresh((accessToken) =>
-				userId === undefined ?
+				userId === undefined || userId === currentUserId || userId === "me" ?
 					apiClient.users.me.profile({ accessToken: accessToken ?? undefined, signal })
 				:	apiClient.users.user.profile({ params: { userId }, accessToken: accessToken ?? undefined, signal }),
 			);
