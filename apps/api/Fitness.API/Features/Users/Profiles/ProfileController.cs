@@ -13,7 +13,7 @@ namespace Fitness.API.Features.Users.Profiles;
 [Tags("Profiles")]
 public class ProfileController(IProfileService profileService, ILogger<ProfileController> logger) : ControllerBase
 {
-    // questioning if /users is the right route as the rest of getting user profiles is done through /users/{userId}/profile and /users/me/profile.
+    // Returns profile summaries for explore/search (excludes the current user and admins).
     [HttpGet("users")]
     [Authorize]
     public async Task<IActionResult> GetAllUserProfilesAsync()

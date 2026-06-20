@@ -1,8 +1,8 @@
 import { useAuthActions } from "@/features/auth/hooks/use-auth-actions";
 import { apiClient } from "@/lib/api-client";
 import { ClientError } from "@fitness/api-client/types";
-import { CreateTrainerRequest, TrainerRequest } from "@fitness/contracts/trainer-requests";
-import { TrainingPlan } from "@fitness/contracts/training-plans";
+import { type CreateTrainerRequest, type TrainerRequest } from "@fitness/contracts/trainer-requests";
+import { type TrainingPlan } from "@fitness/contracts/training-plans";
 import { useMutation } from "@tanstack/react-query";
 
 export const useRequestTraining = () => {

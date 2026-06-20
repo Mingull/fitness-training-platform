@@ -44,6 +44,7 @@ public class UserController(IPlanService planService) : ControllerBase
     }
 
     [HttpGet("users/me/plans")]
+    [Authorize]
     public async Task<IActionResult> GetUserPlans()
     {
         var userId = this.UserIdFromJwt();

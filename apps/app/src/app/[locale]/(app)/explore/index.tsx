@@ -18,14 +18,12 @@ import { Search } from "lucide-react-native";
 import { useMemo, useState } from "react";
 import { FlatList, View } from "react-native";
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
-import { useLocale } from "use-intl";
 
 type FilterOptions = "all" | "exercises" | "both" | "sporters" | "trainers" | "plans";
 
 export default function ExploreScreen() {
 	const [filter, setFilter] = useState<FilterOptions>("all");
 	const [searchQuery, setSearchQuery] = useState("");
-	const locale = useLocale();
 	const session = useSession();
 
 	const { data: profiles, isLoading: isLoadingProfiles, error: errorProfiles, isRefetching: isRefetchingProfiles, refetch: refetchProfiles } = useProfiles();
@@ -52,7 +50,7 @@ export default function ExploreScreen() {
 				if (filter === "both") return matchesSearchQuery;
 				if (filter === "sporters") return matchesSearchQuery && profile.roles.includes("Sporter");
 				if (filter === "trainers") return matchesSearchQuery && profile.roles.includes("Trainer");
-				return true;
+				return matchesSearchQuery;
 			}) ?? []
 		);
 	}, [profiles, searchQuery, filter]);

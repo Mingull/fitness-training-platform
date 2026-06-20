@@ -1,11 +1,7 @@
-using Fitness.API.Features.Plans.Contracts;
-using Fitness.API.Features.Plans.Models;
 using Fitness.API.Features.Profiles.Contracts;
 using Fitness.API.Features.Profiles.Models;
-using Fitness.API.Features.Workouts;
 
 namespace Fitness.API.Features.Plans;
-
 public static class ProfileMappers
 {
     public static ProfileResponse ToResponse(this Profile profile, IList<string> roles)

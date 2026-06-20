@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
-import { ProfileItem as ProfileItemType } from "@fitness/contracts/user";
+import { type ProfileItem as ProfileItemType } from "@fitness/contracts/user";
 import { useRouter } from "expo-router";
 import { Pressable, View } from "react-native";
 import { useLocale } from "use-intl";

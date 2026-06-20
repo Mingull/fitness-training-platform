@@ -41,7 +41,7 @@ function RootNavigator() {
 	const { isAuthenticated } = useSession();
 	const theme = useTheme();
 
-	console.log({ isAuthenticated });
+	if (__DEV__) console.log({ isAuthenticated });
 	return (
 		<Stack
 			screenOptions={{

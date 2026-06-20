@@ -8,13 +8,13 @@ import { Dumbbell, Globe2 } from "lucide-react-native";
 import { View } from "react-native";
 import { useTranslations } from "use-intl";
 
-type WorkoutsEmptyStateProps = {
+type ExercisesEmptyStateProps = {
 	isLoading: boolean;
 	error: { message?: string } | null;
 	onRetry: () => void;
 };
 
-export function ExercisesEmptyState({ isLoading, error, onRetry }: WorkoutsEmptyStateProps) {
+export function ExercisesEmptyState({ isLoading, error, onRetry }: ExercisesEmptyStateProps) {
 	const t = useTranslations("plans.workouts.exercises.list.states");
 
 	if (isLoading) {

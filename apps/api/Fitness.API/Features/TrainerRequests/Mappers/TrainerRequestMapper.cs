@@ -1,8 +1,5 @@
-using Fitness.API.Features.Plans;
-using Fitness.API.Features.Plans.Models;
 using Fitness.API.Features.TrainerRequests.Contracts;
 using Fitness.API.Features.TrainerRequests.Models;
-using Fitness.API.Features.Users.Contracts;
 
 namespace Fitness.API.Features.TrainerRequests.Mappers;
 

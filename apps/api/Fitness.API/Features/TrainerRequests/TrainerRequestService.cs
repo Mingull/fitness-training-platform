@@ -24,14 +24,14 @@ public class TrainerRequestService(ITrainerRequestRepository trainerRequestRepos
             return TrainerRequestErrors.AthleteNotFound;
 
         // check if user has Sporter role, if not return forbidden (403) instead of not found (404) to prevent user enumeration
-        if (!await userManager.IsInRoleAsync(athlete, "Sporter"))
+        if (!await userManager.IsInRoleAsync(athlete, Roles.Sporter))
             return TrainerRequestErrors.AthleteNotSporter;
 
         var trainer = await userManager.FindByIdAsync(request.TrainerId.ToString());
         if (trainer is null)
             return TrainerRequestErrors.TrainerNotFound;
 
-        if (!await userManager.IsInRoleAsync(trainer, "Trainer"))
+        if (!await userManager.IsInRoleAsync(trainer, Roles.Trainer))
             return TrainerRequestErrors.SelectedUserNotTrainer;
 
         // STEP 2: CHECK EXISTING REQUEST

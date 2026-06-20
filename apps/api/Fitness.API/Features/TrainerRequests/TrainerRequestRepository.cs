@@ -27,6 +27,7 @@ public class TrainerRequestRepository(FitnessContext context) : ITrainerRequestR
     public async Task<TrainerRequest?> GetPendingRequestAsync(Guid athleteId, Guid trainerId)
     {
         return await context.TrainerRequests
+            .Include(r => r.Status)
             .Where(r => r.AthleteId == athleteId && r.TrainerId == trainerId && r.StatusId == RequestStatuses.Pending.Id)
             .FirstOrDefaultAsync();
     }

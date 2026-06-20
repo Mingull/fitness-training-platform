@@ -9,7 +9,7 @@ export const useProfiles = () => {
 	const { userId } = useSession();
 	const { withRefresh } = useAuthActions();
 	return useQuery<ProfileList["data"], ClientError>({
-		queryKey: ["profiles"],
+		queryKey: ["profiles", userId],
 		enabled: !!userId,
 		retry: false,
 		// Keep profiles fresh for 5 minutes and cache for 30 minutes
