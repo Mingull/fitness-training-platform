@@ -5,6 +5,7 @@ namespace Fitness.API.Features.Profiles.Abstract;
 
 public interface IProfileService
 {
-    Task<Result<ProfileResponse>> GetProfileAsync(Guid userId);
-    Task<Result<ProfileResponse>> UpdateProfileAsync(Guid userId, UpdateProfileRequest request);
+    Task<Result<ProfileDetailResponse>> GetProfileAsync(Guid userId);
+    Task<Result<IEnumerable<ProfileResponse>>> GetAllUserProfilesAsync(Guid userId);
+    Task<Result<ProfileDetailResponse>> UpdateProfileAsync(Guid userId, UpdateProfileRequest request);
 }

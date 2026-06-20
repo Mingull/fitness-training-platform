@@ -1,0 +1,19 @@
+meta {
+  name: Get by Id
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/users/:userId/profile
+  body: none
+  auth: bearer
+}
+
+params:path {
+  userId: 019e8d6e-006f-7a30-b175-a5536de898cf
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

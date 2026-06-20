@@ -221,6 +221,10 @@ declare const messages: {
 				retry: "Opnieuw";
 				signOut: "Afmelden";
 				editProfile: "Profiel bewerken";
+				requestTraining: {
+					request: "Vraag training aan";
+					requested: "Training aangevraagd";
+				};
 			};
 			editModal: {
 				header: {
@@ -278,6 +282,40 @@ declare const messages: {
 				feedback: {
 					success: "Profiel succesvol bijgewerkt!";
 					error: "Fout bij het bijwerken van het profiel.";
+				};
+			};
+		};
+	};
+	myPlans: {
+		list: {
+			header: {
+				title: "Mijn Trainingsprogramma's";
+				available: "{count, plural, =0 {Geen programma's} =1 {Een programma} other {# programma's}} beschikbaar.";
+				indicators: {
+					loading: "Mijn programma's laden";
+					refreshing: "Mijn programma's verversen";
+					none: "Je hebt geen trainingsprogramma's beschikbaar";
+				};
+				badge: {
+					loading: "Laden";
+					refreshing: "Verversen";
+					updated: "Bijgewerkt";
+				};
+			};
+			actions: {
+				createPlanFab: "Plan aanmaken";
+			};
+			states: {
+				empty: {
+					title: "Je hebt geen trainingsprogramma's";
+					description: "Je hebt geen trainingsprogramma's beschikbaar. Als een trainer een programma heeft toegewezen, verschijnt dit hier; maak anders je eerste programma om aan de slag te gaan.";
+					create: "Plan aanmaken";
+					refresh: "Ververs";
+				};
+				error: {
+					title: "Je trainingsprogramma's zijn niet beschikbaar";
+					description: "Kan je trainingsprogramma's niet laden. Controleer je verbinding en probeer het opnieuw.";
+					tryAgain: "Opnieuw proberen";
 				};
 			};
 		};

@@ -81,10 +81,7 @@ export default function ProfileScreen() {
 							</View>
 
 							<View className="bg-card flex-1 gap-2 rounded-4xl p-6 shadow-sm">
-								<ProfileAction
-									label={t("actions.retry")}
-									onPress={() => router.replace({ pathname: "/[locale]/(app)/profile", params: { locale } })}
-								/>
+								<ProfileAction label={t("actions.retry")} onPress={refetch} />
 								<ProfileAction label={t("actions.signOut")} onPress={signOut} destructive />
 							</View>
 						</View>

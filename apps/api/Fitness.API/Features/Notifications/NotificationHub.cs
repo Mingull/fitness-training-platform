@@ -1,12 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Fitness.API.Features.Notifications;
 
-[Authorize]
+// [Authorize] // as for now, we will not require authorization for the hub, but we will validate the userId in the Register method.
 public class NotificationHub(ILogger<NotificationHub> logger) : Hub
 {
     public async Task Register(Guid _userId)
@@ -36,8 +34,7 @@ public class NotificationHub(ILogger<NotificationHub> logger) : Hub
             Context.Abort();
             return;
         }
-        
-        logger.LogInformation("User {UserId} registered for notifications.", userId);
+
         await Groups.AddToGroupAsync(Context.ConnectionId, userId.ToString());
     }
 }

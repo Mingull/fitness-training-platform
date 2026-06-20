@@ -308,7 +308,7 @@ namespace Mingull.Fitness.API.Migrations
                         .HasColumnType("char(36)")
                         .HasColumnName("user_id");
 
-                    b.Property<DateTime>("ActivatedAt")
+                    b.Property<DateTimeOffset>("ActivatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasColumnName("activated_at")
@@ -453,6 +453,137 @@ namespace Mingull.Fitness.API.Migrations
                         .HasDatabaseName("ix_profiles_user_id");
 
                     b.ToTable("profiles", (string)null);
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.TrainerRequests.Models.RequestStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("label");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id")
+                        .HasName("pk_request_statuses");
+
+                    b.ToTable("request_statuses", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Label = "Pending",
+                            Value = "pending"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Label = "Accepted",
+                            Value = "accepted"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Label = "Rejected",
+                            Value = "rejected"
+                        });
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.TrainerRequests.Models.TrainerRelationship", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("AthleteId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("athlete_id");
+
+                    b.Property<DateTimeOffset?>("EndDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("end_date");
+
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("start_date");
+
+                    b.Property<Guid>("TrainerId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("trainer_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_trainer_relationships");
+
+                    b.HasIndex("AthleteId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_trainer_relationships_athlete_id");
+
+                    b.HasIndex("TrainerId")
+                        .HasDatabaseName("ix_trainer_relationships_trainer_id");
+
+                    b.ToTable("trainer_relationships", (string)null);
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.TrainerRequests.Models.TrainerRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("AthleteId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("athlete_id");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("deleted_at");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("longtext")
+                        .HasColumnName("message");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int")
+                        .HasColumnName("status_id");
+
+                    b.Property<Guid>("TrainerId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("trainer_id");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_trainer_requests");
+
+                    b.HasIndex("StatusId")
+                        .HasDatabaseName("ix_trainer_requests_status_id");
+
+                    b.HasIndex("TrainerId")
+                        .HasDatabaseName("ix_trainer_requests_trainer_id");
+
+                    b.HasIndex("AthleteId", "StatusId")
+                        .HasDatabaseName("ix_trainer_requests_athlete_id_status_id");
+
+                    b.ToTable("trainer_requests", (string)null);
                 });
 
             modelBuilder.Entity("Fitness.API.Features.WorkoutExercises.Models.WorkoutExercise", b =>
@@ -800,6 +931,57 @@ namespace Mingull.Fitness.API.Migrations
                         .HasConstraintName("fk_profiles_users_user_id");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.TrainerRequests.Models.TrainerRelationship", b =>
+                {
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "Athlete")
+                        .WithMany()
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_trainer_relationships_users_athlete_id");
+
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "Trainer")
+                        .WithMany()
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_trainer_relationships_users_trainer_id");
+
+                    b.Navigation("Athlete");
+
+                    b.Navigation("Trainer");
+                });
+
+            modelBuilder.Entity("Fitness.API.Features.TrainerRequests.Models.TrainerRequest", b =>
+                {
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "Athlete")
+                        .WithMany()
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_trainer_requests_users_athlete_id");
+
+                    b.HasOne("Fitness.API.Features.TrainerRequests.Models.RequestStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_trainer_requests_request_statuses_status_id");
+
+                    b.HasOne("Fitness.API.Features.Auth.Models.AppUser", "Trainer")
+                        .WithMany()
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_trainer_requests_users_trainer_id");
+
+                    b.Navigation("Athlete");
+
+                    b.Navigation("Status");
+
+                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("Fitness.API.Features.WorkoutExercises.Models.WorkoutExercise", b =>

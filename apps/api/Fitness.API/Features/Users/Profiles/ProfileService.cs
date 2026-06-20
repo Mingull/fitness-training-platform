@@ -1,5 +1,6 @@
 using Fitness.API.Core.Utilities;
 using Fitness.API.Features.Auth.Models;
+using Fitness.API.Features.Plans;
 using Fitness.API.Features.Profiles.Abstract;
 using Fitness.API.Features.Profiles.Contracts;
 using Fitness.API.Features.Profiles.Models;
@@ -10,7 +11,7 @@ namespace Fitness.API.Features.Profiles;
 
 public class ProfileService(IProfileRepository profileRepository, UserManager<AppUser> userManager) : IProfileService
 {
-    public async Task<Result<ProfileResponse>> GetProfileAsync(Guid userId)
+    public async Task<Result<ProfileDetailResponse>> GetProfileAsync(Guid userId)
     {
         var profile = await profileRepository.GetByUserIdAsync(userId);
         if (profile == null)
@@ -20,23 +21,27 @@ public class ProfileService(IProfileRepository profileRepository, UserManager<Ap
 
         var roles = await userManager.GetRolesAsync(profile.User);
 
-        return Result<ProfileResponse>.Success(new ProfileResponse
-        {
-            Id = profile.Id,
-            UserId = profile.User.Id,
-            Username = profile.User.UserName!,
-            Email = profile.User.Email!,
-            Roles = roles,
-            FirstName = profile.FirstName!,
-            LastName = profile.LastName!,
-            ExperienceLevel = profile.ExperienceLevel.Value,
-            Bio = profile.Bio,
-            Goals = profile.Goals,
-            PictureUrl = profile.PictureUrl
-        });
+        return Result<ProfileDetailResponse>.Success(profile.ToDetailResponse(roles));
     }
 
-    public async Task<Result<ProfileResponse>> UpdateProfileAsync(Guid userId, UpdateProfileRequest request)
+    public async Task<Result<IEnumerable<ProfileResponse>>> GetAllUserProfilesAsync(Guid userId)
+    {
+        var profiles = await profileRepository.GetAllAsync();
+        var profileResponses = new List<ProfileResponse>();
+
+        foreach (var profile in profiles)
+        {
+            if(profile.User.Id == userId) continue; // Skip the current user's profile
+            var roles = await userManager.GetRolesAsync(profile.User);
+            if (roles.Contains(Roles.Admin)) continue; // Skip admin profiles
+
+            profileResponses.Add(profile.ToResponse(roles));
+        }
+
+        return Result<IEnumerable<ProfileResponse>>.Success(profileResponses);
+    }
+
+    public async Task<Result<ProfileDetailResponse>> UpdateProfileAsync(Guid userId, UpdateProfileRequest request)
     {
         var profile = await profileRepository.GetByUserIdAsync(userId);
         if (profile == null)
@@ -54,19 +59,6 @@ public class ProfileService(IProfileRepository profileRepository, UserManager<Ap
         await profileRepository.UpdateAsync(profile);
         var roles = await userManager.GetRolesAsync(profile.User);
 
-        return Result<ProfileResponse>.Success(new ProfileResponse
-        {
-            Id = profile.Id,
-            UserId = profile.User.Id,
-            Username = profile.User.UserName!,
-            Email = profile.User.Email!,
-            Roles = roles,
-            FirstName = profile.FirstName!,
-            LastName = profile.LastName!,
-            ExperienceLevel = profile.ExperienceLevel.Value,
-            Bio = profile.Bio,
-            Goals = profile.Goals,
-            PictureUrl = profile.PictureUrl
-        });
+        return Result<ProfileDetailResponse>.Success(profile.ToDetailResponse(roles));
     }
 }

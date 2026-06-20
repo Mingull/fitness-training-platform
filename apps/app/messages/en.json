@@ -217,7 +217,11 @@
 			"actions": {
 				"retry": "Retry",
 				"signOut": "Sign Out",
-				"editProfile": "Edit Profile"
+				"editProfile": "Edit Profile",
+				"requestTraining": {
+					"request": "Request Training",
+					"requested": "Training Requested"
+				}
 			},
 			"editModal": {
 				"header": {
@@ -275,6 +279,40 @@
 				"feedback": {
 					"success": "Profile updated successfully!",
 					"error": "Failed to update profile."
+				}
+			}
+		}
+	},
+	"myPlans": {
+		"list": {
+			"header": {
+				"title": "My Training Programs",
+				"available": "{count, plural, =0 {No programs} =1 {One program} other {# programs}} available.",
+				"indicators": {
+					"loading": "Loading my programs",
+					"refreshing": "Refreshing my programs",
+					"none": "You have no training programs available"
+				},
+				"badge": {
+					"loading": "Loading",
+					"refreshing": "Refreshing",
+					"updated": "Updated"
+				}
+			},
+			"actions": {
+				"createPlanFab": "Create Plan"
+			},
+			"states": {
+				"empty": {
+					"title": "You have no training programs",
+					"description": "You have no training programs available. If a trainer assigned a program it will appear here; otherwise create your first program to get started.",
+					"create": "Create Plan",
+					"refresh": "Refresh"
+				},
+				"error": {
+					"title": "Your training programs are unavailable",
+					"description": "Could not load your training programs. Check your connection and try again.",
+					"tryAgain": "Try again"
 				}
 			}
 		}

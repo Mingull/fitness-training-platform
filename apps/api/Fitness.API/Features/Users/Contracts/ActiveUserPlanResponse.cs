@@ -5,5 +5,5 @@ namespace Fitness.API.Features.Users.Contracts;
 public record ActiveUserPlanResponse
 {
     public PlanResponse Plan { get; set; } = null!;
-    public DateTime ActivatedAt { get; set; }
+    public DateTimeOffset ActivatedAt { get; set; }
 }

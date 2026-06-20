@@ -1,0 +1,22 @@
+meta {
+  name: Request training
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/trainer-requests
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "trainerId": "019e8d6e-006f-7a30-b175-a5536de898cf",
+    "message": "I need training"
+  }
+}

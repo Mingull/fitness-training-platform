@@ -12,5 +12,5 @@ public sealed class ActiveUserPlan
     public AppUser User { get; init; } = null!;
     public Guid PlanId { get; init; }
     public Plan Plan { get; init; } = null!;
-    public DateTime ActivatedAt { get; init; } = DateTime.UtcNow;
+    public DateTimeOffset ActivatedAt { get; init; } = DateTimeOffset.UtcNow;
 }

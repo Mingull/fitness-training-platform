@@ -5,6 +5,7 @@ using Fitness.API.Core.Contracts;
 using Fitness.API.Core.Extensions;
 using Fitness.API.Features.Plans.Abstract;
 using Fitness.API.Features.Users.Contracts;
+using Fitness.API.Features.Plans.Contracts;
 
 namespace Fitness.API.Features.Users;
 
@@ -38,6 +39,29 @@ public class UserController(IPlanService planService) : ControllerBase
             Status = StatusCodes.Status200OK,
             StatusCode = "Ok",
             Message = "Active plan retrieved successfully",
+            Data = result.Value
+        });
+    }
+
+    [HttpGet("users/me/plans")]
+    public async Task<IActionResult> GetUserPlans()
+    {
+        var userId = this.UserIdFromJwt();
+        if (!userId.HasValue)
+            return Unauthorized(new ApiError("InvalidToken", ErrorType.Unauthorized, "Invalid token", "The provided token is invalid."));
+
+        var result = await planService.GetPlansForUserAsync(userId.Value);
+        if (!result.IsSuccess)
+        {
+            var error = result.Error!;
+            return StatusCode(error.Status ?? StatusCodes.Status500InternalServerError, error);
+        }
+
+        return Ok(new ApiResponse<IEnumerable<PlanResponse>>
+        {
+            Status = StatusCodes.Status200OK,
+            StatusCode = "Ok",
+            Message = "User plans retrieved successfully",
             Data = result.Value
         });
     }

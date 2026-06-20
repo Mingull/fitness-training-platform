@@ -1,6 +1,5 @@
 using Fitness.API.Core.Utilities;
 using Fitness.API.Features.Plans.Contracts;
-using Fitness.API.Features.Workouts.Contracts;
 using Fitness.API.Features.Users.Contracts;
 
 namespace Fitness.API.Features.Plans.Abstract;
@@ -16,6 +15,12 @@ public interface IPlanService
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<Result<IEnumerable<PlanResponse>>> GetAllPlansAsync(Guid? userId);
+    /// <summary>
+    /// Gets all plans that belong to the specified user, including public and private plans. If the user has no plans, it will return an empty list.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<Result<IEnumerable<PlanResponse>>> GetPlansForUserAsync(Guid userId);
     /// <summary>
     /// Gets an plan by its id. If the plan is private and does not belong to the authenticated user, it will return an error.
     /// </summary>

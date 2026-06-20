@@ -71,7 +71,7 @@ export function PlansEmptyState({ isLoading, error, onCreate, onRetry }: PlansEm
 				<EmptyTitle>{t("empty.title")}</EmptyTitle>
 				<EmptyDescription>{t("empty.description")}</EmptyDescription>
 			</EmptyHeader>
-			<EmptyContent>
+			<EmptyContent className="flex-row justify-center gap-2">
 				<Button variant="default" onPress={onCreate}>
 					<Text>{t("empty.create")}</Text>
 				</Button>

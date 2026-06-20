@@ -49,7 +49,7 @@ export default function TrainingPlanListScreen() {
 
 			form.reset();
 			toast.success(t("feedback.success"), { position: "top-center" });
-			router.push({ pathname: "/[locale]/(app)/plans", params: { locale } });
+			router.push({ pathname: "/[locale]/(app)/my-plans", params: { locale } });
 		},
 	});
 

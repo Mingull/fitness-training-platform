@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Fitness.API.Features.Notifications.Models;
 using Fitness.API.Features.Devices.Models;
+using Fitness.API.Features.TrainerRequests.Models;
 
 namespace Fitness.API.Core.Contexts;
 
@@ -23,6 +24,9 @@ public sealed class FitnessContext(DbContextOptions<FitnessContext> options) : I
     public DbSet<Exercise> Exercises => Set<Exercise>();
     public DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<Device> Devices => Set<Device>();
+    public DbSet<TrainerRequest> TrainerRequests => Set<TrainerRequest>();
+    public DbSet<TrainerRelationship> TrainerRelationships => Set<TrainerRelationship>();
+    public DbSet<RequestStatus> RequestStatuses => Set<RequestStatus>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

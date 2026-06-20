@@ -6,6 +6,7 @@ import { authTokensContract, signinContract, signupContract } from "@fitness/con
 import { deviceContract, registerDeviceContract } from "@fitness/contracts/devices";
 import { exerciseListContract } from "@fitness/contracts/exercises";
 import { notificationListContract } from "@fitness/contracts/notifications";
+import { createTrainerRequestContract, trainerRequestContract } from "@fitness/contracts/trainer-requests";
 import {
 	addWorkoutToPlanContract,
 	createTrainingPlanContract,
@@ -13,7 +14,7 @@ import {
 	trainingPlanContract,
 	trainingPlanListContract,
 } from "@fitness/contracts/training-plans";
-import { activatePlanContract, activeUserPlanContract, profileContract, updateProfileContract } from "@fitness/contracts/user";
+import { activatePlanContract, activeUserPlanContract, profileContract, profileListContract, updateProfileContract } from "@fitness/contracts/user";
 import { addExerciseToWorkoutContract, reorderExercisesContract, workoutContract } from "@fitness/contracts/workouts";
 import { fetch, FetchRequestInit } from "expo/fetch";
 import { z } from "zod";
@@ -54,6 +55,12 @@ const routes = {
 				in: updateProfileContract,
 				out: profileContract,
 			},
+			plans: {
+				method: "GET",
+				path: "/users/me/plans",
+				auth: "required",
+				out: trainingPlanListContract,
+			},
 			currentActivePlan: {
 				method: "GET",
 				path: "/users/me/active-plan",
@@ -73,6 +80,20 @@ const routes = {
 				auth: "required",
 				out: apiResponseBaseContract,
 			},
+		},
+		user: {
+			profile: {
+				method: "GET",
+				path: "/users/{userId:string}/profile",
+				auth: "required",
+				out: profileContract,
+			},
+		},
+		getAllProfiles: {
+			method: "GET",
+			path: "/users",
+			auth: "required",
+			out: profileListContract,
 		},
 	},
 	plans: {
@@ -161,6 +182,15 @@ const routes = {
 			path: "/notifications/{notificationId:string}/read",
 			auth: "required",
 			out: apiResponseBaseContract,
+		},
+	},
+	trainerRequests: {
+		request: {
+			method: "POST",
+			path: "/trainer-requests",
+			auth: "required",
+			in: createTrainerRequestContract,
+			out: trainerRequestContract,
 		},
 	},
 } as const satisfies RouteNamespace;
