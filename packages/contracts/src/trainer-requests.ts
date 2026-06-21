@@ -6,8 +6,20 @@ import { apiResponseBaseContract } from "./api-response";
  */
 export const trainerRequestItemContract = z.object({
 	id: z.uuidv7(),
-	sporterId: z.uuidv7(),
-	trainerId: z.uuidv7(),
+	sporter: z.object({
+		id: z.uuidv7(),
+		username: z.string().max(100),
+		firstName: z.string().max(100),
+		lastName: z.string().max(100),
+		pictureUrl: z.url().optional(),
+	}),
+	trainer: z.object({
+		id: z.uuidv7(),
+		username: z.string().max(100),
+		firstName: z.string().max(100),
+		lastName: z.string().max(100),
+		pictureUrl: z.url().optional(),
+	}),
 	status: z.object({
 		label: z.enum(["Pending", "Accepted", "Rejected"]),
 		value: z.enum(["pending", "accepted", "rejected"]),

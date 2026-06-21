@@ -10,6 +10,71 @@ declare const messages: {
 		requests: "Requests";
 		profile: "Profile";
 	};
+	home: {
+		header: {
+			welcomeBack: "Welcome back";
+			fallbackTitle: "Your Fitness Home";
+			refreshing: "Refreshing";
+			upToDate: "Up to date";
+		};
+		stats: {
+			plansAvailable: "Plans available";
+			pendingRequests: "Pending requests";
+			trainerRequestStatus: "Trainer request status";
+			noRequest: "No request";
+		};
+		activePlan: {
+			title: "Active plan";
+			description: "Your currently activated training plan.";
+			empty: "No active plan yet.";
+			errors: {
+				loadFailed: "Could not load your active plan.";
+			};
+		};
+		requestStatus: {
+			title: "Training request status";
+			sporterDescription: "Find a trainer and request guidance for your goals.";
+			trainerDescription: "Check incoming trainer requests and respond quickly.";
+			sporterHint: "Discover trainers in Explore and send a request to start training together.";
+			empty: "No training requests yet.";
+			errors: {
+				loadFailed: "Could not load trainer requests.";
+			};
+			values: {
+				pending: "Pending";
+				accepted: "Accepted";
+				rejected: "Rejected";
+			};
+		};
+		quickActions: {
+			title: "Quick actions";
+			description: "Jump straight into your most-used areas.";
+			items: {
+				myPlans: "My plans";
+				explore: "Explore";
+				notifications: "Notifications";
+				profile: "Profile";
+			};
+		};
+		difficulty: {
+			beginner: "Beginner";
+			novice: "Novice";
+			intermediate: "Intermediate";
+			advanced: "Advanced";
+			expert: "Expert";
+		};
+		actions: {
+			tryAgain: "Try again";
+			openActivePlan: "Open active plan";
+			choosePlan: "Choose a plan";
+			findTrainer: "Find a trainer";
+			viewAllRequests: "View all requests";
+			refresh: "Refresh";
+		};
+		errors: {
+			planRefresh: "Could not refresh all plan data right now.";
+		};
+	};
 	auth: {
 		onboarding: {
 			hero: {
@@ -233,7 +298,7 @@ declare const messages: {
 					request: "Request Training";
 					label: "Request Trainer";
 					pending: "Request Pending...";
-					approved: "Request Approved";
+					accepted: "Request Accepted";
 					rejected: "Request Rejected";
 				};
 			};

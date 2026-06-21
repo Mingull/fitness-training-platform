@@ -242,7 +242,7 @@ export const createApiClient = <const R extends RouteNamespace>({
 	 * This function handles authentication, input validation, making the HTTP request, and output validation according to the route definition.
 	 */
 	const request = async <T extends Route>(config: T, data: InputOf<T> | undefined, options?: RequestOptions<T>): Promise<ClientResult<OutputOf<T>>> => {
-		if ((config.auth === "required" || config.auth === "optional") && !options?.accessToken) {
+		if (config.auth === "required" && !options?.accessToken) {
 			return {
 				data: null,
 				error: {
