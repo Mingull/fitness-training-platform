@@ -42,7 +42,7 @@ declare const messages: {
 			};
 			values: {
 				pending: "In behandeling";
-				approved: "Goedgekeurd";
+				accepted: "Geaccepteerd";
 				rejected: "Afgewezen";
 			};
 		};
@@ -298,7 +298,7 @@ declare const messages: {
 					request: "Vraag training aan";
 					label: "Vraag trainer aan";
 					pending: "In behandeling...";
-					approved: "Goedgekeurd";
+					accepted: "Geaccepteerd";
 					rejected: "Afgewezen";
 				};
 			};

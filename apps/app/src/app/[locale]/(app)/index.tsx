@@ -190,7 +190,7 @@ export default function HomeScreen() {
 										<Badge
 											variant={
 												latestRequest.status.value === "pending" ? "default"
-												: latestRequest.status.value === "approved" ?
+												: latestRequest.status.value === "accepted" ?
 													"secondary"
 												:	"destructive"
 											}

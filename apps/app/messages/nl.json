@@ -39,7 +39,7 @@
 			},
 			"values": {
 				"pending": "In behandeling",
-				"approved": "Goedgekeurd",
+				"accepted": "Geaccepteerd",
 				"rejected": "Afgewezen"
 			}
 		},
@@ -295,7 +295,7 @@
 					"request": "Vraag training aan",
 					"label": "Vraag trainer aan",
 					"pending": "In behandeling...",
-					"approved": "Goedgekeurd",
+					"accepted": "Geaccepteerd",
 					"rejected": "Afgewezen"
 				}
 			},

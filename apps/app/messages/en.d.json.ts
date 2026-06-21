@@ -42,7 +42,7 @@ declare const messages: {
 			};
 			values: {
 				pending: "Pending";
-				approved: "Approved";
+				accepted: "Accepted";
 				rejected: "Rejected";
 			};
 		};
@@ -298,7 +298,7 @@ declare const messages: {
 					request: "Request Training";
 					label: "Request Trainer";
 					pending: "Request Pending...";
-					approved: "Request Approved";
+					accepted: "Request Accepted";
 					rejected: "Request Rejected";
 				};
 			};

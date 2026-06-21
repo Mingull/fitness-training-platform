@@ -39,7 +39,7 @@
 			},
 			"values": {
 				"pending": "Pending",
-				"approved": "Approved",
+				"accepted": "Accepted",
 				"rejected": "Rejected"
 			}
 		},
@@ -295,7 +295,7 @@
 					"request": "Request Training",
 					"label": "Request Trainer",
 					"pending": "Request Pending...",
-					"approved": "Request Approved",
+					"accepted": "Request Accepted",
 					"rejected": "Request Rejected"
 				}
 			},
