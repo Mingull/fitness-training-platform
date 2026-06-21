@@ -130,7 +130,7 @@ export default function ProfileScreen() {
 						experienceLevel: data.experienceLevel,
 						bio: data.bio,
 						goals: data.goals,
-						pictureUrl: data.pictureUrl,
+						picture: data.pictureUrl,
 					}}
 				/>
 			:	null}

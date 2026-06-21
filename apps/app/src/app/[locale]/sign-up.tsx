@@ -9,14 +9,14 @@ import { StepFour } from "@/features/auth/sign-up/components/steps/step-four";
 import { StepOne } from "@/features/auth/sign-up/components/steps/step-one";
 import { StepThree } from "@/features/auth/sign-up/components/steps/step-three";
 import { StepTwo } from "@/features/auth/sign-up/components/steps/step-two";
-import { formSchema } from "@/features/auth/sign-up/schemas";
+import { formSchema, stepFourSchema, stepOneSchema, stepThreeSchema, stepTwoSchema } from "@/features/auth/sign-up/schemas";
 import { sharedForm } from "@/features/auth/sign-up/shared-form";
 import { useAppForm } from "@/hooks/forms";
 import { cn } from "@fitness/ui/lib/utils";
 import { revalidateLogic } from "@tanstack/react-form";
 import { Link, useRouter } from "expo-router";
 import { Dumbbell } from "lucide-react-native";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { toast } from "sonner-native";
 import { useTranslations } from "use-intl";
@@ -26,7 +26,6 @@ export default function SignupScreen() {
 	const router = useRouter();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [currentStepIndex, setCurrentStepIndex] = useState(0);
-	const [currentStepValidator, setCurrentStepValidator] = useState(formSchema.pick({ stepOne: true }));
 
 	const steps = [
 		{ title: t("steps.account.title"), subtitle: t("steps.account.subtitle") },
@@ -35,29 +34,13 @@ export default function SignupScreen() {
 		{ title: t("steps.about.title"), subtitle: t("steps.about.subtitle") },
 	];
 
-	const submitSchemaByStep = useMemo(
-		() => [formSchema.pick({ stepOne: true }), formSchema.pick({ stepTwo: true }), formSchema.pick({ stepThree: true }), formSchema],
-		[],
-	);
-
-	useEffect(() => {
-		setCurrentStepValidator(submitSchemaByStep[currentStepIndex] as unknown as typeof formSchema);
-	}, [currentStepIndex, submitSchemaByStep]);
-
 	const form = useAppForm({
 		...sharedForm,
-		validationLogic: revalidateLogic({
-			mode: "submit",
-			modeAfterSubmission: "submit",
-		}),
+		validationLogic: revalidateLogic(),
 		validators: {
-			onSubmit: currentStepValidator as unknown as typeof formSchema,
-			onChange: currentStepValidator as unknown as typeof formSchema,
+			onDynamic: formSchema,
 		},
 		onSubmit: async ({ value }) => {
-			if (!(currentStepIndex >= steps.length - 1)) {
-				return next();
-			}
 			setErrorMessage(null);
 
 			const { error } = await signUp({
@@ -69,7 +52,7 @@ export default function SignupScreen() {
 				experienceLevel: value.stepThree.experienceLevel || undefined,
 				bio: value.stepFour.bio || undefined,
 				goals: value.stepFour.goals || undefined,
-				pictureUrl: value.stepFour.pictureUrl || undefined,
+				picture: value.stepFour.pictureUrl || undefined,
 			});
 
 			if (error) {
@@ -86,16 +69,6 @@ export default function SignupScreen() {
 
 	const handleSignInProvider = async (provider: "google" | "discord") => {
 		toast.error(`Social sign-in is for ${provider.slice(0, 1).toUpperCase() + provider.slice(1)} not implemented yet.`, { position: "top-center" });
-	};
-
-	const back = () => setCurrentStepIndex((index) => Math.max(index - 1, 0));
-
-	const next = () => {
-		if (currentStepIndex === steps.length - 1) {
-			form.handleSubmit();
-			return;
-		}
-		setCurrentStepIndex((index) => Math.min(index + 1, steps.length - 1));
 	};
 
 	return (
@@ -140,35 +113,74 @@ export default function SignupScreen() {
 						:	null}
 
 						<FieldSet>
-							<StepOne form={form} className={cn({ hidden: currentStepIndex !== 0 })} />
-							<StepTwo form={form} className={cn({ hidden: currentStepIndex !== 1 })} />
-							<StepThree form={form} className={cn({ hidden: currentStepIndex !== 2 })} />
-							<StepFour form={form} className={cn({ hidden: currentStepIndex !== 3 })} />
+							{currentStepIndex === 0 && (
+								<form.FormGroup name="stepOne" validators={{ onDynamic: stepOneSchema }} onGroupSubmit={() => setCurrentStepIndex(1)}>
+									{(formGroup) => (
+										<View className="gap-3">
+											<StepOne form={form} className={cn()} />
+											<Button className="flex-1" onPress={formGroup.handleSubmit} disabled={form.state.isSubmitting}>
+												<Text>{t("actions.next")}</Text>
+											</Button>
+										</View>
+									)}
+								</form.FormGroup>
+							)}
+
+							{currentStepIndex === 1 && (
+								<form.FormGroup name="stepTwo" validators={{ onDynamic: stepTwoSchema }} onGroupSubmit={() => setCurrentStepIndex(2)}>
+									{(formGroup) => (
+										<View className="gap-3">
+											<StepTwo form={form} className={cn()} />
+											<View className="flex-row gap-3">
+												<Button variant="outline" className="flex-1" onPress={() => setCurrentStepIndex(0)}>
+													<Text>{t("actions.back")}</Text>
+												</Button>
+												<Button className="flex-1" onPress={formGroup.handleSubmit} disabled={form.state.isSubmitting}>
+													<Text>{t("actions.next")}</Text>
+												</Button>
+											</View>
+										</View>
+									)}
+								</form.FormGroup>
+							)}
+
+							{currentStepIndex === 2 && (
+								<form.FormGroup name="stepThree" validators={{ onDynamic: stepThreeSchema }} onGroupSubmit={() => setCurrentStepIndex(3)}>
+									{(formGroup) => (
+										<View className="gap-3">
+											<StepThree form={form} className={cn()} />
+											<View className="flex-row gap-3">
+												<Button variant="outline" className="flex-1" onPress={() => setCurrentStepIndex(1)}>
+													<Text>{t("actions.back")}</Text>
+												</Button>
+												<Button className="flex-1" onPress={formGroup.handleSubmit} disabled={form.state.isSubmitting}>
+													<Text>{t("actions.next")}</Text>
+												</Button>
+											</View>
+										</View>
+									)}
+								</form.FormGroup>
+							)}
+
+							{currentStepIndex === 3 && (
+								<form.FormGroup name="stepFour" validators={{ onDynamic: stepFourSchema }} onGroupSubmit={() => form.handleSubmit()}>
+									{(formGroup) => (
+										<View className="gap-3">
+											<StepFour form={form} className={cn()} />
+											<View className="flex-row gap-3">
+												<Button variant="outline" className="flex-1" onPress={() => setCurrentStepIndex(2)}>
+													<Text>{t("actions.back")}</Text>
+												</Button>
+												<Button className="flex-1" onPress={formGroup.handleSubmit} disabled={form.state.isSubmitting}>
+													<Text>{t("actions.submit")}</Text>
+												</Button>
+											</View>
+										</View>
+									)}
+								</form.FormGroup>
+							)}
 
 							<View className="gap-1">
-								<View className={"flex-row gap-3"}>
-									{!(currentStepIndex === 0) && (
-										<Button variant="outline" className="flex-1" onPress={back}>
-											<Text>{t("actions.back")}</Text>
-										</Button>
-									)}
-									<form.Subscribe selector={(state) => [state.isSubmitting]}>
-										{([isSubmitting]) => (
-											<Button
-												className="flex-1"
-												onPress={() => {
-													console.log("Running next step");
-													next();
-												}}
-												disabled={isSubmitting}
-											>
-												{currentStepIndex === steps.length - 1 ?
-													<Text>{t("actions.submit")}</Text>
-												:	<Text>{t("actions.next")}</Text>}
-											</Button>
-										)}
-									</form.Subscribe>
-								</View>
 								<Text className="text-center text-sm">
 									{t("links.haveAccount")}{" "}
 									<Link href="/[locale]/sign-in" className="underline underline-offset-4" asChild>

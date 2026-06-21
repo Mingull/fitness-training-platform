@@ -12,7 +12,7 @@ export const signupContract = z.object({
 	bio: z.string().optional(),
 	goals: z.string().optional(),
 	experienceLevel: z.string().optional(),
-	pictureUrl: z.string().optional(),
+	picture: z.string().optional(),
 });
 
 export const signinContract = z.object({

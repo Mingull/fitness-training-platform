@@ -51,7 +51,7 @@ export const updateProfileContract = z.object({
 	experienceLevel: z.enum(["beginner", "intermediate", "advanced", "professional"]).optional(),
 	bio: z.string().optional(),
 	goals: z.string().optional(),
-	pictureUrl: z.string().optional(),
+	picture: z.string().optional(),
 });
 
 export const activeUserPlanContract = apiResponseBaseContract.extend({

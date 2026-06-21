@@ -27,5 +27,5 @@ public sealed record RegisterUserRequest
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ExperienceLevel { get; set; } = null;
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? PictureUrl { get; set; } = null;
+    public string? Picture { get; set; } = null;
 }

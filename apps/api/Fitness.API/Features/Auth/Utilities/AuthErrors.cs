@@ -33,6 +33,10 @@ public static class AuthErrors
     /// <returns></returns>
     public static ApiError UnauthorizedWithResource(string resource) =>
         new("Unauthorized", ErrorType.Unauthorized, "Unauthorized", $"You are not authorized to access the {resource}.");
+    public static ApiError InvalidProfilePicture(string detail) => new("InvalidProfilePicture", ErrorType.Validation, "Validation failed", detail, new Dictionary<string, string[]>
+    {
+        {"picture", new[] { detail }}
+    });
 
     public static ApiError MapUserCreationFailure(IEnumerable<IdentityError> errors)
     {

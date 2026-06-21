@@ -25,6 +25,14 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
                 UserName = request.Username,
                 Email = request.Email,
             };
+            if (!Base64ImageValidator.TryNormalizeImageBase64(
+                request.Picture,
+                2 * 1024 * 1024,
+                out var normalizedPicture,
+                out var pictureError))
+            {
+                return AuthErrors.InvalidProfilePicture(pictureError!);
+            }
 
             var createUserResult = await userManager.CreateAsync(user, request.Password);
 
@@ -50,7 +58,7 @@ public class AuthService(UserManager<AppUser> userManager, FitnessContext contex
                 Bio = request.Bio,
                 ExperienceLevel = ExperienceLevel.From(request.ExperienceLevel),
                 Goals = request.Goals,
-                PictureUrl = request.PictureUrl
+                PictureUrl = normalizedPicture
             });
 
             await transaction.CommitAsync();

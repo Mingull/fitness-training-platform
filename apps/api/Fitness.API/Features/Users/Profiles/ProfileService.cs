@@ -49,12 +49,21 @@ public class ProfileService(IProfileRepository profileRepository, UserManager<Ap
             return ProfileErrors.NotFound;
         }
 
+        if (!Base64ImageValidator.TryNormalizeImageBase64(
+            request.Picture,
+            2 * 1024 * 1024,
+            out var normalizedPicture,
+            out var pictureError))
+        {
+            return ProfileErrors.InvalidProfilePicture(pictureError!);
+        }
+
         profile.FirstName = request.FirstName ?? profile.FirstName;
         profile.LastName = request.LastName ?? profile.LastName;
         profile.Bio = request.Bio ?? profile.Bio;
         profile.Goals = request.Goals ?? profile.Goals;
         profile.ExperienceLevel = request.ExperienceLevel is null ? profile.ExperienceLevel : ExperienceLevel.From(request.ExperienceLevel);
-        profile.PictureUrl = request.PictureUrl ?? profile.PictureUrl;
+        profile.PictureUrl = normalizedPicture ?? profile.PictureUrl;
 
         await profileRepository.UpdateAsync(profile);
         var roles = await userManager.GetRolesAsync(profile.User);
