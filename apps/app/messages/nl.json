@@ -7,6 +7,71 @@
 		"requests": "Verzoeken",
 		"profile": "Profiel"
 	},
+	"home": {
+		"header": {
+			"welcomeBack": "Welkom terug",
+			"fallbackTitle": "Jouw Fitness Home",
+			"refreshing": "Verversen",
+			"upToDate": "Up-to-date"
+		},
+		"stats": {
+			"plansAvailable": "Beschikbare schema's",
+			"pendingRequests": "Openstaande verzoeken",
+			"trainerRequestStatus": "Status trainerverzoek",
+			"noRequest": "Geen verzoek"
+		},
+		"activePlan": {
+			"title": "Actief schema",
+			"description": "Je momenteel geactiveerde trainingsschema.",
+			"empty": "Nog geen actief schema.",
+			"errors": {
+				"loadFailed": "Kon je actieve schema niet laden."
+			}
+		},
+		"requestStatus": {
+			"title": "Status trainingsverzoek",
+			"sporterDescription": "Vind een trainer en vraag begeleiding aan voor je doelen.",
+			"trainerDescription": "Bekijk inkomende trainingsverzoeken en reageer snel.",
+			"sporterHint": "Ontdek trainers in Ontdek en stuur een verzoek om samen te starten.",
+			"empty": "Nog geen trainingsverzoeken.",
+			"errors": {
+				"loadFailed": "Kon trainingsverzoeken niet laden."
+			},
+			"values": {
+				"pending": "In behandeling",
+				"approved": "Goedgekeurd",
+				"rejected": "Afgewezen"
+			}
+		},
+		"quickActions": {
+			"title": "Snelle acties",
+			"description": "Ga direct naar de onderdelen die je het meest gebruikt.",
+			"items": {
+				"myPlans": "Mijn schema's",
+				"explore": "Ontdek",
+				"notifications": "Meldingen",
+				"profile": "Profiel"
+			}
+		},
+		"difficulty": {
+			"beginner": "Beginner",
+			"novice": "Nieuweling",
+			"intermediate": "Gemiddeld",
+			"advanced": "Geavanceerd",
+			"expert": "Expert"
+		},
+		"actions": {
+			"tryAgain": "Opnieuw proberen",
+			"openActivePlan": "Open actief schema",
+			"choosePlan": "Kies een schema",
+			"findTrainer": "Vind een trainer",
+			"viewAllRequests": "Bekijk alle verzoeken",
+			"refresh": "Verversen"
+		},
+		"errors": {
+			"planRefresh": "Kon nu niet alle schemagegevens verversen."
+		}
+	},
 	"auth": {
 		"onboarding": {
 			"hero": {

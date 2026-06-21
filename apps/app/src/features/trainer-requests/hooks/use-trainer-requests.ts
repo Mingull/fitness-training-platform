@@ -5,12 +5,12 @@ import type { ClientError } from "@fitness/api-client/types";
 import type { TrainerRequestList } from "@fitness/contracts/trainer-requests";
 import { useQuery } from "@tanstack/react-query";
 
-export const useTrainerRequests = () => {
+export const useTrainerRequests = ({ enabled = true }: { enabled?: boolean } = {}) => {
 	const { userId } = useSession();
 	const { withRefresh } = useAuthActions();
 	return useQuery<TrainerRequestList["data"], ClientError>({
 		queryKey: ["trainer-requests", userId],
-		enabled: !!userId,
+		enabled: !!userId && enabled,
 		retry: false,
 		// Keep training plans fresh for 5 minutes and cache for 30 minutes
 		staleTime: 1000 * 60 * 5,
