@@ -21,8 +21,8 @@ export const trainerRequestItemContract = z.object({
 		pictureUrl: z.url().optional(),
 	}),
 	status: z.object({
-		label: z.enum(["Pending", "Approved", "Rejected"]),
-		value: z.enum(["pending", "approved", "rejected"]),
+		label: z.enum(["Pending", "Accepted", "Rejected"]),
+		value: z.enum(["pending", "accepted", "rejected"]),
 	}),
 	message: z.string().optional().nullable(),
 	createdAt: z.iso.datetime({ offset: true }),
