@@ -1,0 +1,19 @@
+meta {
+  name: Accept trainer request
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/trainer-requests/:requestId/accept
+  body: none
+  auth: bearer
+}
+
+params:path {
+  requestId: 019ee9cd-1e65-7d98-90e6-5c2fdf7f96b5
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

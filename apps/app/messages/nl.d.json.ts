@@ -7,6 +7,7 @@ declare const messages: {
 		myPlans: "Mijn Schema's";
 		explore: "Ontdek";
 		notifications: "Meldingen";
+		requests: "Verzoeken";
 		profile: "Profiel";
 	};
 	auth: {
@@ -228,9 +229,12 @@ declare const messages: {
 				retry: "Opnieuw";
 				signOut: "Afmelden";
 				editProfile: "Profiel bewerken";
-				requestTraining: {
+				requestTrainer: {
 					request: "Vraag training aan";
-					requested: "Training aangevraagd";
+					label: "Vraag trainer aan";
+					pending: "In behandeling...";
+					approved: "Goedgekeurd";
+					rejected: "Afgewezen";
 				};
 			};
 			editModal: {
@@ -640,6 +644,28 @@ declare const messages: {
 			trainers: "Trainers";
 			plans: "Trainingsschema's";
 			exercises: "Oefeningen";
+		};
+	};
+	requests: {
+		header: {
+			title: "Verzoeken";
+			description: "Bekijk en beheer je trainingsverzoeken van sporters die met jou als hun trainer willen verbinden.";
+		};
+		states: {
+			empty: {
+				title: "Geen verzoeken";
+				description: "Je hebt momenteel geen trainingsverzoeken. Wanneer sporters je verzoeken sturen, verschijnen ze hier.";
+				refresh: "Vernieuwen";
+			};
+			error: {
+				title: "Fout";
+				description: "Er is een fout opgetreden bij het laden van verzoeken.";
+				tryAgain: "Probeer het opnieuw.";
+			};
+		};
+		actions: {
+			accept: "Accepteren";
+			reject: "Weigeren";
 		};
 	};
 };
