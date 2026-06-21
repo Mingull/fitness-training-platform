@@ -1,4 +1,5 @@
 import { FormBase } from "@/components/forms/base";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldSet, FieldTitle } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
@@ -8,6 +9,7 @@ import { useAppForm } from "@/hooks/forms";
 import { updateProfileContract } from "@fitness/contracts/user";
 import { cn } from "@fitness/ui/lib/utils";
 import * as Haptics from "expo-haptics";
+import * as ImagePicker from "expo-image-picker";
 import { XIcon } from "lucide-react-native";
 import { useRef, useState } from "react";
 import { KeyboardAvoidingView, Modal, Platform, TextInput, View } from "react-native";
@@ -20,6 +22,7 @@ import { useUpdateProfile } from "../hooks/use-update-profile";
 type FormData = z.infer<typeof updateProfileContract>;
 
 export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: boolean; onClose: () => void; defaultValues: FormData }) {
+	const [previewUri, setPreviewUri] = useState<string | null>(null);
 	const t = useTranslations("user.profile.editModal");
 	const mutator = useUpdateProfile();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -39,7 +42,7 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 				experienceLevel: value.experienceLevel,
 				bio: value.bio,
 				goals: value.goals,
-				pictureUrl: value.pictureUrl,
+				picture: value.picture,
 			});
 
 			if (mutator.isError) {
@@ -89,6 +92,14 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 		fields.current.get(name)?.focus();
 	};
 
+
+	const toDataUri = (asset: ImagePicker.ImagePickerAsset) => {
+		if (!asset.base64) return null;
+		const mimeType = asset.mimeType ?? "image/jpeg";
+		return `data:${mimeType};base64,${asset.base64}`;
+	};
+
+
 	return (
 		<Modal visible={isOpen} animationType="slide" onRequestClose={onClose} transparent>
 			<KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} className="flex-1">
@@ -102,7 +113,7 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 						</View>
 						{errorMessage ?
 							<Text className="text-destructive text-sm">{errorMessage}</Text>
-						:	null}
+							: null}
 						<FieldSet className="gap-4">
 							<FieldGroup className="flex-row gap-4">
 								<form.AppField name="firstName" validators={{ onBlur: updateProfileContract.shape.firstName }}>
@@ -205,6 +216,78 @@ export function EditProfileModal({ isOpen, onClose, defaultValues }: { isOpen: b
 													</RadioGroup>
 												)}
 											</FormBase>
+										);
+									}}
+								</form.AppField>
+								<form.AppField name="picture">
+									{(field) => {
+										const localUri = previewUri ?? (field.state.value?.startsWith("data:") ? field.state.value : null);
+
+										const pickImage = async () => {
+											const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+											if (status !== "granted") return;
+											const result = await ImagePicker.launchImageLibraryAsync({
+												mediaTypes: ["images"],
+												allowsEditing: true,
+												aspect: [1, 1],
+												base64: true,
+												quality: 0.7,
+											});
+											if (!result.canceled && result.assets?.[0]) {
+												const asset = result.assets[0];
+												const imageDataUri = toDataUri(asset);
+												if (!imageDataUri) return;
+
+												setPreviewUri(asset.uri);
+												field.handleChange(imageDataUri);
+											}
+										};
+
+										const takePhoto = async () => {
+											const { status } = await ImagePicker.requestCameraPermissionsAsync();
+											if (status !== "granted") return;
+											const result = await ImagePicker.launchCameraAsync({
+												mediaTypes: ["images"],
+												allowsEditing: true,
+												aspect: [1, 1],
+												base64: true,
+												quality: 0.7,
+											});
+											if (!result.canceled && result.assets?.[0]) {
+												const asset = result.assets[0];
+												const imageDataUri = toDataUri(asset);
+												if (!imageDataUri) return;
+
+												setPreviewUri(asset.uri);
+												field.handleChange(imageDataUri);
+											}
+										};
+
+										return (
+											<View className="space-y-2">
+												<Text className={cn("text-muted-foreground text-sm")}>Profile Picture (optional)</Text>
+												{localUri ?
+													<Avatar alt="Profile Picture" className="border-background size-48 rounded-3xl">
+														<AvatarImage source={{ uri: localUri }} className="size-48 rounded-md" />
+														<AvatarFallback className="bg-border size-48 items-center justify-center rounded-md">
+															<Text className="text-muted-foreground text-xs">Preview</Text>
+														</AvatarFallback>
+													</Avatar>
+													: <View className="bg-border size-48 items-center justify-center rounded-md">
+														<Text className="text-muted-foreground text-xs">No photo</Text>
+													</View>
+												}
+												<View className="flex-row gap-2">
+													<Button onPress={pickImage} className="bg-border rounded px-3 py-2">
+														<Text>Select Photo</Text>
+													</Button>
+													{Platform.OS !== "web" && (
+														<Button onPress={takePhoto} className="bg-border rounded px-3 py-2">
+															<Text>Take Photo</Text>
+														</Button>
+													)}
+												</View>
+											</View>
 										);
 									}}
 								</form.AppField>

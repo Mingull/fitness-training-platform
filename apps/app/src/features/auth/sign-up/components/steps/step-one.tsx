@@ -95,8 +95,7 @@ export const StepOne = withForm({
 											placeholder={t("form.fields.confirmPassword.placeholder")}
 										returnKeyType="done"
 										ref={(input) => registerRef(field.name, input)}
-										submitBehavior="blurAndSubmit"
-										onSubmitEditing={() => form.handleSubmit()}
+											submitBehavior="blurAndSubmit"
 									/>
 									<InputGroupAddon align="inline-end">
 										<InputGroupButton onPress={() => setShowPasswordConfirm((prev) => !prev)} aria-label="Toggle password visibility">

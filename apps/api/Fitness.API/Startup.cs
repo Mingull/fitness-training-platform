@@ -28,6 +28,8 @@ using Fitness.API.Features.Notifications.Abstract;
 using Fitness.API.Features.Notifications;
 using Fitness.API.Features.TrainerRequests.Abstract;
 using Fitness.API.Features.TrainerRequests;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace Fitness.API;
 
@@ -59,6 +61,18 @@ public class Startup(IConfiguration configuration)
 
     public void ConfigureServices(IServiceCollection services)
     {
+        const long maxRequestBodySize = 5 * 1024 * 1024;
+
+        services.Configure<KestrelServerOptions>(options =>
+        {
+            options.Limits.MaxRequestBodySize = maxRequestBodySize;
+        });
+
+        services.Configure<IISServerOptions>(options =>
+        {
+            options.MaxRequestBodySize = maxRequestBodySize;
+        });
+
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
         services
             .AddControllers(options =>

@@ -63,7 +63,6 @@ export const StepTwo = withForm({
 							returnKeyType="next"
 							ref={(input) => registerRef(field.name, input)}
 							submitBehavior="submit"
-							onSubmitEditing={() => form.handleSubmit()}
 						/>
 					)}
 				</form.AppField>
