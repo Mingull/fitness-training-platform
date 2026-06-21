@@ -52,7 +52,7 @@ export default function HomeScreen() {
 		isRefetching: isRefetchingRequests,
 		error: requestsError,
 		refetch: refetchRequests,
-	} = useTrainerRequests();
+	} = useTrainerRequests({ enabled: userRole !== "Sporter" });
 
 	const isRefreshing = isRefetchingActivePlan || isRefetchingPlans || isRefetchingRequests;
 	const pendingRequests = trainerRequests?.filter((request) => request.status.value === "pending") ?? [];
