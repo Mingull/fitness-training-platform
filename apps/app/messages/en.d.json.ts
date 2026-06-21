@@ -7,6 +7,7 @@ declare const messages: {
 		myPlans: "My Plans";
 		explore: "Explore";
 		notifications: "Notifications";
+		requests: "Requests";
 		profile: "Profile";
 	};
 	auth: {
@@ -228,9 +229,12 @@ declare const messages: {
 				retry: "Retry";
 				signOut: "Sign Out";
 				editProfile: "Edit Profile";
-				requestTraining: {
+				requestTrainer: {
 					request: "Request Training";
-					requested: "Training Requested";
+					label: "Request Trainer";
+					pending: "Request Pending...";
+					approved: "Request Approved";
+					rejected: "Request Rejected";
 				};
 			};
 			editModal: {
@@ -640,6 +644,28 @@ declare const messages: {
 			trainers: "Trainers";
 			plans: "Training Plans";
 			exercises: "Exercises";
+		};
+	};
+	requests: {
+		header: {
+			title: "Requests";
+			description: "View and manage your training requests from sporters who want to connect with you as their trainer.";
+		};
+		states: {
+			empty: {
+				title: "No requests";
+				description: "You have no training requests at the moment. When sporters send you requests, they will appear here.";
+				refresh: "Refresh";
+			};
+			error: {
+				title: "Error";
+				description: "An error occurred while loading requests.";
+				tryAgain: "Please try.";
+			};
+		};
+		actions: {
+			accept: "Accept";
+			reject: "Reject";
 		};
 	};
 };

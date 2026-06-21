@@ -6,6 +6,7 @@ public enum ErrorType
     Conflict,
     Forbidden,
     InternalError,
+    NoContent,
     NotFound,
     Unauthorized,
     Validation,

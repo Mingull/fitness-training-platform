@@ -144,12 +144,19 @@ export function useNotificationSocket() {
 					return;
 				}
 				// Ensure the connection is established before registering the user with the hub
-				if (connection.state == signalR.HubConnectionState.Connected) await connection.invoke("Register", userId);
+				if (
+					connection.state === signalR.HubConnectionState.Connected ||
+					connection.state !== signalR.HubConnectionState.Disconnected ||
+					connection.state !== signalR.HubConnectionState.Connecting
+				) {
+					console.log("[SignalR] Registering user with hub:", userId);
+					await connection.invoke("Register", userId);
+				}
 			} catch (error) {
 				if (disposed) {
 					return;
 				}
-				console.error(error);
+				console.log("[SignalR] Error:", error);
 			}
 		})();
 

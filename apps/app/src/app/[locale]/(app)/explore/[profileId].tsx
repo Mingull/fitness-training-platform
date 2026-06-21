@@ -4,31 +4,62 @@ import { Icon } from "@/components/ui/icon";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Text } from "@/components/ui/text";
-import { useRequestTraining } from "@/features/users/hooks/use-request-training";
+import { useRequestTrainer } from "@/features/trainer-requests/hooks/use-request-trainer";
+import { useRequestTrainerStatus } from "@/features/trainer-requests/hooks/use-request-trainer-status";
 import { ProfileAction } from "@/features/users/profile/components/profile-action";
 import { ProfileRow } from "@/features/users/profile/components/profile-row";
 import { useProfile } from "@/features/users/profile/hooks/use-profile";
+import { ClientError } from "@fitness/api-client/types";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ChevronLeft, XIcon } from "lucide-react-native";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { useTranslations } from "use-intl";
 
 export default function ProfileScreen() {
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const router = useRouter();
 	const t = useTranslations("user.profile");
 	const { profileId } = useLocalSearchParams<"/[locale]/(app)/explore/[profileId]">();
 	const { data, isLoading, error, isRefetching, refetch } = useProfile(Array.isArray(profileId) ? profileId[0] : profileId);
-	const mutator = useRequestTraining();
+	const {
+		data: trainingStatus,
+		isLoading: isTrainingStatusLoading,
+		isRefetching: isTrainingStatusRefetching,
+		refetch: refetchTrainingStatus,
+	} = useRequestTrainerStatus(Array.isArray(profileId) ? profileId[0] : profileId);
+	const mutator = useRequestTrainer();
 
 	const handleRequestTraining = async () => {
-		await mutator.mutateAsync({
-			trainerId: Array.isArray(profileId) ? profileId[0] : profileId,
-		});
+		try {
+			await mutator.mutateAsync({
+				trainerId: Array.isArray(profileId) ? profileId[0] : profileId,
+			});
+		} catch (error) {
+			setErrorMessage((error as ClientError).message);
+		} finally {
+			setTimeout(() => {
+				setErrorMessage(null);
+			}, 5000);
+		}
 	};
+
+	const handleRefresh = async () => {
+		await Promise.all([refetch(), refetchTrainingStatus()]);
+	};
+
+	useEffect(() => {
+		console.log({ trainingStatus });
+	}, [trainingStatus]);
+
 	return (
 		<View className="bg-primary pt-safe flex-1">
-			<ScrollView className="flex-1" contentContainerClassName="grow" refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}>
+			<ScrollView
+				className="flex-1"
+				contentContainerClassName="grow"
+				refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={handleRefresh} />}
+			>
 				<View className="mt-2 flex-row items-center justify-between px-4">
 					<Button variant="ghost" size="icon" onPress={() => router.back()}>
 						<Icon as={ChevronLeft} size={14 * 1.5} strokeWidth={3} className="text-primary-foreground" />
@@ -101,11 +132,19 @@ export default function ProfileScreen() {
 								<ProfileRow label={t("fields.experience.label")} value={t(`fields.experience.options.${data.experienceLevel}`)} />
 								<ProfileRow label={t("fields.goals.label")} value={data.goals ?? t("fields.goals.empty")} vertical />
 								<ProfileRow label={t("fields.bio.label")} value={data.bio ?? t("fields.bio.empty")} vertical />
-								<Separator />
-
-								<View className="">
-									<ProfileAction label={t("actions.requestTraining.request")} onPress={handleRequestTraining} />
-								</View>
+								{data.roles.includes("Trainer") && (
+									<>
+										<Separator />
+										{trainingStatus?.status.value === "pending" ?
+											<ProfileRow label={t("actions.requestTrainer.label")} value={t("actions.requestTrainer.pending")} />
+										: trainingStatus?.status.value === "approved" ?
+											<ProfileRow label={t("actions.requestTrainer.label")} value={t("actions.requestTrainer.approved")} disabled />
+										: trainingStatus?.status.value === "rejected" ?
+											<ProfileRow label={t("actions.requestTrainer.label")} value={t("actions.requestTrainer.rejected")} disabled />
+										:	<ProfileAction label={t("actions.requestTrainer.request")} onPress={handleRequestTraining} />}
+										{errorMessage && <Text className="text-destructive">{errorMessage}</Text>}
+									</>
+								)}
 							</View>
 						</View>
 					:	null}

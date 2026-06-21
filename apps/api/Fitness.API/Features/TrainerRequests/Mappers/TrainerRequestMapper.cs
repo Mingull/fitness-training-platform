@@ -1,5 +1,6 @@
 using Fitness.API.Features.TrainerRequests.Contracts;
 using Fitness.API.Features.TrainerRequests.Models;
+using Fitness.API.Features.Users.Mappers;
 
 namespace Fitness.API.Features.TrainerRequests.Mappers;
 
@@ -10,8 +11,8 @@ public static class TrainerRequestMapper
         return new TrainerRequestResponse
         {
             Id = entity.Id,
-            SporterId = entity.AthleteId,
-            TrainerId = entity.TrainerId,
+            Sporter = entity.Athlete.ToResponse(),
+            Trainer = entity.Trainer.ToResponse(),
             Status = new()
             {
                 Label = entity.Status.Label,

@@ -6,7 +6,7 @@ import { authTokensContract, signinContract, signupContract } from "@fitness/con
 import { deviceContract, registerDeviceContract } from "@fitness/contracts/devices";
 import { exerciseListContract } from "@fitness/contracts/exercises";
 import { notificationListContract } from "@fitness/contracts/notifications";
-import { createTrainerRequestContract, trainerRequestContract } from "@fitness/contracts/trainer-requests";
+import { createTrainerRequestContract, trainerRequestContract, trainerRequestListContract } from "@fitness/contracts/trainer-requests";
 import {
 	addWorkoutToPlanContract,
 	createTrainingPlanContract,
@@ -191,6 +191,30 @@ const routes = {
 			auth: "required",
 			in: createTrainerRequestContract,
 			out: trainerRequestContract,
+		},
+		status: {
+			method: "GET",
+			path: "/trainer-requests/{trainerId:string}/status",
+			auth: "required",
+			out: trainerRequestContract,
+		},
+		list: {
+			method: "GET",
+			path: "/trainer-requests",
+			auth: "required",
+			out: trainerRequestListContract,
+		},
+		accept: {
+			method: "POST",
+			path: "/trainer-requests/{requestId:string}/accept",
+			auth: "required",
+			out: apiResponseBaseContract,
+		},
+		reject: {
+			method: "POST",
+			path: "/trainer-requests/{requestId:string}/reject",
+			auth: "required",
+			out: apiResponseBaseContract,
 		},
 	},
 } as const satisfies RouteNamespace;
