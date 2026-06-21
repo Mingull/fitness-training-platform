@@ -160,10 +160,10 @@ export default function HomeScreen() {
 				{userRole !== "Sporter" && (
 					<Card>
 						<CardHeader>
-							<CardTitle>{t("requestStatus.title")}</CardTitle>
-							<CardDescription>
-								{userRole === "Sporter" ? t("requestStatus.sporterDescription") : t("requestStatus.trainerDescription")}
-							</CardDescription>
+					<CardHeader>
+						<CardTitle>{t("requestStatus.title")}</CardTitle>
+						<CardDescription>{t("requestStatus.trainerDescription")}</CardDescription>
+					</CardHeader>
 						</CardHeader>
 						<CardContent className="gap-3">
 							{isLoadingRequests ?
