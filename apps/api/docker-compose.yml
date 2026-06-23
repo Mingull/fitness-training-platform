@@ -1,7 +1,7 @@
 services:
   fitness-api:
     image: ${DOCKER_REGISTRY-}fitnessapi
-    container_name: fitness.api
+    container_name: fitness-api
     build:
       context: .
       dockerfile: Fitness.API/Dockerfile
@@ -9,14 +9,14 @@ services:
       - "3000:8080"
       - "3001:8081"
     environment:
-      - ConnectionStrings__DatabaseUrl=Server=fitness.database;Database=${DB_NAME};User=${DB_USER};Password=${DB_PASSWORD};
+      - ConnectionStrings__DatabaseUrl=Server=fitness-database;Database=${DB_NAME};User=${DB_USER};Password=${DB_PASSWORD};
       - RunMigrations=${RUN_MIGRATIONS}
       - JWT__Issuer=${JWT_ISSUER}
       - JWT__Audience=${JWT_AUDIENCE}
       - JWT__ExpirationInMinutes=${JWT_EXPIRATION_IN_MINUTES}
       - JWT__SecretKey=${JWT_SECRET_KEY}
     depends_on:
-      fitness.database:
+      fitness-database:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
@@ -28,7 +28,7 @@ services:
 
   fitness-database:
     image: mysql:8.4.9
-    container_name: fitness.database
+    container_name: fitness-database
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "no"
       MYSQL_DATABASE: ${DB_NAME}
