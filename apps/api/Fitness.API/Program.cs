@@ -23,13 +23,17 @@ public class Program
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
             var dbContext = services.GetRequiredService<FitnessContext>();
             var environment = services.GetRequiredService<IHostEnvironment>();
+            var configuration = services.GetRequiredService<IConfiguration>();
 
-            if (environment.IsDevelopment())
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            var runMigrations = configuration.GetValue("RUN_MIGRATIONS", false);
+            if (environment.IsDevelopment() || runMigrations)
             {
+                logger.LogInformation("Running database migrations...");
                 await dbContext.Database.MigrateAsync();
+                await IdentitySeeder.SeedRoles(roleManager);
+                logger.LogInformation("Database migrations completed.");
             }
-
-            await IdentitySeeder.SeedRoles(roleManager);
         }
 
         await host.RunAsync();
