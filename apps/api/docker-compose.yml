@@ -10,6 +10,7 @@ services:
       - "3001:8081"
     environment:
       - ConnectionStrings__DatabaseUrl=Server=fitness.database;Database=${DB_NAME};User=${DB_USER};Password=${DB_PASSWORD};
+      - RunMigrations=${RUN_MIGRATIONS}
       - JWT__Issuer=${JWT_ISSUER}
       - JWT__Audience=${JWT_AUDIENCE}
       - JWT__ExpirationInMinutes=${JWT_EXPIRATION_IN_MINUTES}

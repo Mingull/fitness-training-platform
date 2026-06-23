@@ -26,7 +26,7 @@ public class Program
             var configuration = services.GetRequiredService<IConfiguration>();
 
             var logger = services.GetRequiredService<ILogger<Program>>();
-            var runMigrations = configuration.GetValue("RUN_MIGRATIONS", false);
+            var runMigrations = configuration.GetValue("RunMigrations", false);
             if (environment.IsDevelopment() || runMigrations)
             {
                 logger.LogInformation("Running database migrations...");
