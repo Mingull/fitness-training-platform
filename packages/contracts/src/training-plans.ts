@@ -31,7 +31,7 @@ export type TrainingPlanItem = z.infer<typeof trainingPlanItemContract>;
  */
 export const trainingPlanContract = apiResponseBaseContract.extend({
 	data: trainingPlanItemContract.extend({
-		workouts: z.array(workoutItemContract),
+		workouts: z.array(workoutItemContract).optional(),
 	}),
 });
 
@@ -59,7 +59,7 @@ export const createTrainingPlanContract = z.object({
 	name: z.string("name.validations.required").min(2, "name.validations.minLength").max(100, "name.validations.maxLength"),
 	description: z.string("description.validations.required").min(2, "description.validations.minLength").max(1000, "description.validations.maxLength"),
 	difficulty: z.number().min(0, "difficulty.validations.min").max(100, "difficulty.validations.max"),
-	estimatedDuration: z.number().int().min(1, "estimatedDuration.validations.min"),
+	estimatedDuration: z.number().min(1, "estimatedDuration.validations.min"),
 	isPublic: z.boolean(),
 });
 

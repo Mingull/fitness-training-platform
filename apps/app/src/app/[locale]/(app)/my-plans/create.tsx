@@ -33,17 +33,17 @@ export default function TrainingPlanListScreen() {
 		onSubmit: async ({ value }) => {
 			setErrorMessage(null);
 
-			await mutator.mutateAsync({
-				name: value.name,
-				description: value.description,
-				difficulty: value.difficulty,
-				estimatedDuration: value.estimatedDuration,
-				isPublic: value.isPublic,
-			});
-
-			if (mutator.isError) {
-				setErrorMessage(mutator.error.message || t("feedback.error"));
-				toast.error(mutator.error.message || t("feedback.error"), { position: "top-center" });
+			try {
+				await mutator.mutateAsync({
+					name: value.name,
+					description: value.description,
+					difficulty: value.difficulty,
+					estimatedDuration: value.estimatedDuration,
+					isPublic: value.isPublic,
+				});
+			} catch (error) {
+				setErrorMessage((error as { message: string }).message || t("feedback.error"));
+				toast.error((error as { message: string }).message || t("feedback.error"), { position: "top-center" });
 				return;
 			}
 
@@ -70,7 +70,7 @@ export default function TrainingPlanListScreen() {
 			message:
 				error?.message && error.message.startsWith(`${fieldName}.validations.`) ?
 					(t as unknown as (key: string) => string)(`form.fields.${error.message}`)
-				:	error?.message,
+					: error?.message,
 		}));
 	};
 
@@ -95,7 +95,7 @@ export default function TrainingPlanListScreen() {
 				<ScaffoldContent scrollable>
 					{errorMessage ?
 						<Text className="text-destructive text-sm">{errorMessage}</Text>
-					:	null}
+						: null}
 					<FieldSet>
 						<FieldGroup className="gap-4">
 							<form.AppField name="name" validators={{ onBlur: createTrainingPlanContract.shape.name }}>
@@ -175,7 +175,7 @@ export default function TrainingPlanListScreen() {
 													field.handleChange(0);
 													return;
 												}
-												const parsed = Number.parseInt(text, 10);
+												const parsed = Number(text);
 												field.handleChange(Number.isFinite(parsed) ? parsed : 0);
 											}}
 											onSubmitEditing={() => focusNext("isPublic")}

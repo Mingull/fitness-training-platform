@@ -6,8 +6,6 @@ import { type ExerciseItem as ExerciseItemType } from "@fitness/contracts/exerci
  * It is used for quickly adding exercises to a workout inside of a training plan.
  */
 export const ExerciseItem = ({ item, orientation }: { item: ExerciseItemType; orientation: "horizontal" | "vertical" }) => {
-	const initials = item.name.trim().charAt(0).toUpperCase();
-
 	return (
 		<Card className="py-4">
 			<CardHeader className={orientation === "horizontal" ? "flex-col" : "flex-col"}>
