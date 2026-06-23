@@ -13,10 +13,8 @@ public record CreatePlanRequest
     [MaxLength(1000)]
     public string Description { get; set; } = String.Empty;
     [Required]
-    [Range(1, 100)]
     public int Difficulty { get; set; }
     [Required]
-    [MinLength(1)]
     public int EstimatedDuration { get; set; }
     [Required]
     public bool IsPublic { get; set; }
