@@ -54,6 +54,7 @@ public class Startup(IConfiguration configuration)
             {
                 endpoints.MapOpenApi();
             }
+            endpoints.MapHealthChecks("/health");
         });
 
         app.UseHttpsRedirection();
@@ -131,6 +132,7 @@ public class Startup(IConfiguration configuration)
                 },
             };
         });
+        services.AddHealthChecks();
 
         services.AddAuthorization();
         services.AddHttpContextAccessor();
