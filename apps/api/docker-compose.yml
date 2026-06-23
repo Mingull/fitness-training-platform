@@ -19,8 +19,6 @@ services:
       fitness.database:
         condition: service_healthy
     restart: always
-    networks:
-      - default
 
   fitness.database:
     image: mysql:8.4.9
@@ -40,9 +38,3 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-    networks:
-      - default
-
-networks:
-  default:
-    driver: bridge
